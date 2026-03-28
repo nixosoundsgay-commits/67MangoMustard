@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <style>
 :root{
@@ -1490,14 +1491,16 @@ Currently showing: <span id="embed-status-url"></span>
 ════════════════════════════════════════════════════════
   FIREBASE SECURITY RULES — paste into Firebase Console
   → Realtime Database → Rules tab
+  ALSO: Firebase Console → Authentication → Sign-in method
+        → Anonymous → Enable
 ════════════════════════════════════════════════════════
 {
   "rules": {
     "online": {
       ".read": true,
       "$uid": {
-        ".write": "$uid === auth.uid || auth !== null",
-        ".validate": "newData.hasChildren(['name','role','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 40 && (newData.child('role').val() === 'usr_std' || newData.child('role').val() === 'sys_rx7')"
+        ".write": "auth !== null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['name','role','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 40"
       }
     },
     "bans": {
@@ -1518,10 +1521,6 @@ Currently showing: <span id="embed-status-url"></span>
     }
   }
 }
-
-NOTE: For full protection, enable Firebase Authentication and
-move admin writes to a server/Cloud Function that verifies
-a secret token. Client-side role checks are always bypassable.
 ════════════════════════════════════════════════════════
 */
 // FIREBASE INIT
@@ -1532,6 +1531,14 @@ firebase.initializeApp({
   projectId: "tung-tung-sahur-67"
 });
 const db = firebase.database();
+const auth = firebase.auth();
+
+// Sign in anonymously so Firebase rules (auth !== null) are satisfied
+// This gives every user a real auth token without requiring any login
+auth.signInAnonymously().catch(() => {
+  // If anon auth fails, we still try to proceed (open rules fallback)
+  console.warn('Anonymous auth failed — DB writes may be blocked by rules.');
+});
 
 // STATE
 let currentRole = null, currentName = null, pendingRole = null;
@@ -1669,14 +1676,15 @@ function authorizeConsent() {
   if (enterBtn) { enterBtn.textContent = 'Connecting…'; enterBtn.disabled = true; }
 
   myRef = db.ref('online').push();
-  myRef.set({
+
+  // Wait for Firebase auth to be ready before writing
+  // This fixes the "internet error" caused by rules requiring auth !== null
+  const doWrite = () => myRef.set({
     name: currentName,
     role: currentRole,
     joined: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
     ts: Date.now()
-  })
-  .then(() => {
-    // Only proceed AFTER Firebase confirms the write
+  }).then(() => {
     hasFullyLoggedIn = true;
     myRef.onDisconnect().remove();
 
@@ -1701,18 +1709,34 @@ function authorizeConsent() {
       rb.className = 'role-badge role-std';
     }
 
-    addLog(`${currentName} logged in as ${currentRole}.`, 'join');
+    addLog(`${currentName} logged in.`, 'join');
     showPage('app-page');
     sessionStart = Date.now();
-  })
-  .catch(err => {
-    console.error('Login Firebase error:', err);
-    hasFullyLoggedIn = false; // reset so retry works correctly
+  }).catch(e => {
+    console.error('Login Firebase error:', e);
+    hasFullyLoggedIn = false;
     if (enterBtn) { enterBtn.textContent = origText; enterBtn.disabled = false; }
     const consentErr = document.getElementById('consent-err');
     consentErr.textContent = '❌ Could not connect to server. Check your internet and try again.';
     consentErr.style.display = 'block';
   });
+
+  // If already signed in anonymously, write immediately
+  // Otherwise wait for auth to complete first
+  const user = auth.currentUser;
+  if (user) {
+    doWrite();
+  } else {
+    const unsub = auth.onAuthStateChanged(u => {
+      unsub(); // only fire once
+      if (u) {
+        doWrite();
+      } else {
+        // Auth unavailable — try writing anyway (open rules fallback)
+        doWrite();
+      }
+    });
+  }
 }
 
 function leaveConsent() {
