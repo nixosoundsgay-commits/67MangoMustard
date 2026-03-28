@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <style>
 :root{
@@ -1531,14 +1530,6 @@ firebase.initializeApp({
   projectId: "tung-tung-sahur-67"
 });
 const db = firebase.database();
-const auth = firebase.auth();
-
-// Sign in anonymously so Firebase rules (auth !== null) are satisfied
-// This gives every user a real auth token without requiring any login
-auth.signInAnonymously().catch(() => {
-  // If anon auth fails, we still try to proceed (open rules fallback)
-  console.warn('Anonymous auth failed — DB writes may be blocked by rules.');
-});
 
 // STATE
 let currentRole = null, currentName = null, pendingRole = null;
@@ -1663,23 +1654,23 @@ function checkName() {
 
 // CONSENT
 function authorizeConsent() {
-  const err = document.getElementById('consent-err');
+  const consentErr = document.getElementById('consent-err');
   if (!document.getElementById('cc1').checked || !document.getElementById('cc2').checked || !document.getElementById('cc3').checked) {
-    err.style.display = 'block';
+    consentErr.textContent = 'Please check all boxes to continue.';
+    consentErr.style.display = 'block';
     return;
   }
-  err.style.display = 'none';
+  consentErr.style.display = 'none';
 
-  // Show loading state on button while Firebase connects
   const enterBtn = document.getElementById('consent-authorize-btn');
-  const origText = enterBtn ? enterBtn.textContent : '';
   if (enterBtn) { enterBtn.textContent = 'Connecting…'; enterBtn.disabled = true; }
 
-  myRef = db.ref('online').push();
+  function resetBtn() {
+    if (enterBtn) { enterBtn.textContent = '✅ Authorize & Enter'; enterBtn.disabled = false; }
+  }
 
-  // Wait for Firebase auth to be ready before writing
-  // This fixes the "internet error" caused by rules requiring auth !== null
-  const doWrite = () => myRef.set({
+  myRef = db.ref('online').push();
+  myRef.set({
     name: currentName,
     role: currentRole,
     joined: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
@@ -1687,17 +1678,14 @@ function authorizeConsent() {
   }).then(() => {
     hasFullyLoggedIn = true;
     myRef.onDisconnect().remove();
-
     startPresenceListener();
     startBanListener();
     startGlobalMsgListener();
     startLockdownListener();
     startEmbedListener();
     startUptime();
-
     document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
     document.getElementById('consent-overlay').style.display = 'none';
-
     document.getElementById('topbar-name').textContent = currentName;
     const rb = document.getElementById('topbar-role');
     if (currentRole === 'sys_rx7') {
@@ -1708,35 +1696,16 @@ function authorizeConsent() {
       rb.textContent = 'STD';
       rb.className = 'role-badge role-std';
     }
-
     addLog(`${currentName} logged in.`, 'join');
     showPage('app-page');
     sessionStart = Date.now();
   }).catch(e => {
-    console.error('Login Firebase error:', e);
+    console.error('Firebase write error:', e.code, e.message);
     hasFullyLoggedIn = false;
-    if (enterBtn) { enterBtn.textContent = origText; enterBtn.disabled = false; }
-    const consentErr = document.getElementById('consent-err');
-    consentErr.textContent = '❌ Could not connect to server. Check your internet and try again.';
+    resetBtn();
+    consentErr.textContent = '❌ Error: ' + (e.code || e.message || 'unknown') + '. Check your Firebase rules.';
     consentErr.style.display = 'block';
   });
-
-  // If already signed in anonymously, write immediately
-  // Otherwise wait for auth to complete first
-  const user = auth.currentUser;
-  if (user) {
-    doWrite();
-  } else {
-    const unsub = auth.onAuthStateChanged(u => {
-      unsub(); // only fire once
-      if (u) {
-        doWrite();
-      } else {
-        // Auth unavailable — try writing anyway (open rules fallback)
-        doWrite();
-      }
-    });
-  }
 }
 
 function leaveConsent() {
