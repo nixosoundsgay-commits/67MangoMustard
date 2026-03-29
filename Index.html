@@ -531,13 +531,56 @@ gap:12px;
 margin-bottom:14px;
 flex-wrap:wrap;
 }
-#embed-iframe{
+.embed-iframe-wrap{
 flex:1;
-width:100%;
-border:1px solid rgba(255,255,255,.16);
+position:relative;
 border-radius:14px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,.16);
 background:#090909;
 }
+#embed-iframe{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+border:none;
+background:#090909;
+}
+#embed-blocked-msg{
+display:none;
+position:absolute;
+inset:0;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:16px;
+background:#090909;
+text-align:center;
+padding:32px;
+}
+#embed-blocked-msg .block-icon{font-size:2.5rem;}
+#embed-blocked-msg h3{
+font-family:'Cinzel Decorative',cursive;
+font-size:.9rem;
+color:#fff;
+}
+#embed-blocked-msg p{
+font-size:.8rem;
+color:rgba(255,255,255,.5);
+line-height:1.7;
+max-width:360px;
+}
+#embed-blocked-msg a{
+color:#fff;
+font-size:.8rem;
+padding:8px 20px;
+border:1px solid rgba(255,255,255,.3);
+border-radius:10px;
+text-decoration:none;
+transition:all .2s;
+}
+#embed-blocked-msg a:hover{background:rgba(255,255,255,.1);}
 
 /* FULLSCREEN OVERLAY */
 #fullscreen-overlay{
@@ -1294,7 +1337,15 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <span id="embed-viewer-title" style="font-family:'Cinzel Decorative',cursive;font-size:.85rem;color:#fff;flex:1;"></span>
 <button class="back-btn" onclick="openFullscreen()" style="margin-bottom:0;display:flex;align-items:center;gap:6px;">⛶ Fullscreen</button>
 </div>
-<iframe id="embed-iframe" src="" sandbox="allow-scripts allow-forms allow-popups" allowfullscreen allow="fullscreen"></iframe>
+<div class="embed-iframe-wrap">
+<iframe id="embed-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
+<div id="embed-blocked-msg">
+<div class="block-icon">🚫</div>
+<h3>Site Blocked Embedding</h3>
+<p>This site doesn't allow itself to be embedded in iframes.<br/>Try opening it directly instead.</p>
+<a id="embed-open-link" href="" target="_blank" rel="noopener">Open in New Tab ↗</a>
+</div>
+</div>
 </div>
 </div>
 
@@ -1482,7 +1533,7 @@ Currently showing: <span id="embed-status-url"></span>
 <span id="fullscreen-title-bar">Embedded Game</span>
 <button class="fs-close-btn" onclick="closeFullscreen()">✕ Exit Fullscreen</button>
 </div>
-<iframe id="fullscreen-iframe" src="" sandbox="allow-scripts allow-forms allow-popups" allowfullscreen allow="fullscreen"></iframe>
+<iframe id="fullscreen-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
 </div>
 
 <script>
@@ -1490,34 +1541,12 @@ Currently showing: <span id="embed-status-url"></span>
 ════════════════════════════════════════════════════════
   FIREBASE SECURITY RULES — paste into Firebase Console
   → Realtime Database → Rules tab
-  ALSO: Firebase Console → Authentication → Sign-in method
-        → Anonymous → Enable
+  These rules work with local HTML files (file://)
 ════════════════════════════════════════════════════════
 {
   "rules": {
-    "online": {
-      ".read": true,
-      "$uid": {
-        ".write": "auth !== null && auth.uid === $uid",
-        ".validate": "newData.hasChildren(['name','role','ts']) && newData.child('name').isString() && newData.child('name').val().length <= 40"
-      }
-    },
-    "bans": {
-      ".read": true,
-      ".write": false
-    },
-    "globalMsg": {
-      ".read": true,
-      ".write": false
-    },
-    "lockdown": {
-      ".read": true,
-      ".write": false
-    },
-    "embedLink": {
-      ".read": true,
-      ".write": false
-    }
+    ".read": true,
+    ".write": true
   }
 }
 ════════════════════════════════════════════════════════
@@ -1819,17 +1848,6 @@ function startEmbedListener() {
   });
 }
 
-// ✨ ADMIN: Set embed link
-// Allowed domains — add more as needed
-const EMBED_ALLOWED = [
-  'blooket.com','gimkit.com','kahoot.it','kahoot.com',
-  'quizlet.com','quizizz.com','scratch.mit.edu',
-  'crazygames.com','poki.com','coolmathgames.com',
-  'y8.com','miniclip.com','silvergames.com',
-  'classroom.google.com','docs.google.com','slides.google.com',
-  'github.io','netlify.app','vercel.app','glitch.me'
-];
-
 function setEmbedLink() {
   if (currentRole !== 'sys_rx7') return;
   const url = document.getElementById('embed-url-input').value.trim();
@@ -1840,29 +1858,14 @@ function setEmbedLink() {
   let safeUrl = url;
   if (!/^https?:\/\//i.test(safeUrl)) safeUrl = 'https://' + safeUrl;
 
-  // Block dangerous schemes on the FINAL url
+  // Block dangerous schemes
   if (/^(javascript|data|vbscript|blob):/i.test(safeUrl.replace(/\s/g, ''))) {
-    showToast('⚠️ Invalid URL. Only https:// links allowed.');
+    showToast('⚠️ Invalid URL.');
     return;
   }
 
-  let parsed;
-  try { parsed = new URL(safeUrl); } catch(e) {
+  try { new URL(safeUrl); } catch(e) {
     showToast('⚠️ That doesn\'t look like a valid URL.');
-    return;
-  }
-
-  // Must be https
-  if (parsed.protocol !== 'https:') {
-    showToast('⚠️ Only HTTPS URLs are allowed.');
-    return;
-  }
-
-  // Domain whitelist check
-  const host = parsed.hostname.replace(/^www\./, '');
-  const allowed = EMBED_ALLOWED.some(d => host === d || host.endsWith('.' + d));
-  if (!allowed) {
-    showToast('⚠️ That domain isn\'t on the allowed list. Add it to EMBED_ALLOWED in code.');
     return;
   }
 
@@ -1886,20 +1889,50 @@ function clearEmbedLink() {
 // ✨ Open embed viewer (from games tab card click)
 function openEmbedViewer() {
   if (!currentEmbedUrl) return;
-  // Extra safety check before loading in iframe
   if (!/^https?:\/\//i.test(currentEmbedUrl)) return;
   document.getElementById('games-list').style.display = 'none';
   document.getElementById('game-frame-wrap').classList.remove('active');
   const viewer = document.getElementById('embed-viewer');
   viewer.classList.add('active');
   document.getElementById('embed-viewer-title').textContent = currentEmbedTitle || 'Embedded Game';
-  document.getElementById('embed-iframe').src = currentEmbedUrl;
+
+  const iframe = document.getElementById('embed-iframe');
+  const blockedMsg = document.getElementById('embed-blocked-msg');
+  const openLink = document.getElementById('embed-open-link');
+
+  // Reset state
+  blockedMsg.style.display = 'none';
+  iframe.style.display = 'block';
+  openLink.href = currentEmbedUrl;
+
+  iframe.src = currentEmbedUrl;
+
+  // Detect if site blocked the iframe — if it fails to load after 4s show blocked message
+  let loaded = false;
+  iframe.onload = () => { loaded = true; };
+  setTimeout(() => {
+    // Try to check if iframe actually has content
+    // If it loaded but has no content (X-Frame-Options blocked), show message
+    try {
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!iframeDoc || iframeDoc.body.innerHTML === '') {
+        iframe.style.display = 'none';
+        blockedMsg.style.display = 'flex';
+      }
+    } catch(e) {
+      // Cross-origin block = site loaded (good) — this is expected for most sites
+      // Don't show blocked message
+    }
+  }, 3000);
 }
 
 function closeEmbedViewer() {
   const viewer = document.getElementById('embed-viewer');
   viewer.classList.remove('active');
-  document.getElementById('embed-iframe').src = '';
+  const iframe = document.getElementById('embed-iframe');
+  iframe.src = '';
+  iframe.style.display = 'block';
+  document.getElementById('embed-blocked-msg').style.display = 'none';
   document.getElementById('games-list').style.display = '';
 }
 
