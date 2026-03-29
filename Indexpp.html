@@ -1580,21 +1580,78 @@ let hasFullyLoggedIn = false;
 // Check ban on load
 if (localStorage.getItem(BANNED_KEY)) showPage('banned-page');
 
-// Auto-fill remembered login
-(function checkRemembered() {
+// Shared Firebase login — used by both consent button and auto-login
+function doFirebaseLogin(name, role, onError) {
+  myRef = db.ref('online').push();
+  myRef.set({
+    name: name,
+    role: role,
+    joined: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+    ts: Date.now()
+  }).then(() => {
+    hasFullyLoggedIn = true;
+    myRef.onDisconnect().remove();
+    startPresenceListener();
+    startBanListener();
+    startGlobalMsgListener();
+    startLockdownListener();
+    startEmbedListener();
+    startUptime();
+    document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
+    document.getElementById('consent-overlay').style.display = 'none';
+    document.getElementById('topbar-name').textContent = name;
+    const rb = document.getElementById('topbar-role');
+    if (role === 'sys_rx7') {
+      rb.textContent = 'RX-7';
+      rb.className = 'role-badge role-sys';
+      document.getElementById('admin-tab-btn').style.display = '';
+    } else {
+      rb.textContent = 'STD';
+      rb.className = 'role-badge role-std';
+    }
+    addLog(`${name} logged in.`, 'join');
+    showPage('app-page');
+    sessionStart = Date.now();
+  }).catch(e => {
+    console.error('Firebase write error:', e.code, e.message);
+    hasFullyLoggedIn = false;
+    if (onError) onError(e);
+  });
+}
+
+// Auto-login if remember me was checked last time
+window.addEventListener('load', function() {
+  if (localStorage.getItem(BANNED_KEY)) return; // don't auto-login if banned
   const saved = localStorage.getItem(REMEMBER_KEY);
   if (!saved) return;
   try {
-    const { pw, name } = JSON.parse(atob(saved));
-    // Pre-fill and auto-submit password
-    document.getElementById('pw-input').value = pw;
-    document.getElementById('remember-me').checked = true;
-    // Pre-fill name for when we get to that page
-    if (name) document.getElementById('name-input').value = name;
+    const { pw, name, role } = JSON.parse(atob(saved));
+    if (!pw || !name || !role) return;
+
+    // Set state as if they went through all pages
+    currentName = name;
+    currentRole = role;
+
+    // Pre-fill fields in case auto-login fails
+    const pwInput = document.getElementById('pw-input');
+    const nameInput = document.getElementById('name-input');
+    const rememberCheck = document.getElementById('remember-me');
+    if (pwInput) pwInput.value = pw;
+    if (nameInput) nameInput.value = name;
+    if (rememberCheck) rememberCheck.checked = true;
+
+    // Skip straight to Firebase login — no pages needed
+    doFirebaseLogin(name, role, (e) => {
+      // If it fails, go back to password page so they can try manually
+      currentName = null;
+      currentRole = null;
+      showPage('pw-page');
+      showToast('⚠️ Auto-login failed. Please log in manually.');
+    });
   } catch(e) {
     localStorage.removeItem(REMEMBER_KEY);
   }
-})();
+});
 
 // PETALS + CANVAS
 function makePetal() {
@@ -1669,13 +1726,13 @@ function checkPassword() {
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
   if (v === 'TTT') {
     pendingRole = 'usr_std';
-    if (rememberMe) _saveRemember(v, null);
+    if (rememberMe) _saveRemember(v, null, 'usr_std');
     showPage('name-page');
     return;
   }
   if (v === 'Triple T' || v === 'TripleT') {
     pendingRole = 'sys_rx7';
-    if (rememberMe) _saveRemember(v, null);
+    if (rememberMe) _saveRemember(v, null, 'sys_rx7');
     showPage('name-page');
     return;
   }
@@ -1685,9 +1742,9 @@ function checkPassword() {
   localStorage.removeItem(REMEMBER_KEY);
 }
 
-function _saveRemember(pw, name) {
+function _saveRemember(pw, name, role) {
   try {
-    localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({ pw, name })));
+    localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({ pw, name, role })));
   } catch(e) {}
 }
 
@@ -1716,12 +1773,12 @@ function checkName() {
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
 
-  // Update remember storage with the confirmed name
+  // Update remember storage with the confirmed name and role
   const saved = localStorage.getItem(REMEMBER_KEY);
   if (saved) {
     try {
       const data = JSON.parse(atob(saved));
-      _saveRemember(data.pw, currentName);
+      _saveRemember(data.pw, currentName, currentRole);
     } catch(e) {}
   }
   document.getElementById('cc1').checked = false;
@@ -1744,44 +1801,8 @@ function authorizeConsent() {
   const enterBtn = document.getElementById('consent-authorize-btn');
   if (enterBtn) { enterBtn.textContent = 'Connecting…'; enterBtn.disabled = true; }
 
-  function resetBtn() {
+  doFirebaseLogin(currentName, currentRole, (e) => {
     if (enterBtn) { enterBtn.textContent = '✅ Authorize & Enter'; enterBtn.disabled = false; }
-  }
-
-  myRef = db.ref('online').push();
-  myRef.set({
-    name: currentName,
-    role: currentRole,
-    joined: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
-    ts: Date.now()
-  }).then(() => {
-    hasFullyLoggedIn = true;
-    myRef.onDisconnect().remove();
-    startPresenceListener();
-    startBanListener();
-    startGlobalMsgListener();
-    startLockdownListener();
-    startEmbedListener();
-    startUptime();
-    document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
-    document.getElementById('consent-overlay').style.display = 'none';
-    document.getElementById('topbar-name').textContent = currentName;
-    const rb = document.getElementById('topbar-role');
-    if (currentRole === 'sys_rx7') {
-      rb.textContent = 'RX-7';
-      rb.className = 'role-badge role-sys';
-      document.getElementById('admin-tab-btn').style.display = '';
-    } else {
-      rb.textContent = 'STD';
-      rb.className = 'role-badge role-std';
-    }
-    addLog(`${currentName} logged in.`, 'join');
-    showPage('app-page');
-    sessionStart = Date.now();
-  }).catch(e => {
-    console.error('Firebase write error:', e.code, e.message);
-    hasFullyLoggedIn = false;
-    resetBtn();
     consentErr.textContent = '❌ Error: ' + (e.code || e.message || 'unknown') + '. Check your Firebase rules.';
     consentErr.style.display = 'block';
   });
@@ -1799,6 +1820,7 @@ function logout() {
     myRef.remove().catch(() => {});
     myRef = null;
   }
+
   // Reset all state
   hasFullyLoggedIn = false;
   currentRole = null;
@@ -1807,31 +1829,47 @@ function logout() {
   liveUsers = {};
   sessionStart = null;
 
-  // Clear remembered login (so they see the page fresh, but keep remember key intact)
-  // — actually restore pw page with fields pre-filled if they had remember me on
+  // Close any open games or embeds cleanly
+  if (typeof backToGames === 'function') backToGames();
+  if (typeof closeEmbedViewer === 'function') closeEmbedViewer();
+  if (typeof closeFullscreen === 'function') closeFullscreen();
+
+  // Reset consent overlay so it shows fresh next login
+  document.getElementById('consent-overlay').style.display = 'none';
+  const cc1 = document.getElementById('cc1');
+  const cc2 = document.getElementById('cc2');
+  const cc3 = document.getElementById('cc3');
+  if (cc1) cc1.checked = false;
+  if (cc2) cc2.checked = false;
+  if (cc3) cc3.checked = false;
+
+  // Reset topbar
+  document.getElementById('topbar-name').textContent = 'User';
+  const rb = document.getElementById('topbar-role');
+  rb.textContent = 'STD';
+  rb.className = 'role-badge role-std';
+  document.getElementById('admin-tab-btn').style.display = 'none';
+
+  // Re-fill remembered credentials if saved
   const saved = localStorage.getItem(REMEMBER_KEY);
   if (saved) {
     try {
       const { pw, name } = JSON.parse(atob(saved));
-      document.getElementById('pw-input').value = pw;
-      document.getElementById('name-input').value = name || '';
-      document.getElementById('remember-me').checked = true;
-    } catch(e) {}
+      const pwInput = document.getElementById('pw-input');
+      const nameInput = document.getElementById('name-input');
+      const rememberCheck = document.getElementById('remember-me');
+      if (pwInput && pw) pwInput.value = pw;
+      if (nameInput && name) nameInput.value = name;
+      if (rememberCheck) rememberCheck.checked = true;
+    } catch(e) {
+      localStorage.removeItem(REMEMBER_KEY);
+    }
   } else {
-    document.getElementById('pw-input').value = '';
-    document.getElementById('name-input').value = '';
+    const pwInput = document.getElementById('pw-input');
+    const nameInput = document.getElementById('name-input');
+    if (pwInput) pwInput.value = '';
+    if (nameInput) nameInput.value = '';
   }
-
-  // Reset topbar
-  document.getElementById('topbar-name').textContent = 'User';
-  document.getElementById('topbar-role').textContent = 'STD';
-  document.getElementById('topbar-role').className = 'role-badge role-std';
-  document.getElementById('admin-tab-btn').style.display = 'none';
-
-  // Close any open games or embeds
-  backToGames();
-  closeEmbedViewer();
-  closeFullscreen();
 
   showToast('👋 Logged out.');
   showPage('pw-page');
