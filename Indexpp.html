@@ -1204,6 +1204,10 @@ to{transform:rotate(360deg);}
 <div class="err-msg" id="pw-err"></div>
 <label for="pw-input">Enter Access Code</label>
 <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off"/>
+<div style="display:flex;align-items:center;gap:10px;margin:-8px 0 20px;">
+<input type="checkbox" id="remember-me" style="width:15px;height:15px;accent-color:#fff;cursor:pointer;flex-shrink:0;"/>
+<label for="remember-me" style="font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.5);cursor:pointer;text-transform:uppercase;margin:0;">Remember Me</label>
+</div>
 <button class="btn" onclick="checkPassword()">Enter The Portal</button>
 <span class="hint-link" onclick="toggleHint()">Need a code? ▾</span>
 <div id="hint-box">
@@ -1567,6 +1571,7 @@ let lastGlobalMsg = null;
 let currentEmbedUrl = null, currentEmbedTitle = null;
 const BANNED_KEY = 'whl_banned_67';
 const NOTES_KEY = 'whl_notes';
+const REMEMBER_KEY = 'whl_rem';
 let hasFullyLoggedIn = false;
 
 // PAGE HELPER — must be defined before the ban check below uses it
@@ -1585,6 +1590,18 @@ function showPage(id) {
 
 // Check ban on load
 if (localStorage.getItem(BANNED_KEY)) showPage('banned-page');
+
+// Pre-fill saved credentials if remember me was on
+setTimeout(() => {
+  try {
+    const saved = localStorage.getItem(REMEMBER_KEY);
+    if (!saved) return;
+    const { pw, name, role } = JSON.parse(atob(saved));
+    if (pw) document.getElementById('pw-input').value = pw;
+    if (name) document.getElementById('name-input').value = name;
+    document.getElementById('remember-me').checked = true;
+  } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
+}, 0);
 
 // Shared Firebase login function
 function doFirebaseLogin(name, role, onError) {
@@ -1676,6 +1693,7 @@ let _pwAttempts = 0, _pwCooldown = false;
 function checkPassword() {
   const v = document.getElementById('pw-input').value.trim();
   const err = document.getElementById('pw-err');
+  const rem = document.getElementById('remember-me').checked;
   err.style.display = 'none';
 
   if (_pwCooldown) {
@@ -1690,11 +1708,27 @@ function checkPassword() {
   }
 
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
-  if (v === 'TTT') { pendingRole = 'usr_std'; showPage('name-page'); return; }
-  if (v === 'Triple T' || v === 'TripleT') { pendingRole = 'sys_rx7'; showPage('name-page'); return; }
+  if (v === 'TTT') {
+    pendingRole = 'usr_std';
+    if (rem) _remSave(v, null, 'usr_std');
+    else localStorage.removeItem(REMEMBER_KEY);
+    showPage('name-page');
+    return;
+  }
+  if (v === 'Triple T' || v === 'TripleT') {
+    pendingRole = 'sys_rx7';
+    if (rem) _remSave(v, null, 'sys_rx7');
+    else localStorage.removeItem(REMEMBER_KEY);
+    showPage('name-page');
+    return;
+  }
   err.textContent = 'Incorrect access code. Try again.';
   err.style.display = 'block';
   document.getElementById('pw-input').value = '';
+}
+
+function _remSave(pw, name, role) {
+  try { localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({pw, name, role}))); } catch(e) {}
 }
 
 function toggleHint() {
@@ -1721,6 +1755,15 @@ function checkName() {
   // Sanitize: strip anything that could be used for injection
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
+
+  // Update remember storage with confirmed name
+  try {
+    const saved = localStorage.getItem(REMEMBER_KEY);
+    if (saved) {
+      const d = JSON.parse(atob(saved));
+      _remSave(d.pw, currentName, currentRole);
+    }
+  } catch(e) {}
   document.getElementById('cc1').checked = false;
   document.getElementById('cc2').checked = false;
   document.getElementById('cc3').checked = false;
@@ -1780,8 +1823,20 @@ function logout() {
   rb.className = 'role-badge role-std';
   document.getElementById('admin-tab-btn').style.display = 'none';
 
-  document.getElementById('pw-input').value = '';
-  document.getElementById('name-input').value = '';
+  // If remember me is off, clear saved data and fields
+  const saved = localStorage.getItem(REMEMBER_KEY);
+  if (saved) {
+    try {
+      const { pw, name } = JSON.parse(atob(saved));
+      document.getElementById('pw-input').value = pw || '';
+      document.getElementById('name-input').value = name || '';
+      document.getElementById('remember-me').checked = true;
+    } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
+  } else {
+    document.getElementById('pw-input').value = '';
+    document.getElementById('name-input').value = '';
+    document.getElementById('remember-me').checked = false;
+  }
 
   showToast('👋 Logged out.');
   showPage('pw-page');
