@@ -1207,6 +1207,10 @@ to{transform:rotate(360deg);}
 <div class="err-msg" id="pw-err"></div>
 <label for="pw-input">Enter Access Code</label>
 <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off"/>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;margin-top:-8px;">
+<input type="checkbox" id="remember-me" style="width:15px;height:15px;accent-color:#fff;cursor:pointer;"/>
+<label for="remember-me" style="font-size:.72rem;letter-spacing:1px;color:rgba(255,255,255,.55);cursor:pointer;text-transform:uppercase;margin:0;">Remember me</label>
+</div>
 <button class="btn" onclick="checkPassword()">Enter The Portal</button>
 <span class="hint-link" onclick="toggleHint()">Need a code? ▾</span>
 <div id="hint-box">
@@ -1261,6 +1265,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dot"></div>
 <span id="topbar-name">User</span>
 <span class="role-badge role-std" id="topbar-role">STD</span>
+</div>
+<button onclick="logout()" style="padding:6px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:20px;color:rgba(255,255,255,.6);font-size:.72rem;cursor:pointer;transition:all .2s;font-family:'Raleway',sans-serif;letter-spacing:1px;" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.6)'">⏻ Logout</button>
 </div>
 </div>
 
@@ -1568,10 +1574,27 @@ let lastGlobalMsg = null;
 let currentEmbedUrl = null, currentEmbedTitle = null;
 const BANNED_KEY = 'whl_banned_67';
 const NOTES_KEY = 'whl_notes';
-let hasFullyLoggedIn = false; // set true only after Firebase login write succeeds
+const REMEMBER_KEY = 'whl_remember';
+let hasFullyLoggedIn = false;
 
-// check ban on load
+// Check ban on load
 if (localStorage.getItem(BANNED_KEY)) showPage('banned-page');
+
+// Auto-fill remembered login
+(function checkRemembered() {
+  const saved = localStorage.getItem(REMEMBER_KEY);
+  if (!saved) return;
+  try {
+    const { pw, name } = JSON.parse(atob(saved));
+    // Pre-fill and auto-submit password
+    document.getElementById('pw-input').value = pw;
+    document.getElementById('remember-me').checked = true;
+    // Pre-fill name for when we get to that page
+    if (name) document.getElementById('name-input').value = name;
+  } catch(e) {
+    localStorage.removeItem(REMEMBER_KEY);
+  }
+})();
 
 // PETALS + CANVAS
 function makePetal() {
@@ -1629,6 +1652,7 @@ let _pwAttempts = 0, _pwCooldown = false;
 function checkPassword() {
   const v = document.getElementById('pw-input').value.trim();
   const err = document.getElementById('pw-err');
+  const rememberMe = document.getElementById('remember-me').checked;
   err.style.display = 'none';
 
   if (_pwCooldown) {
@@ -1643,11 +1667,28 @@ function checkPassword() {
   }
 
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
-  if (v === 'TTT') { pendingRole = 'usr_std'; showPage('name-page'); return; }
-  if (v === 'Triple T' || v === 'TripleT') { pendingRole = 'sys_rx7'; showPage('name-page'); return; }
+  if (v === 'TTT') {
+    pendingRole = 'usr_std';
+    if (rememberMe) _saveRemember(v, null);
+    showPage('name-page');
+    return;
+  }
+  if (v === 'Triple T' || v === 'TripleT') {
+    pendingRole = 'sys_rx7';
+    if (rememberMe) _saveRemember(v, null);
+    showPage('name-page');
+    return;
+  }
   err.textContent = 'Incorrect access code. Try again.';
   err.style.display = 'block';
   document.getElementById('pw-input').value = '';
+  localStorage.removeItem(REMEMBER_KEY);
+}
+
+function _saveRemember(pw, name) {
+  try {
+    localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({ pw, name })));
+  } catch(e) {}
 }
 
 function toggleHint() {
@@ -1674,6 +1715,15 @@ function checkName() {
   // Sanitize: strip anything that could be used for injection
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
+
+  // Update remember storage with the confirmed name
+  const saved = localStorage.getItem(REMEMBER_KEY);
+  if (saved) {
+    try {
+      const data = JSON.parse(atob(saved));
+      _saveRemember(data.pw, currentName);
+    } catch(e) {}
+  }
   document.getElementById('cc1').checked = false;
   document.getElementById('cc2').checked = false;
   document.getElementById('cc3').checked = false;
@@ -1741,6 +1791,50 @@ function leaveConsent() {
   document.getElementById('consent-overlay').style.display = 'none';
   document.body.innerHTML = '';
   window.location = 'about:blank';
+}
+
+function logout() {
+  // Remove presence from Firebase
+  if (myRef) {
+    myRef.remove().catch(() => {});
+    myRef = null;
+  }
+  // Reset all state
+  hasFullyLoggedIn = false;
+  currentRole = null;
+  currentName = null;
+  pendingRole = null;
+  liveUsers = {};
+  sessionStart = null;
+
+  // Clear remembered login (so they see the page fresh, but keep remember key intact)
+  // — actually restore pw page with fields pre-filled if they had remember me on
+  const saved = localStorage.getItem(REMEMBER_KEY);
+  if (saved) {
+    try {
+      const { pw, name } = JSON.parse(atob(saved));
+      document.getElementById('pw-input').value = pw;
+      document.getElementById('name-input').value = name || '';
+      document.getElementById('remember-me').checked = true;
+    } catch(e) {}
+  } else {
+    document.getElementById('pw-input').value = '';
+    document.getElementById('name-input').value = '';
+  }
+
+  // Reset topbar
+  document.getElementById('topbar-name').textContent = 'User';
+  document.getElementById('topbar-role').textContent = 'STD';
+  document.getElementById('topbar-role').className = 'role-badge role-std';
+  document.getElementById('admin-tab-btn').style.display = 'none';
+
+  // Close any open games or embeds
+  backToGames();
+  closeEmbedViewer();
+  closeFullscreen();
+
+  showToast('👋 Logged out.');
+  showPage('pw-page');
 }
 
 // FIREBASE LISTENERS
