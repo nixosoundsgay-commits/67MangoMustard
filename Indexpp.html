@@ -83,12 +83,9 @@ display:flex;
 align-items:center;
 justify-content:center;
 flex-direction:column;
-transition:opacity .5s,transform .5s;
 }
 .page.hidden{
-opacity:0;
-pointer-events:none;
-transform:scale(.97);
+display:none;
 }
 
 .glass{
@@ -1207,10 +1204,6 @@ to{transform:rotate(360deg);}
 <div class="err-msg" id="pw-err"></div>
 <label for="pw-input">Enter Access Code</label>
 <input type="password" id="pw-input" placeholder="••••••••" autocomplete="off"/>
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;margin-top:-8px;">
-<input type="checkbox" id="remember-me" style="width:15px;height:15px;accent-color:#fff;cursor:pointer;"/>
-<label for="remember-me" style="font-size:.72rem;letter-spacing:1px;color:rgba(255,255,255,.55);cursor:pointer;text-transform:uppercase;margin:0;">Remember me</label>
-</div>
 <button class="btn" onclick="checkPassword()">Enter The Portal</button>
 <span class="hint-link" onclick="toggleHint()">Need a code? ▾</span>
 <div id="hint-box">
@@ -1267,7 +1260,6 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <span class="role-badge role-std" id="topbar-role">STD</span>
 </div>
 <button onclick="logout()" style="padding:6px 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:20px;color:rgba(255,255,255,.6);font-size:.72rem;cursor:pointer;transition:all .2s;font-family:'Raleway',sans-serif;letter-spacing:1px;" onmouseover="this.style.background='rgba(255,255,255,.12)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,.06)';this.style.color='rgba(255,255,255,.6)'">⏻ Logout</button>
-</div>
 </div>
 
 <div class="tabs">
@@ -1472,6 +1464,7 @@ Currently showing: <span id="embed-status-url"></span>
 </div>
 </div>
 </div>
+</div><!-- end app-page -->
 
 <!-- CONSENT -->
 
@@ -1574,13 +1567,26 @@ let lastGlobalMsg = null;
 let currentEmbedUrl = null, currentEmbedTitle = null;
 const BANNED_KEY = 'whl_banned_67';
 const NOTES_KEY = 'whl_notes';
-const REMEMBER_KEY = 'whl_remember';
 let hasFullyLoggedIn = false;
+
+// PAGE HELPER — must be defined before the ban check below uses it
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => {
+    if (p.id === id) {
+      p.classList.remove('hidden');
+      // app-page is a full layout, not a centered overlay
+      p.style.display = (id === 'app-page') ? 'block' : 'flex';
+    } else {
+      p.classList.add('hidden');
+      p.style.display = 'none';
+    }
+  });
+}
 
 // Check ban on load
 if (localStorage.getItem(BANNED_KEY)) showPage('banned-page');
 
-// Shared Firebase login — used by both consent button and auto-login
+// Shared Firebase login function
 function doFirebaseLogin(name, role, onError) {
   myRef = db.ref('online').push();
   myRef.set({
@@ -1618,40 +1624,6 @@ function doFirebaseLogin(name, role, onError) {
     if (onError) onError(e);
   });
 }
-
-// Auto-login if remember me was checked last time
-window.addEventListener('load', function() {
-  if (localStorage.getItem(BANNED_KEY)) return; // don't auto-login if banned
-  const saved = localStorage.getItem(REMEMBER_KEY);
-  if (!saved) return;
-  try {
-    const { pw, name, role } = JSON.parse(atob(saved));
-    if (!pw || !name || !role) return;
-
-    // Set state as if they went through all pages
-    currentName = name;
-    currentRole = role;
-
-    // Pre-fill fields in case auto-login fails
-    const pwInput = document.getElementById('pw-input');
-    const nameInput = document.getElementById('name-input');
-    const rememberCheck = document.getElementById('remember-me');
-    if (pwInput) pwInput.value = pw;
-    if (nameInput) nameInput.value = name;
-    if (rememberCheck) rememberCheck.checked = true;
-
-    // Skip straight to Firebase login — no pages needed
-    doFirebaseLogin(name, role, (e) => {
-      // If it fails, go back to password page so they can try manually
-      currentName = null;
-      currentRole = null;
-      showPage('pw-page');
-      showToast('⚠️ Auto-login failed. Please log in manually.');
-    });
-  } catch(e) {
-    localStorage.removeItem(REMEMBER_KEY);
-  }
-});
 
 // PETALS + CANVAS
 function makePetal() {
@@ -1699,17 +1671,11 @@ setInterval(makePetal, 600);
   })();
 })();
 
-// PAGE HELPER
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.toggle('hidden', p.id !== id));
-}
-
 // PASSWORD — with rate limiting
 let _pwAttempts = 0, _pwCooldown = false;
 function checkPassword() {
   const v = document.getElementById('pw-input').value.trim();
   const err = document.getElementById('pw-err');
-  const rememberMe = document.getElementById('remember-me').checked;
   err.style.display = 'none';
 
   if (_pwCooldown) {
@@ -1724,28 +1690,11 @@ function checkPassword() {
   }
 
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
-  if (v === 'TTT') {
-    pendingRole = 'usr_std';
-    if (rememberMe) _saveRemember(v, null, 'usr_std');
-    showPage('name-page');
-    return;
-  }
-  if (v === 'Triple T' || v === 'TripleT') {
-    pendingRole = 'sys_rx7';
-    if (rememberMe) _saveRemember(v, null, 'sys_rx7');
-    showPage('name-page');
-    return;
-  }
+  if (v === 'TTT') { pendingRole = 'usr_std'; showPage('name-page'); return; }
+  if (v === 'Triple T' || v === 'TripleT') { pendingRole = 'sys_rx7'; showPage('name-page'); return; }
   err.textContent = 'Incorrect access code. Try again.';
   err.style.display = 'block';
   document.getElementById('pw-input').value = '';
-  localStorage.removeItem(REMEMBER_KEY);
-}
-
-function _saveRemember(pw, name, role) {
-  try {
-    localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({ pw, name, role })));
-  } catch(e) {}
 }
 
 function toggleHint() {
@@ -1772,15 +1721,6 @@ function checkName() {
   // Sanitize: strip anything that could be used for injection
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
-
-  // Update remember storage with the confirmed name and role
-  const saved = localStorage.getItem(REMEMBER_KEY);
-  if (saved) {
-    try {
-      const data = JSON.parse(atob(saved));
-      _saveRemember(data.pw, currentName, currentRole);
-    } catch(e) {}
-  }
   document.getElementById('cc1').checked = false;
   document.getElementById('cc2').checked = false;
   document.getElementById('cc3').checked = false;
@@ -1815,13 +1755,8 @@ function leaveConsent() {
 }
 
 function logout() {
-  // Remove presence from Firebase
-  if (myRef) {
-    myRef.remove().catch(() => {});
-    myRef = null;
-  }
+  if (myRef) { myRef.remove().catch(() => {}); myRef = null; }
 
-  // Reset all state
   hasFullyLoggedIn = false;
   currentRole = null;
   currentName = null;
@@ -1829,47 +1764,24 @@ function logout() {
   liveUsers = {};
   sessionStart = null;
 
-  // Close any open games or embeds cleanly
   if (typeof backToGames === 'function') backToGames();
   if (typeof closeEmbedViewer === 'function') closeEmbedViewer();
   if (typeof closeFullscreen === 'function') closeFullscreen();
 
-  // Reset consent overlay so it shows fresh next login
   document.getElementById('consent-overlay').style.display = 'none';
-  const cc1 = document.getElementById('cc1');
-  const cc2 = document.getElementById('cc2');
-  const cc3 = document.getElementById('cc3');
-  if (cc1) cc1.checked = false;
-  if (cc2) cc2.checked = false;
-  if (cc3) cc3.checked = false;
+  ['cc1','cc2','cc3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
 
-  // Reset topbar
   document.getElementById('topbar-name').textContent = 'User';
   const rb = document.getElementById('topbar-role');
   rb.textContent = 'STD';
   rb.className = 'role-badge role-std';
   document.getElementById('admin-tab-btn').style.display = 'none';
 
-  // Re-fill remembered credentials if saved
-  const saved = localStorage.getItem(REMEMBER_KEY);
-  if (saved) {
-    try {
-      const { pw, name } = JSON.parse(atob(saved));
-      const pwInput = document.getElementById('pw-input');
-      const nameInput = document.getElementById('name-input');
-      const rememberCheck = document.getElementById('remember-me');
-      if (pwInput && pw) pwInput.value = pw;
-      if (nameInput && name) nameInput.value = name;
-      if (rememberCheck) rememberCheck.checked = true;
-    } catch(e) {
-      localStorage.removeItem(REMEMBER_KEY);
-    }
-  } else {
-    const pwInput = document.getElementById('pw-input');
-    const nameInput = document.getElementById('name-input');
-    if (pwInput) pwInput.value = '';
-    if (nameInput) nameInput.value = '';
-  }
+  document.getElementById('pw-input').value = '';
+  document.getElementById('name-input').value = '';
 
   showToast('👋 Logged out.');
   showPage('pw-page');
