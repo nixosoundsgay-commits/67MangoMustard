@@ -375,7 +375,7 @@ padding:12px 20px;
 background:transparent;
 border:none;
 cursor:pointer;
-font-family:'Raleway',sans-serif;
+font-family:'Raleway',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji';
 font-size:.78rem;
 font-weight:600;
 letter-spacing:1px;
@@ -452,11 +452,6 @@ border-color:rgba(255,255,255,.25);
 box-shadow:0 10px 40px rgba(255,255,255,.08);
 }
 .game-card:hover::before{opacity:1;}
-.game-icon{
-font-size:2.5rem;
-margin-bottom:12px;
-display:block;
-}
 .game-card h3{
 font-family:'Cinzel Decorative',cursive;
 font-size:.85rem;
@@ -510,8 +505,97 @@ margin-bottom:12px;
 font-family:'Raleway',sans-serif;
 }
 
-.game-frame-wrap{display:none;}
-.game-frame-wrap.active{display:block;}
+/* EMBED TAB */
+.embed-links-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:16px;
+margin-top:4px;
+}
+.embed-link-card{
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.14);
+border-radius:16px;
+padding:22px 18px;
+cursor:pointer;
+transition:all .3s;
+position:relative;
+overflow:hidden;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+.embed-link-card::before{
+content:'';
+position:absolute;
+inset:0;
+background:radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.07) 0%,transparent 70%);
+pointer-events:none;
+opacity:0;
+transition:opacity .3s;
+}
+.embed-link-card:hover{
+transform:translateY(-4px);
+border-color:rgba(255,255,255,.28);
+box-shadow:0 8px 32px rgba(255,255,255,.07);
+}
+.embed-link-card:hover::before{opacity:1;}
+.embed-link-card-title{
+font-family:'Cinzel Decorative',cursive;
+font-size:.82rem;
+color:#fff;
+}
+.embed-link-card-url{
+font-size:.7rem;
+color:rgba(255,255,255,.35);
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
+}
+.embed-link-card-actions{
+display:flex;
+gap:8px;
+margin-top:4px;
+}
+.embed-link-play-btn{
+flex:1;
+padding:8px;
+background:rgba(255,255,255,.1);
+border:1px solid rgba(255,255,255,.2);
+border-radius:8px;
+color:#fff;
+font-size:.72rem;
+cursor:pointer;
+transition:all .2s;
+font-family:'Raleway',sans-serif;
+}
+.embed-link-play-btn:hover{background:rgba(255,255,255,.18);}
+.embed-link-del-btn{
+padding:8px 12px;
+background:rgba(255,80,80,.1);
+border:1px solid rgba(255,100,100,.25);
+border-radius:8px;
+color:rgba(255,150,150,.9);
+font-size:.72rem;
+cursor:pointer;
+transition:all .2s;
+font-family:'Raleway',sans-serif;
+}
+.embed-link-del-btn:hover{background:rgba(255,80,80,.2);}
+.embed-empty{
+text-align:center;
+color:rgba(255,255,255,.25);
+font-size:.85rem;
+padding:40px 0;
+}
+
+/* Game icon emoji fix */
+.game-icon{
+font-size:2.5rem;
+margin-bottom:12px;
+display:block;
+font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;
+}
 .back-btn{
 padding:8px 18px;
 background:transparent;
@@ -1283,6 +1367,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 
 <div class="tabs">
 <button class="tab-btn active" onclick="switchTab('games',this)">🎮 Games</button>
+<button class="tab-btn" onclick="switchTab('embeds',this)">🔗 Embeds</button>
 <button class="tab-btn" id="admin-tab-btn" style="display:none" onclick="switchTab('admin',this)">👑 Admin</button>
 </div>
 
@@ -1322,17 +1407,6 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 
-<!-- Embedded link card — injected by Firebase listener -->
-
-<div id="embed-game-section" style="margin-top:20px;display:none;">
-<div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px;">📡 Admin Embed</div>
-<div class="embed-game-card" onclick="openEmbedViewer()">
-<div class="embed-badge">Live Embed</div>
-<span class="game-icon" id="embed-card-icon">🌐</span>
-<h3 id="embed-card-title" style="font-family:'Cinzel Decorative',cursive;font-size:.85rem;color:#fff;margin-bottom:6px;">Embedded Game</h3>
-<p id="embed-card-desc" style="font-size:.75rem;color:rgba(255,255,255,.5);">Click to play · fullscreen available</p>
-</div>
-</div>
 </div>
 
 <!-- Canvas games frame -->
@@ -1346,8 +1420,17 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div id="game-embed" style="display:flex;justify-content:center;"></div>
 </div>
 
-<!-- Embed iframe viewer -->
+</div>
 
+<!-- Embeds -->
+
+<div class="tab-panel" id="panel-embeds">
+<div class="panel-title">🔗 Embeds</div>
+<div id="embed-links-list">
+<div class="embed-empty" id="embed-empty-msg">No embeds added yet.</div>
+<div class="embed-links-grid" id="embed-links-grid"></div>
+</div>
+<!-- Embed viewer for this tab -->
 <div id="embed-viewer">
 <div id="embed-viewer-header">
 <button class="back-btn" onclick="closeEmbedViewer()" style="margin-bottom:0;">← Back</button>
@@ -1359,7 +1442,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div id="embed-blocked-msg">
 <div class="block-icon">🚫</div>
 <h3>Site Blocked Embedding</h3>
-<p>This site doesn't allow itself to be embedded in iframes.<br/>Try opening it directly instead.</p>
+<p>This site doesn't allow itself to be embedded.<br/>Try opening it directly instead.</p>
 <a id="embed-open-link" href="" target="_blank" rel="noopener">Open in New Tab ↗</a>
 </div>
 </div>
@@ -1381,27 +1464,17 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 
-<!-- ✨ NEW — EMBED LINK SECTION -->
+<!-- EMBED LINKS SECTION -->
 
 <div class="admin-card admin-full">
-<h3>🔗 Games Tab — Embed Link <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— paste any URL · updates live for all users</span></h3>
-
+<h3>🔗 Embed Links <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— add multiple links visible in the Embeds tab</span></h3>
 <div class="embed-label-row">
-<label style="white-space:nowrap;">Card Title</label>
-<input type="text" id="embed-title-input" placeholder="e.g. Cool Game, Blooket, Slope…" maxlength="40"/>
+<label style="white-space:nowrap;">Title</label>
+<input type="text" id="embed-title-input" placeholder="e.g. Blooket, Slope, Cool Game…" maxlength="40"/>
 </div>
-
 <div class="embed-input-row">
-<input type="text" id="embed-url-input" placeholder="Paste embed URL here — e.g. https://example.com/game"/>
-<button class="embed-set-btn" onclick="setEmbedLink()">Set Link</button>
-</div>
-
-<div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;">
-<button class="embed-clear-btn" onclick="clearEmbedLink()">🗑 Remove Embed from Games Tab</button>
-</div>
-
-<div class="embed-status" id="embed-status">
-Currently showing: <span id="embed-status-url"></span>
+<input type="text" id="embed-url-input" placeholder="Paste URL — e.g. https://example.com/game"/>
+<button class="embed-set-btn" onclick="addEmbedLink()">Add Link</button>
 </div>
 </div>
 <!-- END EMBED SECTION -->
@@ -1532,7 +1605,8 @@ Currently showing: <span id="embed-status-url"></span>
 ════════════════════════════════════════════════════════
   FIREBASE SECURITY RULES — paste into Firebase Console
   → Realtime Database → Rules tab
-  These rules work with local HTML files (file://)
+  IMPORTANT: Use these exact rules or online users
+  will only show on YOUR device, not others.
 ════════════════════════════════════════════════════════
 {
   "rules": {
@@ -1925,133 +1999,139 @@ function startLockdownListener() {
   });
 }
 
-// ✨ EMBED LINK LISTENER — fires for every user on every device
+
+// ✨ EMBED LINKS LISTENER — multiple links stored as Firebase list
 function startEmbedListener() {
-  db.ref('embedLink').on('value', snap => {
-    const d = snap.val();
-    const section = document.getElementById('embed-game-section');
-
-    if (d && d.url) {
-      currentEmbedUrl = d.url;
-      currentEmbedTitle = d.title || 'Embedded Game';
-
-      // Update the card in the games tab
-      document.getElementById('embed-card-title').textContent = currentEmbedTitle;
-      document.getElementById('embed-card-desc').textContent = 'Click to play · fullscreen available';
-      section.style.display = 'block';
-
-      // Update admin status bar
-      const statusEl = document.getElementById('embed-status');
-      document.getElementById('embed-status-url').textContent = d.url;
-      statusEl.classList.add('active');
-
-      // Pre-fill admin inputs if owner
-      if (currentRole === 'sys_rx7') {
-        document.getElementById('embed-url-input').value = d.url;
-        document.getElementById('embed-title-input').value = d.title || '';
-      }
-    } else {
-      currentEmbedUrl = null;
-      currentEmbedTitle = null;
-      section.style.display = 'none';
-      document.getElementById('embed-status').classList.remove('active');
-      closeEmbedViewer();
-    }
+  db.ref('embedLinks').on('value', snap => {
+    const data = snap.val() || {};
+    renderEmbedLinks(data);
   });
 }
 
-function setEmbedLink() {
+function renderEmbedLinks(data) {
+  const grid = document.getElementById('embed-links-grid');
+  const emptyMsg = document.getElementById('embed-empty-msg');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const entries = Object.entries(data);
+  if (!entries.length) {
+    if (emptyMsg) emptyMsg.style.display = 'block';
+    return;
+  }
+  if (emptyMsg) emptyMsg.style.display = 'none';
+  entries.forEach(([key, d]) => {
+    if (!d || !d.url) return;
+    const card = document.createElement('div');
+    card.className = 'embed-link-card';
+    const title = document.createElement('div');
+    title.className = 'embed-link-card-title';
+    title.textContent = d.title || 'Untitled';
+    const url = document.createElement('div');
+    url.className = 'embed-link-card-url';
+    url.textContent = d.url;
+    const actions = document.createElement('div');
+    actions.className = 'embed-link-card-actions';
+    const playBtn = document.createElement('button');
+    playBtn.className = 'embed-link-play-btn';
+    playBtn.textContent = '▶ Open';
+    playBtn.onclick = () => openEmbedViewer(d.url, d.title || 'Untitled');
+    actions.appendChild(playBtn);
+    // Only admins+ can delete
+    if (getRoleMeta(currentRole).rank >= 4) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'embed-link-del-btn';
+      delBtn.textContent = '✕';
+      delBtn.onclick = () => deleteEmbedLink(key, d.title);
+      actions.appendChild(delBtn);
+    }
+    card.appendChild(title);
+    card.appendChild(url);
+    card.appendChild(actions);
+    grid.appendChild(card);
+  });
+}
+
+function addEmbedLink() {
   if (getRoleMeta(currentRole).rank < 4) return;
   const url = document.getElementById('embed-url-input').value.trim();
-  const title = document.getElementById('embed-title-input').value.trim() || 'Embedded Game';
+  const title = document.getElementById('embed-title-input').value.trim() || 'Untitled';
   if (!url) { showToast('⚠️ Paste a URL first.'); return; }
-
-  // Build safeUrl first, then validate
   let safeUrl = url;
   if (!/^https?:\/\//i.test(safeUrl)) safeUrl = 'https://' + safeUrl;
-
-  // Block dangerous schemes
   if (/^(javascript|data|vbscript|blob):/i.test(safeUrl.replace(/\s/g, ''))) {
-    showToast('⚠️ Invalid URL.');
-    return;
+    showToast('⚠️ Invalid URL.'); return;
   }
-
   try { new URL(safeUrl); } catch(e) {
-    showToast('⚠️ That doesn\'t look like a valid URL.');
-    return;
+    showToast('⚠️ Not a valid URL.'); return;
   }
-
-  db.ref('embedLink').set({ url: safeUrl, title, ts: Date.now() })
-    .then(() => showToast('✅ Embed link updated for all users!'))
-    .catch(() => showToast('❌ Firebase error — check your connection.'));
-  addLog(`${currentName} set embed link: "${title}"`, 'embed');
+  db.ref('embedLinks').push({ url: safeUrl, title, ts: Date.now() })
+    .then(() => {
+      showToast('✅ Link added!');
+      document.getElementById('embed-url-input').value = '';
+      document.getElementById('embed-title-input').value = '';
+    })
+    .catch(() => showToast('❌ Firebase error.'));
+  addLog(`${currentName} added embed: "${title}"`, 'embed');
 }
 
-// ✨ ADMIN: Clear embed link
-function clearEmbedLink() {
+function deleteEmbedLink(key, title) {
   if (getRoleMeta(currentRole).rank < 4) return;
-  db.ref('embedLink').remove()
-    .then(() => showToast('🗑 Embed removed from Games tab.'))
-    .catch(() => showToast('❌ Remove failed — Firebase error.'));
-  document.getElementById('embed-url-input').value = '';
-  document.getElementById('embed-title-input').value = '';
-  addLog(`${currentName} removed the embed link.`, 'embed');
+  db.ref('embedLinks/' + key).remove()
+    .then(() => showToast('🗑 Link removed.'))
+    .catch(() => showToast('❌ Remove failed.'));
+  addLog(`${currentName} removed embed: "${title}"`, 'embed');
 }
 
-// ✨ Open embed viewer (from games tab card click)
-function openEmbedViewer() {
-  if (!currentEmbedUrl) return;
-  if (!/^https?:\/\//i.test(currentEmbedUrl)) return;
-  document.getElementById('games-list').style.display = 'none';
-  document.getElementById('game-frame-wrap').classList.remove('active');
+// ✨ Open embed viewer
+function openEmbedViewer(url, title) {
+  if (!url || !/^https?:\/\//i.test(url)) return;
+  currentEmbedUrl = url;
+  currentEmbedTitle = title || 'Embedded';
+  // Switch to embeds tab if not already there
+  const embedsPanel = document.getElementById('panel-embeds');
+  if (embedsPanel && !embedsPanel.classList.contains('active')) {
+    switchTab('embeds', document.querySelector('.tab-btn[onclick*="embeds"]'));
+  }
+  document.getElementById('embed-links-list').style.display = 'none';
   const viewer = document.getElementById('embed-viewer');
   viewer.classList.add('active');
-  document.getElementById('embed-viewer-title').textContent = currentEmbedTitle || 'Embedded Game';
-
+  document.getElementById('embed-viewer-title').textContent = title || 'Embedded';
   const iframe = document.getElementById('embed-iframe');
   const blockedMsg = document.getElementById('embed-blocked-msg');
   const openLink = document.getElementById('embed-open-link');
-
-  // Reset state
   blockedMsg.style.display = 'none';
   iframe.style.display = 'block';
-  openLink.href = currentEmbedUrl;
-
-  iframe.src = currentEmbedUrl;
-
-  // Detect if site blocked the iframe — if it fails to load after 4s show blocked message
-  let loaded = false;
-  iframe.onload = () => { loaded = true; };
+  openLink.href = url;
+  iframe.src = url;
+  // Detect blocked iframes
   setTimeout(() => {
-    // Try to check if iframe actually has content
-    // If it loaded but has no content (X-Frame-Options blocked), show message
     try {
-      const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-      if (!iframeDoc || iframeDoc.body.innerHTML === '') {
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc || doc.body.innerHTML === '') {
         iframe.style.display = 'none';
         blockedMsg.style.display = 'flex';
       }
-    } catch(e) {
-      // Cross-origin block = site loaded (good) — this is expected for most sites
-      // Don't show blocked message
-    }
+    } catch(e) { /* cross-origin = loaded fine */ }
   }, 3000);
 }
 
 function closeEmbedViewer() {
   const viewer = document.getElementById('embed-viewer');
-  viewer.classList.remove('active');
+  if (viewer) viewer.classList.remove('active');
   const iframe = document.getElementById('embed-iframe');
-  iframe.src = '';
-  iframe.style.display = 'block';
-  document.getElementById('embed-blocked-msg').style.display = 'none';
-  document.getElementById('games-list').style.display = '';
+  if (iframe) { iframe.src = ''; iframe.style.display = 'block'; }
+  const blocked = document.getElementById('embed-blocked-msg');
+  if (blocked) blocked.style.display = 'none';
+  const list = document.getElementById('embed-links-list');
+  if (list) list.style.display = '';
+  currentEmbedUrl = null;
+  currentEmbedTitle = null;
 }
 
 // ✨ FULLSCREEN
 function openFullscreen() {
   if (!currentEmbedUrl) return;
-  document.getElementById('fullscreen-title-bar').textContent = currentEmbedTitle || 'Embedded Game';
+  document.getElementById('fullscreen-title-bar').textContent = currentEmbedTitle || 'Embedded';
   document.getElementById('fullscreen-iframe').src = currentEmbedUrl;
   document.getElementById('fullscreen-overlay').classList.add('active');
 }
@@ -2062,6 +2142,7 @@ function closeFullscreen() {
   iframe.src = 'about:blank';
   setTimeout(() => { iframe.src = ''; }, 50);
 }
+
 
 // XSS-safe HTML escape
 function esc(str) {
@@ -2405,8 +2486,8 @@ function switchTab(name, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + name).classList.add('active');
   if (btn) btn.classList.add('active');
-  // close embed viewer when switching away
-  if (name !== 'games') closeEmbedViewer();
+  // close embed viewer when switching away from embeds
+  if (name !== 'embeds') closeEmbedViewer();
 }
 
 // GAMES
