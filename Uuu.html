@@ -334,9 +334,24 @@ color:#fff;
 border:1px solid rgba(255,255,255,.22);
 }
 .role-sys{
-background:rgba(255,255,255,.14);
+background:rgba(255,255,255,.18);
 color:#fff;
-border:1px solid rgba(255,255,255,.34);
+border:1px solid rgba(255,255,255,.5);
+}
+.role-hadm{
+background:rgba(220,180,255,.15);
+color:#e8d5ff;
+border:1px solid rgba(200,150,255,.4);
+}
+.role-adm{
+background:rgba(150,200,255,.12);
+color:#c8e8ff;
+border:1px solid rgba(100,180,255,.35);
+}
+.role-mod{
+background:rgba(150,255,180,.1);
+color:#b8ffcc;
+border:1px solid rgba(100,255,150,.3);
 }
 
 .tabs{
@@ -1432,35 +1447,8 @@ Currently showing: <span id="embed-status-url"></span>
 </div>
 
 <div class="admin-card admin-full">
-<h3>🔑 Password Vault <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— click any row to reveal</span></h3>
-<div class="pw-vault">
-<div class="pw-section-label">Portal Entry</div>
-<div class="pw-row">
-<div class="pw-label">🪤 Trap / Ban Code</div>
-<div class="pw-val" id="pv1"></div>
-<button class="pw-show-btn" onclick="togglePw('pv1',this)">Show</button>
-</div>
-<div class="pw-row">
-<div class="pw-label">👤 User Access Code</div>
-<div class="pw-val" id="pv2"></div>
-<button class="pw-show-btn" onclick="togglePw('pv2',this)">Show</button>
-</div>
-<div class="pw-row">
-<div class="pw-label">👑 Owner Access Code</div>
-<div class="pw-val" id="pv3"></div>
-<button class="pw-show-btn" onclick="togglePw('pv3',this)">Show</button>
-</div>
-<div class="pw-section-label">Admin Overrides</div>
-<div class="pw-row">
-<div class="pw-label">🔓 Unban Override</div>
-<div class="pw-val" id="pv4"></div>
-<button class="pw-show-btn" onclick="togglePw('pv4',this)">Show</button>
-</div>
-<div class="pw-row">
-<div class="pw-label">🔒 Lockdown Relaunch</div>
-<div class="pw-val" id="pv5"></div>
-<button class="pw-show-btn" onclick="togglePw('pv5',this)">Show</button>
-</div>
+<h3>🔑 Password Vault <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— you can only see passwords for roles below yours</span></h3>
+<div class="pw-vault" id="pw-vault-inner">
 </div>
 </div>
 
@@ -1591,6 +1579,13 @@ function showPage(id) {
 // Check ban on load
 if (localStorage.getItem(BANNED_KEY)) showPage('banned-page');
 
+// Check lockdown on load immediately — even before login
+db.ref('lockdown').once('value').then(snap => {
+  if (snap.val() === true) {
+    document.getElementById('lockdown-overlay').classList.add('active');
+  }
+});
+
 // Pre-fill saved credentials if remember me was on
 setTimeout(() => {
   try {
@@ -1602,6 +1597,23 @@ setTimeout(() => {
     document.getElementById('remember-me').checked = true;
   } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
 }, 0);
+
+// ROLE SYSTEM
+// Hierarchy: sys_rx7 > head_adm > adm_x2 > mod_v1 > usr_std
+const ROLE_META = {
+  'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5, tab:true },
+  'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4, tab:true },
+  'adm_x2':   { label:'ADMIN',    cls:'role-adm',  rank:3, tab:true },
+  'mod_v1':   { label:'MOD',      cls:'role-mod',  rank:2, tab:true },
+  'usr_std':  { label:'USER',     cls:'role-std',  rank:1, tab:false },
+};
+function getRoleMeta(role) {
+  return ROLE_META[role] || ROLE_META['usr_std'];
+}
+function canTarget(myRole, theirRole) {
+  // Can only take action on roles strictly below mine
+  return (getRoleMeta(myRole).rank) > (getRoleMeta(theirRole).rank);
+}
 
 // Shared Firebase login function
 function doFirebaseLogin(name, role, onError) {
@@ -1624,15 +1636,12 @@ function doFirebaseLogin(name, role, onError) {
     document.getElementById('consent-overlay').style.display = 'none';
     document.getElementById('topbar-name').textContent = name;
     const rb = document.getElementById('topbar-role');
-    if (role === 'sys_rx7') {
-      rb.textContent = 'RX-7';
-      rb.className = 'role-badge role-sys';
-      document.getElementById('admin-tab-btn').style.display = '';
-    } else {
-      rb.textContent = 'STD';
-      rb.className = 'role-badge role-std';
-    }
+    const meta = getRoleMeta(role);
+    rb.textContent = meta.label;
+    rb.className = 'role-badge ' + meta.cls;
+    document.getElementById('admin-tab-btn').style.display = meta.tab ? '' : 'none';
     addLog(`${name} logged in.`, 'join');
+    buildVault();
     showPage('app-page');
     sessionStart = Date.now();
   }).catch(e => {
@@ -1708,16 +1717,20 @@ function checkPassword() {
   }
 
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
-  if (v === 'TTT') {
-    pendingRole = 'usr_std';
-    if (rem) _remSave(v, null, 'usr_std');
-    else localStorage.removeItem(REMEMBER_KEY);
-    showPage('name-page');
-    return;
-  }
-  if (v === 'Triple T' || v === 'TripleT') {
-    pendingRole = 'sys_rx7';
-    if (rem) _remSave(v, null, 'sys_rx7');
+
+  // Role passwords — ordered by hierarchy
+  const rolePws = {
+    'TTT':        'usr_std',
+    'ShadowMod':  'mod_v1',
+    'GridAdmin':  'adm_x2',
+    'NexusHead':  'head_adm',
+    'Triple T':   'sys_rx7',
+    'TripleT':    'sys_rx7',
+  };
+  const matchedRole = rolePws[v];
+  if (matchedRole) {
+    pendingRole = matchedRole;
+    if (rem) _remSave(v, null, matchedRole);
     else localStorage.removeItem(REMEMBER_KEY);
     showPage('name-page');
     return;
@@ -1948,7 +1961,7 @@ function startEmbedListener() {
 }
 
 function setEmbedLink() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 4) return;
   const url = document.getElementById('embed-url-input').value.trim();
   const title = document.getElementById('embed-title-input').value.trim() || 'Embedded Game';
   if (!url) { showToast('⚠️ Paste a URL first.'); return; }
@@ -1976,7 +1989,7 @@ function setEmbedLink() {
 
 // ✨ ADMIN: Clear embed link
 function clearEmbedLink() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 4) return;
   db.ref('embedLink').remove()
     .then(() => showToast('🗑 Embed removed from Games tab.'))
     .catch(() => showToast('❌ Remove failed — Firebase error.'));
@@ -2095,14 +2108,16 @@ function renderOnline() {
     nameCol.appendChild(joinedSpan);
     unameDiv.appendChild(nameCol);
     const badge = document.createElement('span');
-    // Only trust role for the current user (verified locally), never trust DB role for others
-    const displayRole = isMe ? currentRole : 'usr_std';
-    badge.className = 'role-badge ' + (displayRole === 'sys_rx7' ? 'role-sys' : 'role-std');
+    // Show real role from DB — stored when they logged in
+    const theirRole = isMe ? currentRole : (u.role || 'usr_std');
+    const theirMeta = getRoleMeta(theirRole);
+    badge.className = 'role-badge ' + theirMeta.cls;
     badge.style.fontSize = '.6rem';
-    badge.textContent = displayRole === 'sys_rx7' ? 'RX-7' : 'STD';
+    badge.textContent = theirMeta.label;
     unameDiv.appendChild(badge);
     li.appendChild(unameDiv);
-    if (!isMe && currentRole === 'sys_rx7') {
+    // Can only ban people with a lower rank than me
+    if (!isMe && canTarget(currentRole, theirRole)) {
       const banBtn = document.createElement('button');
       banBtn.className = 'ban-btn';
       banBtn.textContent = 'Ban';
@@ -2146,7 +2161,8 @@ function renderBans(bans) {
     info.appendChild(timeEl);
     info.appendChild(reasonEl);
     row.appendChild(info);
-    if (currentRole === 'sys_rx7') {
+    // Can unban if my rank > rank 1 (i.e. I'm at least mod level with tab access)
+    if (getRoleMeta(currentRole).rank >= 3) {
       const unbanBtn = document.createElement('button');
       unbanBtn.className = 'ban-btn';
       unbanBtn.textContent = 'Unban';
@@ -2158,9 +2174,9 @@ function renderBans(bans) {
   });
 }
 
-// BAN MODAL
+// BAN MODAL — any role rank >= 2 (mod+) can ban lower ranks
 function openBanModal(uid, name) {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 2) return;
   pendingBanUid = uid;
   document.getElementById('ban-modal-name').textContent = 'User: ' + name;
   document.getElementById('ban-reason').value = '';
@@ -2171,14 +2187,19 @@ function closeBanModal() {
   pendingBanUid = null;
 }
 async function confirmBan() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 2) return;
   if (!pendingBanUid) return;
   const uid = pendingBanUid;
   const u = liveUsers[uid];
   const reason = document.getElementById('ban-reason').value.trim() || 'No reason given';
   if (!u) { closeBanModal(); return; }
+  if (!canTarget(currentRole, u.role || 'usr_std')) {
+    showToast('⛔ You cannot ban someone with equal or higher rank.');
+    closeBanModal();
+    return;
+  }
   try {
-    await db.ref('bans').push().set({ name: u.name, reason, time: new Date().toLocaleString(), uid });
+    await db.ref('bans').push().set({ name: u.name, reason, time: new Date().toLocaleString(), uid, bannedBy: currentName });
     await db.ref('online/' + uid).remove();
     closeBanModal();
     addLog(`${currentName} banned ${u.name}: "${reason}"`, 'ban');
@@ -2188,7 +2209,7 @@ async function confirmBan() {
   }
 }
 async function unbanUser(key, name) {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 3) return;
   try {
     await db.ref('bans/' + key).remove();
     addLog(`${currentName} unbanned ${name}.`, 'join');
@@ -2216,10 +2237,10 @@ function checkUnban() {
   }
 }
 
-// GLOBAL MESSAGE + LOCKDOWN
+// GLOBAL MESSAGE — mod+ can broadcast
 let _lastBroadcast = 0;
 function sendGlobalMsg() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 2) return;
   const now = Date.now();
   if (now - _lastBroadcast < 3000) { showToast('⚠️ Wait a moment before broadcasting again.'); return; }
   _lastBroadcast = now;
@@ -2231,7 +2252,7 @@ function sendGlobalMsg() {
   document.getElementById('global-msg-input').value = '';
 }
 function clearGlobalMsg() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 2) return;
   db.ref('globalMsg').remove()
     .then(() => showToast('📢 Message cleared.'))
     .catch(() => showToast('❌ Clear failed.'));
@@ -2239,10 +2260,11 @@ function clearGlobalMsg() {
 }
 function dismissBanner() {
   document.getElementById('global-banner').classList.remove('active');
-  if (currentRole === 'sys_rx7') db.ref('globalMsg').remove();
+  if (getRoleMeta(currentRole).rank >= 2) db.ref('globalMsg').remove();
 }
+// LOCKDOWN — head admin+ only
 function triggerLockdown() {
-  if (currentRole !== 'sys_rx7') return;
+  if (getRoleMeta(currentRole).rank < 4) return;
   db.ref('lockdown').set(true)
     .catch(() => showToast('❌ Lockdown failed — Firebase error.'));
 }
@@ -2260,6 +2282,7 @@ function checkLockdown() {
     err.style.display = 'block';
     document.getElementById('lockdown-pw').value = '';
   }
+}
 }
 
 // STATS + UPTIME
@@ -2317,32 +2340,63 @@ function saveNotes() {
   }, 800);
 }
 
-// PASSWORD VAULT — values stored in JS, not in HTML source
-// Obfuscated with btoa so they don't appear as plaintext in the DOM or a simple Ctrl+F
-const _pv = {
-  pv1: atob('Njc='),
-  pv2: atob('VFRU'),
-  pv3: atob('VHJpcGxlIFQ='),
-  pv4: atob('VGhlIEJpZyBTYWh1cg=='),
-  pv5: atob('NDE=')
-};
-// Populate vault elements — they start empty in HTML
-(function initVault() {
-  Object.keys(_pv).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.dataset.secret = _pv[id];
+// PASSWORD VAULT — rank-filtered, stored as btoa so not plain text
+const _vaultData = [
+  { id:'v_trap',  label:'🪤 Trap / Ban Code',       secret: atob('Njc='),              rank: 0, section:'Portal Entry' },
+  { id:'v_user',  label:'👤 User Password',          secret: atob('VFRU'),              rank: 1, section:null },
+  { id:'v_mod',   label:'🛡️ Mod Password',           secret: atob('U2hhZG93TW9k'),      rank: 2, section:null },
+  { id:'v_adm',   label:'⚙️ Admin Password',         secret: atob('R3JpZEFkbWlu'),      rank: 3, section:null },
+  { id:'v_hadm',  label:'💠 Head Admin Password',    secret: atob('TmV4dXNIZWFk'),      rank: 4, section:null },
+  { id:'v_owner', label:'👑 Owner Password',         secret: atob('VHJpcGxlIFQ='),      rank: 5, section:null },
+  { id:'v_unban', label:'🔓 Unban Override',         secret: atob('VGhlIEJpZyBTYWh1cg=='), rank: 0, section:'Overrides' },
+  { id:'v_lock',  label:'🔒 Lockdown Relaunch',      secret: atob('NDE='),              rank: 0, section:null },
+];
+
+function buildVault() {
+  const vault = document.getElementById('pw-vault-inner');
+  if (!vault) return;
+  vault.innerHTML = '';
+  const myRank = getRoleMeta(currentRole).rank;
+  let lastSection = null;
+  _vaultData.forEach(row => {
+    // Show this row only if the role it belongs to is strictly below mine
+    // rank 0 rows (trap/overrides) always show to anyone with tab access
+    if (row.rank >= myRank) return;
+    if (row.section && row.section !== lastSection) {
+      lastSection = row.section;
+      const lbl = document.createElement('div');
+      lbl.className = 'pw-section-label';
+      lbl.textContent = row.section;
+      vault.appendChild(lbl);
+    }
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'pw-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'pw-label';
+    lbl.textContent = row.label;
+    const val = document.createElement('div');
+    val.className = 'pw-val';
+    val.id = row.id;
+    val.dataset.secret = row.secret;
+    const btn = document.createElement('button');
+    btn.className = 'pw-show-btn';
+    btn.textContent = 'Show';
+    btn.onclick = () => togglePw(row.id, btn);
+    rowDiv.appendChild(lbl);
+    rowDiv.appendChild(val);
+    rowDiv.appendChild(btn);
+    vault.appendChild(rowDiv);
   });
-})();
+  if (!vault.children.length) {
+    vault.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:.8rem;text-align:center;padding:12px;">No passwords available for your role.</div>';
+  }
+}
 
 function togglePw(id, btn) {
   const el = document.getElementById(id);
   if (!el) return;
   const revealed = el.classList.toggle('show');
-  if (revealed) {
-    el.textContent = el.dataset.secret || '';
-  } else {
-    el.textContent = '';
-  }
+  el.textContent = revealed ? (el.dataset.secret || '') : '';
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
