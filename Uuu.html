@@ -743,7 +743,7 @@ function showPage(id) {
   const appFixedEls = ['.topbar','.dock-wrap','.content','#global-banner'];
   appFixedEls.forEach(sel => {
     document.querySelectorAll(sel).forEach(el => {
-      el.style.visibility = appVisible ? '' : 'hidden';
+      el.style.visibility = appVisible ? 'visible' : 'hidden';
       el.style.pointerEvents = appVisible ? '' : 'none';
     });
   });
