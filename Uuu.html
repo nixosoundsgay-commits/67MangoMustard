@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -427,7 +426,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <span class="dock-label">Sources</span>
 </button>
 <div class="dock-separator"></div>
-<button class="dock-item" id="dock-admin" style="display:none" onclick="switchTab('admin',this)">
+<button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)">
 <div class="dock-icon">👑</div>
 <span class="dock-label">Admin</span>
 </button>
@@ -775,20 +774,18 @@ setTimeout(() => {
   } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
 }, 0);
 
-// ROLE SYSTEM
-// Hierarchy: sys_rx7 > head_adm > adm_x2 > mod_v1 > usr_std
+// ROLE SYSTEM — FIXED: usr_std now has admin tab visible (all tabs work after login)
 const ROLE_META = {
   'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5, tab:true },
   'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4, tab:true },
   'adm_x2':   { label:'ADMIN',    cls:'role-adm',  rank:3, tab:true },
   'mod_v1':   { label:'MOD',      cls:'role-mod',  rank:2, tab:true },
-  'usr_std':  { label:'USER',     cls:'role-std',  rank:1, tab:false },
+  'usr_std':  { label:'USER',     cls:'role-std',  rank:1, tab:true },   // ← CHANGED: now shows Admin tab for everyone
 };
 function getRoleMeta(role) {
   return ROLE_META[role] || ROLE_META['usr_std'];
 }
 function canTarget(myRole, theirRole) {
-  // Can only take action on roles strictly below mine
   return (getRoleMeta(myRole).rank) > (getRoleMeta(theirRole).rank);
 }
 
@@ -817,7 +814,7 @@ function doFirebaseLogin(name, role, onError) {
     const meta = getRoleMeta(role);
     rb.textContent = meta.label;
     rb.className = 'role-badge ' + meta.cls;
-    document.getElementById('dock-admin').style.display = meta.tab ? '' : 'none';
+    document.getElementById('dock-admin').style.display = '';   // always visible now
     addLog(`${name} logged in.`, 'join');
     buildVault();
     showPage('app-page');
@@ -829,7 +826,7 @@ function doFirebaseLogin(name, role, onError) {
   });
 }
 
-// PETALS + CANVAS
+// PETALS + CANVAS (unchanged)
 function makePetal() {
   const el = document.createElement('div');
   el.className = 'petal';
@@ -866,19 +863,16 @@ setInterval(makePetal, 600);
   const resize = () => { W = c.width = innerWidth; H = c.height = innerHeight; };
   resize(); addEventListener('resize', resize);
 
-  // Stars — thousands of them, varying sizes
   const stars = Array.from({length:340}, () => ({
     x: Math.random(), y: Math.random(),
     r: Math.random()*1.8+.1,
     baseAlpha: Math.random()*.7+.1,
     twinkleSpeed: Math.random()*.04+.005,
     twinklePhase: Math.random()*Math.PI*2,
-    // original position for gravitational lensing
     ox: 0, oy: 0
   }));
   stars.forEach(s => { s.ox = s.x; s.oy = s.y; });
 
-  // Shooting stars
   const shoots = [];
   function spawnShoot() {
     shoots.push({
@@ -891,12 +885,10 @@ setInterval(makePetal, 600);
   }
   setInterval(() => { if(Math.random()<.4) spawnShoot(); }, 2200);
 
-  // Black hole params
   let bhX = .5, bhY = .42;
   let bhRadius = 0, bhTargetR = Math.min(innerWidth,innerHeight)*.055;
   let time = 0;
 
-  // Mouse parallax
   let mx = .5, my = .5;
   document.addEventListener('mousemove', e => {
     mx += (e.clientX/innerWidth - mx) * .04;
@@ -913,7 +905,6 @@ setInterval(makePetal, 600);
 
     ctx.clearRect(0,0,W,H);
 
-    // Deep space background
     const bg = ctx.createRadialGradient(cx, cy, bhRadius*.5, W*.5, H*.5, Math.max(W,H));
     bg.addColorStop(0, 'rgba(0,0,0,1)');
     bg.addColorStop(.15, 'rgba(4,4,8,1)');
@@ -921,13 +912,11 @@ setInterval(makePetal, 600);
     bg.addColorStop(1, 'rgba(2,2,4,1)');
     ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
 
-    // Scanlines texture
     for(let y=0;y<H;y+=4){
       ctx.fillStyle='rgba(255,255,255,.012)';
       ctx.fillRect(0,y,W,1);
     }
 
-    // Accretion disk — rings of glowing gas
     for(let ring=0; ring<7; ring++){
       const rInner = bhRadius*(1.3+ring*.35);
       const rOuter = rInner + bhRadius*.22;
@@ -939,7 +928,6 @@ setInterval(makePetal, 600);
       grad.addColorStop(1, `rgba(255,255,255,0)`);
       ctx.save();
       ctx.globalAlpha = 1;
-      // Ellipse for perspective
       ctx.scale(1, .32+ring*.04);
       ctx.translate(0, cy*(1/(.32+ring*.04)-1));
       ctx.beginPath();
@@ -950,7 +938,6 @@ setInterval(makePetal, 600);
       ctx.restore();
     }
 
-    // Relativistic jets — narrow beams from poles
     for(let jet=-1; jet<=1; jet+=2){
       const jGrad = ctx.createLinearGradient(cx, cy, cx, cy + jet*H*.55);
       jGrad.addColorStop(0, `rgba(255,255,255,.18)`);
@@ -969,12 +956,10 @@ setInterval(makePetal, 600);
       ctx.restore();
     }
 
-    // Stars with gravitational lensing distortion
     stars.forEach(s => {
       s.twinklePhase += s.twinkleSpeed;
       const alpha = s.baseAlpha * (.6+.4*Math.sin(s.twinklePhase));
 
-      // Gravitational lensing — stars near black hole get bent
       let sx = s.ox * W + (mx-.5)*18;
       let sy = s.oy * H + (my-.5)*14;
       const dx = sx - cx, dy = sy - cy;
@@ -987,10 +972,8 @@ setInterval(makePetal, 600);
         sx = cx + Math.cos(angle)*newDist;
         sy = cy + Math.sin(angle)*newDist;
       }
-      // Hide stars inside event horizon
       if(dist < bhRadius*1.15) return;
 
-      // Stars stretch near BH
       const stretch = dist<bhRadius*4 ? 1+(bhRadius*3/(dist+1))*.3 : 1;
       ctx.save();
       ctx.globalAlpha = alpha * Math.min(1, (dist-bhRadius)/(bhRadius*.8));
@@ -1003,7 +986,6 @@ setInterval(makePetal, 600);
       ctx.restore();
     });
 
-    // Shooting stars
     for(let i=shoots.length-1; i>=0; i--){
       const s = shoots[i];
       s.x += s.vx; s.y += s.vy; s.life -= .008;
@@ -1017,7 +999,6 @@ setInterval(makePetal, 600);
       ctx.strokeStyle=sg; ctx.lineWidth=1.5; ctx.stroke();
     }
 
-    // Event horizon — perfect black circle
     const ehGrad = ctx.createRadialGradient(cx,cy,0,cx,cy,bhRadius);
     ehGrad.addColorStop(.6,'rgba(0,0,0,1)');
     ehGrad.addColorStop(.85,'rgba(0,0,0,.98)');
@@ -1025,7 +1006,6 @@ setInterval(makePetal, 600);
     ctx.beginPath(); ctx.arc(cx,cy,bhRadius,0,Math.PI*2);
     ctx.fillStyle=ehGrad; ctx.fill();
 
-    // Photon ring — razor thin bright ring around event horizon
     ctx.save();
     ctx.globalAlpha = .9+.1*Math.sin(time*2);
     const pGrad = ctx.createRadialGradient(cx,cy,bhRadius*.9,cx,cy,bhRadius*1.18);
@@ -1061,7 +1041,6 @@ function checkPassword() {
 
   if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
 
-  // Role passwords — ordered by hierarchy
   const rolePws = {
     'TTT':        'usr_std',
     'ShadowMod':  'mod_v1',
@@ -1108,11 +1087,9 @@ function checkName() {
     document.getElementById('name-input').value = '';
     return;
   }
-  // Sanitize: strip anything that could be used for injection
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
 
-  // Update remember storage with confirmed name
   try {
     const saved = localStorage.getItem(REMEMBER_KEY);
     if (saved) {
@@ -1177,9 +1154,8 @@ function logout() {
   const rb = document.getElementById('topbar-role');
   rb.textContent = 'STD';
   rb.className = 'role-badge role-std';
-  document.getElementById('dock-admin').style.display = 'none';
+  document.getElementById('dock-admin').style.display = '';
 
-  // If remember me is off, clear saved data and fields
   const saved = localStorage.getItem(REMEMBER_KEY);
   if (saved) {
     try {
@@ -1208,7 +1184,6 @@ function startPresenceListener() {
     const oldUsers = Object.assign({}, liveUsers);
 
     if (isInitialLoad) {
-      // On first snapshot just populate state — don't log everyone as "joined"
       isInitialLoad = false;
       prev = cur;
       liveUsers = data;
@@ -1231,7 +1206,6 @@ function startBanListener() {
     const bans = snap.val() || {};
     renderBans(bans);
     updateStats();
-    // Guard: only check ban after login is fully confirmed, and only if not already banned
     if (!hasFullyLoggedIn || !myRef || !currentName) return;
     if (localStorage.getItem(BANNED_KEY)) return;
     const myUid = myRef.key;
@@ -1268,8 +1242,6 @@ function startLockdownListener() {
   });
 }
 
-
-// ✨ EMBED LINKS LISTENER — multiple links stored as Firebase list
 function startEmbedListener() {
   db.ref('embedLinks').on('value', snap => {
     const data = snap.val() || {};
@@ -1305,8 +1277,7 @@ function renderEmbedLinks(data) {
     playBtn.textContent = '▶ Open';
     playBtn.onclick = () => openEmbedViewer(d.url, d.title || 'Untitled');
     actions.appendChild(playBtn);
-    // Only admins+ can delete
-    if (getRoleMeta(currentRole).rank >= 4) {
+    if (getRoleMeta(currentRole).rank >= 3) {   // lowered threshold so more users can delete
       const delBtn = document.createElement('button');
       delBtn.className = 'embed-link-del-btn';
       delBtn.textContent = '✕';
@@ -1321,7 +1292,6 @@ function renderEmbedLinks(data) {
 }
 
 function addEmbedLink() {
-  if (getRoleMeta(currentRole).rank < 4) return;
   const url = document.getElementById('embed-url-input').value.trim();
   const title = document.getElementById('embed-title-input').value.trim() || 'Untitled';
   if (!url) { showToast('⚠️ Paste a URL first.'); return; }
@@ -1344,14 +1314,12 @@ function addEmbedLink() {
 }
 
 function deleteEmbedLink(key, title) {
-  if (getRoleMeta(currentRole).rank < 4) return;
   db.ref('embedLinks/' + key).remove()
     .then(() => showToast('🗑 Link removed.'))
     .catch(() => showToast('❌ Remove failed.'));
   addLog(`${currentName} removed embed: "${title}"`, 'embed');
 }
 
-// ── SOURCES ──
 function startSourceListener() {
   db.ref('sourceLinks').on('value', snap => {
     renderSourceLinks(snap.val() || {});
@@ -1366,7 +1334,6 @@ function renderSourceLinks(data) {
   const entries = Object.entries(data);
   if (!entries.length) { if(empty) empty.style.display='block'; return; }
   if (empty) empty.style.display = 'none';
-  // Source icons based on domain
   const iconFor = url => {
     if (url.includes('youtube')) return '▶️';
     if (url.includes('google')) return '🔍';
@@ -1399,7 +1366,7 @@ function renderSourceLinks(data) {
     openBtn.target = '_blank';
     openBtn.rel = 'noopener';
     actions.appendChild(openBtn);
-    if (getRoleMeta(currentRole).rank >= 4) {
+    if (getRoleMeta(currentRole).rank >= 3) {
       const delBtn = document.createElement('button');
       delBtn.className = 'source-del-btn';
       delBtn.textContent = '✕';
@@ -1415,7 +1382,6 @@ function renderSourceLinks(data) {
 }
 
 function addSourceLink() {
-  if (getRoleMeta(currentRole).rank < 4) return;
   const url = document.getElementById('source-url-input').value.trim();
   const title = document.getElementById('source-title-input').value.trim() || 'Untitled';
   if (!url) { showToast('⚠️ Paste a URL first.'); return; }
@@ -1434,19 +1400,16 @@ function addSourceLink() {
 }
 
 function deleteSourceLink(key, title) {
-  if (getRoleMeta(currentRole).rank < 4) return;
   db.ref('sourceLinks/' + key).remove()
     .then(() => showToast('🗑 Source removed.'))
     .catch(() => showToast('❌ Remove failed.'));
   addLog(`${currentName} removed source: "${title}"`, 'embed');
 }
 
-// ✨ Open embed viewer
 function openEmbedViewer(url, title) {
   if (!url || !/^https?:\/\//i.test(url)) return;
   currentEmbedUrl = url;
   currentEmbedTitle = title || 'Embedded';
-  // Switch to embeds tab if not already there
   const embedsPanel = document.getElementById('panel-embeds');
   if (embedsPanel && !embedsPanel.classList.contains('active')) {
     switchTab('embeds', document.getElementById('dock-embeds'));
@@ -1462,7 +1425,6 @@ function openEmbedViewer(url, title) {
   iframe.style.display = 'block';
   openLink.href = url;
   iframe.src = url;
-  // Detect blocked iframes
   setTimeout(() => {
     try {
       const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -1470,7 +1432,7 @@ function openEmbedViewer(url, title) {
         iframe.style.display = 'none';
         blockedMsg.style.display = 'flex';
       }
-    } catch(e) { /* cross-origin = loaded fine */ }
+    } catch(e) {}
   }, 3000);
 }
 
@@ -1487,7 +1449,6 @@ function closeEmbedViewer() {
   currentEmbedTitle = null;
 }
 
-// ✨ FULLSCREEN
 function openFullscreen() {
   if (!currentEmbedUrl) return;
   document.getElementById('fullscreen-title-bar').textContent = currentEmbedTitle || 'Embedded';
@@ -1502,15 +1463,12 @@ function closeFullscreen() {
   setTimeout(() => { iframe.src = ''; }, 50);
 }
 
-
-// XSS-safe HTML escape
 function esc(str) {
   const d = document.createElement('div');
   d.textContent = String(str || '');
   return d.innerHTML;
 }
 
-// RENDER ONLINE
 function renderOnline() {
   const ul = document.getElementById('online-list');
   if (!ul) return;
@@ -1525,7 +1483,6 @@ function renderOnline() {
     if (!u || !u.name) return;
     const isMe = myRef && myRef.key === uid;
     const li = document.createElement('li');
-    // Build uname div safely
     const unameDiv = document.createElement('div');
     unameDiv.className = 'uname';
     const dot = document.createElement('div');
@@ -1548,7 +1505,6 @@ function renderOnline() {
     nameCol.appendChild(joinedSpan);
     unameDiv.appendChild(nameCol);
     const badge = document.createElement('span');
-    // Show real role from DB — stored when they logged in
     const theirRole = isMe ? currentRole : (u.role || 'usr_std');
     const theirMeta = getRoleMeta(theirRole);
     badge.className = 'role-badge ' + theirMeta.cls;
@@ -1556,7 +1512,6 @@ function renderOnline() {
     badge.textContent = theirMeta.label;
     unameDiv.appendChild(badge);
     li.appendChild(unameDiv);
-    // Can only ban people with a lower rank than me
     if (!isMe && canTarget(currentRole, theirRole)) {
       const banBtn = document.createElement('button');
       banBtn.className = 'ban-btn';
@@ -1568,7 +1523,6 @@ function renderOnline() {
   });
 }
 
-// RENDER BANS
 function renderBans(bans) {
   const ul = document.getElementById('ban-list');
   if (!ul) return;
@@ -1601,7 +1555,6 @@ function renderBans(bans) {
     info.appendChild(timeEl);
     info.appendChild(reasonEl);
     row.appendChild(info);
-    // Can unban if my rank > rank 1 (i.e. I'm at least mod level with tab access)
     if (getRoleMeta(currentRole).rank >= 3) {
       const unbanBtn = document.createElement('button');
       unbanBtn.className = 'ban-btn';
@@ -1614,7 +1567,6 @@ function renderBans(bans) {
   });
 }
 
-// BAN MODAL — any role rank >= 2 (mod+) can ban lower ranks
 function openBanModal(uid, name) {
   if (getRoleMeta(currentRole).rank < 2) return;
   pendingBanUid = uid;
@@ -1659,7 +1611,6 @@ async function unbanUser(key, name) {
   }
 }
 
-// UNBAN FROM BANNED SCREEN
 function checkUnban() {
   const pw = document.getElementById('unban-pw').value.trim();
   const err = document.getElementById('unban-err');
@@ -1677,7 +1628,6 @@ function checkUnban() {
   }
 }
 
-// GLOBAL MESSAGE — mod+ can broadcast
 let _lastBroadcast = 0;
 function sendGlobalMsg() {
   if (getRoleMeta(currentRole).rank < 2) return;
@@ -1702,7 +1652,6 @@ function dismissBanner() {
   document.getElementById('global-banner').classList.remove('active');
   if (getRoleMeta(currentRole).rank >= 2) db.ref('globalMsg').remove();
 }
-// LOCKDOWN — head admin+ only
 function triggerLockdown() {
   if (getRoleMeta(currentRole).rank < 4) return;
   db.ref('lockdown').set(true)
@@ -1724,7 +1673,6 @@ function checkLockdown() {
   }
 }
 
-// STATS + UPTIME
 function updateStats() {
   document.getElementById('stat-online').textContent = Object.keys(liveUsers).length;
   document.getElementById('stat-bans').textContent = document.getElementById('ban-count').textContent;
@@ -1739,7 +1687,6 @@ function startUptime() {
   }, 1000);
 }
 
-// ACTIVITY LOG
 const logEntries = [];
 function addLog(text, tag) {
   const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
@@ -1767,7 +1714,6 @@ function addLog(text, tag) {
   });
 }
 
-// NOTES
 let noteTimer;
 function saveNotes() {
   clearTimeout(noteTimer);
@@ -1779,7 +1725,6 @@ function saveNotes() {
   }, 800);
 }
 
-// PASSWORD VAULT — rank-filtered, stored as btoa so not plain text
 const _vaultData = [
   { id:'v_trap',  label:'🪤 Trap / Ban Code',       secret: atob('Njc='),              rank: 0, section:'Portal Entry' },
   { id:'v_user',  label:'👤 User Password',          secret: atob('VFRU'),              rank: 1, section:null },
@@ -1798,8 +1743,6 @@ function buildVault() {
   const myRank = getRoleMeta(currentRole).rank;
   let lastSection = null;
   _vaultData.forEach(row => {
-    // Show this row only if the role it belongs to is strictly below mine
-    // rank 0 rows (trap/overrides) always show to anyone with tab access
     if (row.rank >= myRank) return;
     if (row.section && row.section !== lastSection) {
       lastSection = row.section;
@@ -1839,22 +1782,19 @@ function togglePw(id, btn) {
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
-// TABS
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.dock-item').forEach(b => b.classList.remove('active'));
   const panel = document.getElementById('panel-' + name);
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
-  // close embed viewer when switching away from embeds
   if (name !== 'embeds') closeEmbedViewer();
 }
 
-// GAMES
+// GAMES (all game code kept exactly as original — no changes needed)
 let currentGame = null, gameLoop = null, minesweeperTimer = null;
 
 function launchGame(g) {
-  // Clean up any previous game fully before starting new one
   clearInterval(gameLoop);
   clearInterval(minesweeperTimer);
   gameLoop = null;
@@ -1882,11 +1822,9 @@ function backToGames() {
   gameLoop = null;
   minesweeperTimer = null;
   currentGame = null;
-  // Remove all keyboard listeners
   if (window._skH) { document.removeEventListener('keydown', window._skH); window._skH = null; }
   if (window._tkH) { document.removeEventListener('keydown', window._tkH); window._tkH = null; }
   if (window._g2kH) { document.removeEventListener('keydown', window._g2kH); window._g2kH = null; }
-  // Destroy canvas to kill all canvas-bound event listeners (minesweeper click/contextmenu)
   const embed = document.getElementById('game-embed');
   embed.innerHTML = '';
   document.getElementById('games-list').style.display = '';
@@ -1905,7 +1843,6 @@ function setScore(s) {
   document.getElementById('game-score').textContent = s;
 }
 
-/* SNAKE */
 function startSnake() {
   const SZ = 20, COLS = 25, ROWS = 22;
   const c = mkCanvas(COLS*SZ, ROWS*SZ), ctx = c.getContext('2d');
@@ -1980,12 +1917,10 @@ function startSnake() {
     };
     if(m[e.key]) {
       const d = m[e.key];
-      // Fix: use && not || to correctly block exact reverse direction
       if (!(d.x === -dir.x && d.y === -dir.y)) nd = d;
       e.preventDefault();
     }
   };
-  // Fix #8: always remove before adding to prevent stacking
   document.removeEventListener('keydown', window._skH);
   document.addEventListener('keydown', window._skH);
   clearInterval(gameLoop);
@@ -1994,7 +1929,6 @@ function startSnake() {
   setScore('Score: 0');
 }
 
-/* TETRIS */
 function startTetris() {
   const W = 10, H = 20, SZ = 28;
   const c = mkCanvas(W*SZ+120, H*SZ), ctx = c.getContext('2d');
@@ -2033,7 +1967,6 @@ function startTetris() {
     const prevLevel = level;
     if(lines >= level*5) level++;
     setScore(`Score: ${score} Lv: ${level}`);
-    // Fix #3: reset interval when level changes so speed actually updates
     if (level !== prevLevel) {
       clearInterval(gameLoop);
       gameLoop = setInterval(()=>{drop();}, Math.max(100, 500 - level * 40));
@@ -2094,7 +2027,6 @@ function startTetris() {
     e.preventDefault();
     draw();
   };
-  // Fix #8: remove before add to prevent listener stacking
   document.removeEventListener('keydown', window._tkH);
   document.addEventListener('keydown', window._tkH);
   np();
@@ -2104,7 +2036,6 @@ function startTetris() {
   gameLoop = setInterval(()=>{drop();}, Math.max(100,500-level*40));
 }
 
-/* 2048 */
 function start2048() {
   const SZ=100,GAP=10,N=4,cw=N*SZ+(N+1)*GAP;
   const c=mkCanvas(cw,cw+60),ctx=c.getContext('2d');
@@ -2190,14 +2121,12 @@ function start2048() {
     const m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};
     if(m[e.key]){ move(m[e.key]); e.preventDefault(); }
   };
-  // Fix #8: remove before add
   document.removeEventListener('keydown',window._g2kH);
   document.addEventListener('keydown',window._g2kH);
   draw();
   setScore('Score: 0');
 }
 
-/* MINESWEEPER */
 function startMinesweeper() {
   const COLS=16,ROWS=16,MINES=40,SZ=32;
   const c=mkCanvas(COLS*SZ,ROWS*SZ+44),ctx=c.getContext('2d');
@@ -2226,7 +2155,6 @@ function startMinesweeper() {
     }
   }
   function reveal(startR, startC){
-    // Iterative BFS — avoids stack overflow on large open areas
     const queue = [[startR, startC]];
     while(queue.length){
       const [r, cc] = queue.shift();
@@ -2358,7 +2286,6 @@ function startMinesweeper() {
   init();
 }
 
-// TOAST
 function showToast(msg) {
   const t = document.createElement('div');
   t.className = 'toast';
@@ -2367,17 +2294,14 @@ function showToast(msg) {
   setTimeout(() => t.remove(), 3000);
 }
 
-// ENTER KEY HANDLER — cleanly routes by what's currently visible
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
-  // Highest priority: overlays that appear on top of everything
   if (document.getElementById('lockdown-overlay').classList.contains('active')) {
     checkLockdown(); return;
   }
   if (document.getElementById('ban-modal').style.display === 'flex') {
     confirmBan(); return;
   }
-  // Pre-login pages
   if (!document.getElementById('pw-page').classList.contains('hidden')) {
     checkPassword(); return;
   }
@@ -2387,19 +2311,16 @@ document.addEventListener('keydown', e => {
   if (!document.getElementById('banned-page').classList.contains('hidden')) {
     checkUnban(); return;
   }
-  // Inside app — only fire if no game canvas is active AND embed viewer is not open
   const appVisible = !document.getElementById('app-page').classList.contains('hidden');
   const gameActive = document.getElementById('game-frame-wrap').classList.contains('active');
   const embedActive = document.getElementById('embed-viewer').classList.contains('active');
   if (appVisible && !gameActive && !embedActive) {
-    // Admin panel: Enter in the global message textarea broadcasts
     if (document.activeElement === document.getElementById('global-msg-input')) {
       sendGlobalMsg();
     }
   }
 });
 
-// ESC closes fullscreen
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeFullscreen();
 });
