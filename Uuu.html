@@ -574,6 +574,12 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <ul class="ban-list" id="ban-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li></ul>
 </div>
 
+<!-- NEW OFFLINE BAN SYSTEM SECTION -->
+<div class="admin-card">
+<h3>📜 Offline Visitors <span id="visitors-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
+<ul class="online-list" id="visitors-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No offline visitors yet</li></ul>
+</div>
+
 <div class="admin-card admin-full">
 <h3>📋 Activity Log</h3>
 <div class="admin-log" id="activity-log">
@@ -610,7 +616,6 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 
-</div>
 </div>
 </div>
 </div>
@@ -713,6 +718,8 @@ const db = firebase.database();
 // STATE
 let currentRole = null, currentName = null, pendingRole = null;
 let myRef = null, liveUsers = {}, sessionStart = null;
+let visitorsData = {};  // NEW: stores all unique past visitors (name → {name, lastVisit})
+let bansData = {};      // NEW: reference to current bans for filtering offline list
 let pendingBanUid = null;
 let lastGlobalMsg = null;
 let currentEmbedUrl = null, currentEmbedTitle = null;
@@ -800,12 +807,20 @@ function doFirebaseLogin(name, role, onError) {
   }).then(() => {
     hasFullyLoggedIn = true;
     myRef.onDisconnect().remove();
+
+    // === NEW: Record this visitor (unique by exact name) ===
+    db.ref('visitors/' + name).set({
+      name: name,
+      lastVisit: Date.now()
+    }).catch(() => {}); // silent fail — rules are open anyway
+
     startPresenceListener();
     startBanListener();
     startGlobalMsgListener();
     startLockdownListener();
     startEmbedListener();
     startSourceListener();
+    startVisitorsListener(); // NEW listener for offline visitors
     startUptime();
     document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
     document.getElementById('consent-overlay').style.display = 'none';
@@ -1141,6 +1156,8 @@ function logout() {
   currentName = null;
   pendingRole = null;
   liveUsers = {};
+  visitorsData = {};
+  bansData = {};
   sessionStart = null;
 
   if (typeof backToGames === 'function') backToGames();
@@ -1177,7 +1194,95 @@ function logout() {
   showPage('pw-page');
 }
 
-// FIREBASE LISTENERS
+// ======================
+// NEW OFFLINE BAN SYSTEM
+// ======================
+
+function startVisitorsListener() {
+  db.ref('visitors').on('value', snap => {
+    visitorsData = snap.val() || {};
+    renderVisitors();
+  });
+}
+
+function renderVisitors() {
+  const ul = document.getElementById('visitors-list');
+  if (!ul) return;
+
+  const entries = Object.entries(visitorsData);
+  const onlineNames = new Set(Object.values(liveUsers).map(u => u?.name).filter(Boolean));
+  const bannedNames = new Set(Object.values(bansData).map(b => b?.name).filter(Boolean));
+
+  // Only show truly offline + not-yet-banned visitors (no overlap with online or banned lists)
+  const offlineVisitors = entries.filter(([_, v]) => {
+    if (!v?.name) return false;
+    return !onlineNames.has(v.name) && !bannedNames.has(v.name);
+  });
+
+  document.getElementById('visitors-count').textContent = offlineVisitors.length;
+
+  if (!offlineVisitors.length) {
+    ul.innerHTML = '<li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No offline visitors yet</li>';
+    return;
+  }
+
+  ul.innerHTML = '';
+  offlineVisitors.forEach(([_, v]) => {
+    const name = v.name;
+    const li = document.createElement('li');
+    const unameDiv = document.createElement('div');
+    unameDiv.className = 'uname';
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    unameDiv.appendChild(dot);
+
+    const nameCol = document.createElement('div');
+    nameCol.style.cssText = 'display:flex;flex-direction:column;gap:2px;';
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+    nameCol.appendChild(nameSpan);
+
+    if (v.lastVisit) {
+      const timeEl = document.createElement('span');
+      timeEl.style.cssText = 'font-size:.68rem;color:rgba(255,255,255,.3);';
+      const d = new Date(v.lastVisit);
+      timeEl.textContent = 'Last visit ' + d.toLocaleDateString([], {month:'short', day:'numeric'});
+      nameCol.appendChild(timeEl);
+    }
+    unameDiv.appendChild(nameCol);
+    li.appendChild(unameDiv);
+
+    const banBtn = document.createElement('button');
+    banBtn.className = 'ban-btn';
+    banBtn.textContent = 'Ban';
+    banBtn.onclick = () => offlineBan(name);
+    li.appendChild(banBtn);
+
+    ul.appendChild(li);
+  });
+}
+
+function offlineBan(name) {
+  if (getRoleMeta(currentRole).rank < 2) {
+    showToast('⛔ You need at least Moderator rank.');
+    return;
+  }
+
+  const reason = 'Offline ban (admin)';
+
+  db.ref('bans').push().set({
+    name: name,
+    reason: reason,
+    time: new Date().toLocaleString(),
+    bannedBy: currentName
+    // no uid — this is the offline case
+  }).then(() => {
+    showToast(`🚫 Offline banned: ${name}`);
+    addLog(`${currentName} offline banned ${name}`, 'ban');
+  }).catch(() => showToast('❌ Firebase write failed'));
+}
+
+// FIREBASE LISTENERS (updated)
 function startPresenceListener() {
   let prev = new Set();
   let isInitialLoad = true;
@@ -1192,6 +1297,7 @@ function startPresenceListener() {
       liveUsers = data;
       renderOnline();
       updateStats();
+      renderVisitors(); // NEW
       return;
     }
 
@@ -1201,18 +1307,20 @@ function startPresenceListener() {
     liveUsers = data;
     renderOnline();
     updateStats();
+    renderVisitors(); // NEW — when someone logs out they appear in offline list
   });
 }
 
 function startBanListener() {
   db.ref('bans').on('value', snap => {
-    const bans = snap.val() || {};
-    renderBans(bans);
+    bansData = snap.val() || {};
+    renderBans(bansData);
     updateStats();
+    renderVisitors(); // NEW — if we ban an offline visitor they disappear from the list
     if (!hasFullyLoggedIn || !myRef || !currentName) return;
     if (localStorage.getItem(BANNED_KEY)) return;
     const myUid = myRef.key;
-    const hit = Object.values(bans).find(b => b.uid === myUid || b.name === currentName);
+    const hit = Object.values(bansData).find(b => b.uid === myUid || b.name === currentName);
     if (hit) {
       localStorage.setItem(BANNED_KEY, '1');
       location.reload();
