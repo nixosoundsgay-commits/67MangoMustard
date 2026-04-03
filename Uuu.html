@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -240,9 +239,26 @@ input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255
 #remember-me{width:14px;height:14px;accent-color:#fff;cursor:pointer;flex-shrink:0;}
 /* ── SOURCES TAB ── */
 .sources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
-.source-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:24px 20px;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .2s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:10px;text-decoration:none;}
-.source-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.08) 0%,transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s;}
-.source-card:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(255,255,255,.22);box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);}
+.source-card{
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.08);
+border-radius:20px;padding:24px 20px;
+cursor:pointer;
+transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .2s,box-shadow .2s;
+position:relative;overflow:hidden;
+display:flex;flex-direction:column;gap:10px;
+text-decoration:none;
+}
+.source-card::before{
+content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.08) 0%,transparent 60%);
+pointer-events:none;opacity:0;transition:opacity .3s;
+}
+.source-card:hover{
+transform:translateY(-8px) scale(1.02);
+border-color:rgba(255,255,255,.22);
+box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
+}
 .source-card:hover::before{opacity:1;}
 .source-card-icon{font-size:1.8rem;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;}
 .source-card-title{font-family:'Cinzel Decorative',cursive;font-size:.82rem;color:#fff;}
@@ -253,27 +269,64 @@ input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255
 .source-del-btn{padding:8px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.4);font-size:.7rem;cursor:pointer;transition:all .2s;font-family:'Raleway',sans-serif;}
 .source-del-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
 .sources-empty{text-align:center;color:rgba(255,255,255,.2);font-size:.82rem;padding:48px 0;}
+
 /* ── GRAIN OVERLAY ── */
-body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");background-size:200px;opacity:.028;mix-blend-mode:overlay;}
+body::after{
+content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+background-size:200px;
+opacity:.028;
+mix-blend-mode:overlay;
+}
+
 /* ── ENHANCED GLASS ── */
-.glass{background:linear-gradient(135deg,rgba(18,18,28,.88) 0%,rgba(8,8,16,.92) 100%);}
+.glass{
+background:linear-gradient(135deg,rgba(18,18,28,.88) 0%,rgba(8,8,16,.92) 100%);
+}
+
 /* ── ENHANCED DOCK ── */
-.dock{background:linear-gradient(135deg,rgba(8,8,20,.72) 0%,rgba(4,4,12,.82) 100%);box-shadow:0 0 0 1px rgba(255,255,255,.06) inset, 0 0 0 1px rgba(255,255,255,.04), 0 24px 80px rgba(0,0,0,.8), 0 8px 32px rgba(0,0,0,.6);}
-.dock-icon{background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.05) 100%);box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 4px 12px rgba(0,0,0,.4);}
-.dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.1) 100%);box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 0 24px rgba(255,255,255,.12), 0 4px 16px rgba(0,0,0,.4);}
+.dock{
+background:linear-gradient(135deg,rgba(8,8,20,.72) 0%,rgba(4,4,12,.82) 100%);
+box-shadow:0 0 0 1px rgba(255,255,255,.06) inset, 0 0 0 1px rgba(255,255,255,.04), 0 24px 80px rgba(0,0,0,.8), 0 8px 32px rgba(0,0,0,.6);
+}
+.dock-icon{
+background:linear-gradient(135deg,rgba(255,255,255,.09) 0%,rgba(255,255,255,.05) 100%);
+box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 4px 12px rgba(0,0,0,.4);
+}
+.dock-item.active .dock-icon{
+background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.1) 100%);
+box-shadow:0 1px 0 rgba(255,255,255,.2) inset, 0 0 24px rgba(255,255,255,.12), 0 4px 16px rgba(0,0,0,.4);
+}
+
 /* ── ENHANCED TOPBAR ── */
-.topbar{background:linear-gradient(180deg,rgba(6,6,18,.88) 0%,rgba(4,4,12,.82) 100%);box-shadow:0 1px 0 rgba(255,255,255,.06), 0 4px 24px rgba(0,0,0,.4);}
+.topbar{
+background:linear-gradient(180deg,rgba(6,6,18,.88) 0%,rgba(4,4,12,.82) 100%);
+box-shadow:0 1px 0 rgba(255,255,255,.06), 0 4px 24px rgba(0,0,0,.4);
+}
+
 /* ── ENHANCED ADMIN CARDS ── */
-.admin-card{background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,rgba(255,255,255,.015) 100%);box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 4px 20px rgba(0,0,0,.3);}
-/* ── ENHANCED CARDS ── */
-.game-card,.embed-link-card,.source-card{box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 4px 20px rgba(0,0,0,.3);}
-.game-card:hover,.embed-link-card:hover,.source-card:hover{box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);}
+.admin-card{
+background:linear-gradient(135deg,rgba(255,255,255,.03) 0%,rgba(255,255,255,.015) 100%);
+box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 4px 20px rgba(0,0,0,.3);
+}
+
+/* ── ENHANCED GAME/EMBED CARDS ── */
+.game-card,.embed-link-card,.source-card{
+box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 4px 20px rgba(0,0,0,.3);
+}
+.game-card:hover,.embed-link-card:hover,.source-card:hover{
+box-shadow:0 1px 0 rgba(255,255,255,.1) inset, 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);
+}
+
 /* ── CURSOR GLOW ── */
-.cursor-glow{position:fixed;pointer-events:none;z-index:9999;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);transform:translate(-50%,-50%);transition:opacity .3s;}
-/* ── NO ACCESS MESSAGE ── */
-.no-access-msg{text-align:center;padding:60px 20px;color:rgba(255,255,255,.25);font-size:.85rem;line-height:2;}
-.no-access-msg .lock-icon{font-size:2.5rem;display:block;margin-bottom:14px;}
-.no-access-msg strong{color:rgba(255,255,255,.5);font-family:'Cinzel Decorative',cursive;font-size:.8rem;}
+.cursor-glow{
+position:fixed;pointer-events:none;z-index:9999;
+width:300px;height:300px;
+border-radius:50%;
+background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);
+transform:translate(-50%,-50%);
+transition:opacity .3s;
+}
 </style>
 
 </head>
@@ -372,8 +425,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dock-icon">🌐</div>
 <span class="dock-label">Sources</span>
 </button>
-<div class="dock-separator" id="admin-separator" style="display:none;"></div>
-<button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)" style="display:none;">
+<div class="dock-separator"></div>
+<button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)">
 <div class="dock-icon">👑</div>
 <span class="dock-label">Admin</span>
 </button>
@@ -386,72 +439,180 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <div class="content">
+<!-- Games -->
+<div class="tab-panel active" id="panel-games">
+<div class="panel-title">Games</div>
 
-  <!-- Games -->
+<!-- Normal games grid -->
 
-  <div class="tab-panel active" id="panel-games">
-  <div class="panel-title">Games</div>
-  <div id="games-list">
-  <div class="games-grid" id="games-grid-inner">
-  <div class="game-card" onclick="launchGame('snake')"><span class="game-icon">🐍</span><h3>Snake</h3><p>Arrow keys · eat to grow</p></div>
-  <div class="game-card" onclick="launchGame('tetris')"><span class="game-icon">🟦</span><h3>Tetris</h3><p>Arrow keys · Space to drop</p></div>
-  <div class="game-card" onclick="launchGame('2048')"><span class="game-icon">🔢</span><h3>2048</h3><p>Arrow keys · reach 2048</p></div>
-  <div class="game-card" onclick="launchGame('minesweeper')"><span class="game-icon">💣</span><h3>Minesweeper</h3><p>Click · right-click to flag</p></div>
-  </div>
-  </div>
-  <div class="game-frame-wrap" id="game-frame-wrap">
-  <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
-  <button class="back-btn" onclick="backToGames()">← Back</button>
-  <span id="game-score" style="color:#fff;font-size:.85rem;font-weight:600;"></span>
-  <button class="back-btn" onclick="restartGame()" style="margin-left:auto;">↺ Restart</button>
-  </div>
-  <div id="game-embed" style="display:flex;justify-content:center;"></div>
-  </div>
-  </div>
+<div id="games-list">
+<div class="games-grid" id="games-grid-inner">
+<div class="game-card" onclick="launchGame('snake')">
+<span class="game-icon">🐍</span>
+<h3>Snake</h3>
+<p>Arrow keys · eat to grow</p>
+</div>
+<div class="game-card" onclick="launchGame('tetris')">
+<span class="game-icon">🟦</span>
+<h3>Tetris</h3>
+<p>Arrow keys · Space to drop</p>
+</div>
+<div class="game-card" onclick="launchGame('2048')">
+<span class="game-icon">🔢</span>
+<h3>2048</h3>
+<p>Arrow keys · reach 2048</p>
+</div>
+<div class="game-card" onclick="launchGame('minesweeper')">
+<span class="game-icon">💣</span>
+<h3>Minesweeper</h3>
+<p>Click · right-click to flag</p>
+</div>
+</div>
 
-  <!-- Embeds -->
+</div>
 
-  <div class="tab-panel" id="panel-embeds">
-  <div class="panel-title">🔗 Embeds</div>
-  <div id="embed-links-list">
-  <div class="embed-empty" id="embed-empty-msg">No embeds added yet.</div>
-  <div class="embed-links-grid" id="embed-links-grid"></div>
-  </div>
-  <div id="embed-viewer">
-  <div id="embed-viewer-header">
-  <button class="back-btn" onclick="closeEmbedViewer()" style="margin-bottom:0;">← Back</button>
-  <span id="embed-viewer-title" style="font-family:'Cinzel Decorative',cursive;font-size:.85rem;color:#fff;flex:1;"></span>
-  <button class="back-btn" onclick="openFullscreen()" style="margin-bottom:0;display:flex;align-items:center;gap:6px;">⛶ Fullscreen</button>
-  </div>
-  <div class="embed-iframe-wrap">
-  <iframe id="embed-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
-  <div id="embed-blocked-msg">
-  <div class="block-icon">🚫</div>
-  <h3>Site Blocked Embedding</h3>
-  <p>This site doesn't allow itself to be embedded.<br/>Try opening it directly instead.</p>
-  <a id="embed-open-link" href="" target="_blank" rel="noopener">Open in New Tab ↗</a>
-  </div>
-  </div>
-  </div>
-  </div>
+<!-- Canvas games frame -->
 
-  <!-- Sources -->
+<div class="game-frame-wrap" id="game-frame-wrap">
+<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+<button class="back-btn" onclick="backToGames()">← Back</button>
+<span id="game-score" style="color:#fff;font-size:.85rem;font-weight:600;"></span>
+<button class="back-btn" onclick="restartGame()" style="margin-left:auto;">↺ Restart</button>
+</div>
+<div id="game-embed" style="display:flex;justify-content:center;"></div>
+</div>
 
-  <div class="tab-panel" id="panel-sources">
-  <div class="panel-title">🌐 Sources</div>
-  <div class="sources-empty" id="sources-empty-msg">No sources added yet.</div>
-  <div class="sources-grid" id="sources-grid"></div>
-  </div>
+</div>
 
-  <!-- Admin — sections rendered dynamically based on role -->
+<!-- Embeds -->
 
-  <div class="tab-panel" id="panel-admin">
-  <div class="panel-title">👑 Admin Panel</div>
-  <div class="admin-grid" id="admin-grid-container">
-  <!-- Populated by buildAdminPanel() after login -->
-  </div>
-  </div>
+<div class="tab-panel" id="panel-embeds">
+<div class="panel-title">🔗 Embeds</div>
+<div id="embed-links-list">
+<div class="embed-empty" id="embed-empty-msg">No embeds added yet.</div>
+<div class="embed-links-grid" id="embed-links-grid"></div>
+</div>
+<!-- Embed viewer for this tab -->
+<div id="embed-viewer">
+<div id="embed-viewer-header">
+<button class="back-btn" onclick="closeEmbedViewer()" style="margin-bottom:0;">← Back</button>
+<span id="embed-viewer-title" style="font-family:'Cinzel Decorative',cursive;font-size:.85rem;color:#fff;flex:1;"></span>
+<button class="back-btn" onclick="openFullscreen()" style="margin-bottom:0;display:flex;align-items:center;gap:6px;">⛶ Fullscreen</button>
+</div>
+<div class="embed-iframe-wrap">
+<iframe id="embed-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
+<div id="embed-blocked-msg">
+<div class="block-icon">🚫</div>
+<h3>Site Blocked Embedding</h3>
+<p>This site doesn't allow itself to be embedded.<br/>Try opening it directly instead.</p>
+<a id="embed-open-link" href="" target="_blank" rel="noopener">Open in New Tab ↗</a>
+</div>
+</div>
+</div>
+</div>
 
+<!-- Sources -->
+
+<div class="tab-panel" id="panel-sources">
+<div class="panel-title">🌐 Sources</div>
+<div class="sources-empty" id="sources-empty-msg">No sources added yet.</div>
+<div class="sources-grid" id="sources-grid"></div>
+</div>
+
+<!-- Admin -->
+
+<div class="tab-panel" id="panel-admin">
+<div class="panel-title">👑 Admin Panel</div>
+<div class="admin-grid">
+
+<div class="admin-card admin-full">
+<h3>📊 Site Statistics</h3>
+<div class="stat-row">
+<div class="stat-chip"><div class="stat-val" id="stat-online">0</div><div class="stat-lbl">Online Now</div></div>
+<div class="stat-chip"><div class="stat-val" id="stat-bans">0</div><div class="stat-lbl">Total Bans</div></div>
+<div class="stat-chip"><div class="stat-val" id="stat-uptime">0m 0s</div><div class="stat-lbl">Session Uptime</div></div>
+</div>
+</div>
+
+<!-- EMBED LINKS SECTION -->
+
+<div class="admin-card admin-full">
+<h3>🔗 Embed Links <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— add multiple links visible in the Embeds tab</span></h3>
+<div class="embed-label-row">
+<label style="white-space:nowrap;">Title</label>
+<input type="text" id="embed-title-input" placeholder="e.g. Blooket, Slope, Cool Game…" maxlength="40"/>
+</div>
+<div class="embed-input-row">
+<input type="text" id="embed-url-input" placeholder="Paste URL — e.g. https://example.com/game"/>
+<button class="embed-set-btn" onclick="addEmbedLink()">Add Link</button>
+</div>
+</div>
+<!-- END EMBED SECTION -->
+
+<!-- SOURCES SECTION -->
+
+<div class="admin-card admin-full">
+<h3>🌐 Sources <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— links that open directly in a new tab</span></h3>
+<div class="embed-label-row">
+<label style="white-space:nowrap;">Title</label>
+<input type="text" id="source-title-input" placeholder="e.g. Wikipedia, Notes, YouTube…" maxlength="40"/>
+</div>
+<div class="embed-input-row">
+<input type="text" id="source-url-input" placeholder="Paste URL — e.g. https://example.com"/>
+<button class="embed-set-btn" onclick="addSourceLink()">Add Source</button>
+</div>
+</div>
+<!-- END SOURCES SECTION -->
+
+<div class="admin-card">
+<h3>🟢 Online Users <span id="online-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
+<ul class="online-list" id="online-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No one online yet</li></ul>
+</div>
+
+<div class="admin-card">
+<h3>🚫 Banned Users <span id="ban-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
+<ul class="ban-list" id="ban-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li></ul>
+</div>
+
+<div class="admin-card admin-full">
+<h3>📋 Activity Log</h3>
+<div class="admin-log" id="activity-log">
+<div style="color:rgba(255,255,255,.25);font-size:.78rem;text-align:center;padding:12px 0;">No activity yet.</div>
+</div>
+</div>
+
+<div class="admin-card admin-full">
+<h3>📢 Global Message <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— broadcasts to every device live</span></h3>
+<div class="global-msg-row">
+<textarea id="global-msg-input" placeholder="Type a message to broadcast to everyone…"></textarea>
+<div class="msg-btn-col">
+<button class="send-btn" onclick="sendGlobalMsg()" style="padding:13px 24px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#fff,#d7d7d7);color:#000;font-weight:700;font-size:.85rem;transition:all .2s;box-shadow:0 4px 20px rgba(255,255,255,.14);">Broadcast</button>
+<button class="send-btn" style="padding:13px 24px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.08);box-shadow:none;font-size:.72rem;color:#fff;transition:all .2s;" onclick="clearGlobalMsg()">Clear</button>
+</div>
+</div>
+</div>
+
+<div class="admin-card">
+<h3>📝 Private Admin Notes</h3>
+<textarea class="admin-note-area" id="admin-notes" placeholder="Write private notes here — saved automatically…" oninput="saveNotes()"></textarea>
+<div class="note-saved" id="note-saved">✓ Saved</div>
+</div>
+
+<div class="admin-card">
+<h3>🔒 Site Lockdown</h3>
+<p style="font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.7;">Shuts the site for ALL users on every device. Relaunch password: <strong style="color:#fff;">41</strong></p>
+<button class="lockdown-btn" onclick="triggerLockdown()">⚠️ Initiate Lockdown</button>
+</div>
+
+<div class="admin-card admin-full">
+<h3>🔑 Password Vault <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— you can only see passwords for roles below yours</span></h3>
+<div class="pw-vault" id="pw-vault-inner">
+</div>
+</div>
+
+</div>
+</div>
+</div>
 </div>
 </div><!-- end app-page -->
 
@@ -460,7 +621,9 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div id="consent-overlay">
 <div style="width:min(560px,94vw);">
 <div class="glass" style="padding:44px 48px;">
-<div style="text-align:center;margin-bottom:16px;"><div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);font-size:1.6rem;">🛡️</div></div>
+<div style="text-align:center;margin-bottom:16px;">
+<div style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);font-size:1.6rem;">🛡️</div>
+</div>
 <div class="site-title" style="font-size:1.1rem;margin-bottom:4px;">Data & Privacy Notice</div>
 <div class="site-sub" style="margin-bottom:24px;">We Hate Lightspeed · User Agreement</div>
 <div class="consent-scroll">
@@ -523,6 +686,21 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <script>
+/*
+════════════════════════════════════════════════════════
+  FIREBASE SECURITY RULES — paste into Firebase Console
+  → Realtime Database → Rules tab
+  IMPORTANT: Use these exact rules or online users
+  will only show on YOUR device, not others.
+════════════════════════════════════════════════════════
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+════════════════════════════════════════════════════════
+*/
 // FIREBASE INIT
 firebase.initializeApp({
   apiKey: "AIzaSyCHpBGvYLjToJ9kj5c5UCbPLrNmg4sC2io",
@@ -543,7 +721,7 @@ const NOTES_KEY = 'whl_notes';
 const REMEMBER_KEY = 'whl_rem';
 let hasFullyLoggedIn = false;
 
-// PAGE HELPER
+// PAGE HELPER — must be defined before the ban check below uses it
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => {
     if (p.id === id) {
@@ -558,6 +736,8 @@ function showPage(id) {
       p.classList.remove('slide-in');
     }
   });
+  // Fixed children (topbar, dock, content) escape display:none on parent
+  // So we must hide/show them manually
   const appVisible = id === 'app-page';
   const appFixedEls = ['.topbar','.dock-wrap','.content','#global-banner'];
   appFixedEls.forEach(sel => {
@@ -568,21 +748,21 @@ function showPage(id) {
   });
 }
 
-// Check ban on load
+// Check ban on load — also initializes fixed element visibility
 if (localStorage.getItem(BANNED_KEY)) {
   showPage('banned-page');
 } else {
   showPage('pw-page');
 }
 
-// Check lockdown on load
+// Check lockdown on load immediately — even before login
 db.ref('lockdown').once('value').then(snap => {
   if (snap.val() === true) {
     document.getElementById('lockdown-overlay').classList.add('active');
   }
 });
 
-// Pre-fill saved credentials
+// Pre-fill saved credentials if remember me was on
 setTimeout(() => {
   try {
     const saved = localStorage.getItem(REMEMBER_KEY);
@@ -594,1059 +774,1570 @@ setTimeout(() => {
   } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
 }, 0);
 
-/*
-════════════════════════════════════════════════════════
-  ROLE SYSTEM
-  Rank 5 = Owner     (sys_rx7)   — everything
-  Rank 4 = Head Admin (head_adm) — everything
-  Rank 3 = Admin     (adm_x2)   — embeds, sources, ban, online, banned, log
-  Rank 2 = Mod       (mod_v1)   — broadcast + log only
-  Rank 1 = User      (usr_std)  — NO admin tab
-════════════════════════════════════════════════════════
-*/
+// ROLE SYSTEM — RESTRICTED: only Mod and above can see/use Admin panel
 const ROLE_META = {
-  'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5 },
-  'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4 },
-  'adm_x2':   { label:'ADMIN',    cls:'role-adm',  rank:3 },
-  'mod_v1':   { label:'MOD',      cls:'role-mod',  rank:2 },
-  'usr_std':  { label:'USER',     cls:'role-std',  rank:1 },
+  'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5, tab:true },
+  'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4, tab:true },
+  'adm_x2':   { label:'ADMIN',    cls:'role-adm',  rank:3, tab:true },
+  'mod_v1':   { label:'MOD',      cls:'role-mod',  rank:2, tab:true },
+  'usr_std':  { label:'USER',     cls:'role-std',  rank:1, tab:false },   // NORMAL USERS CANNOT SEE ADMIN PANEL
 };
 function getRoleMeta(role) {
   return ROLE_META[role] || ROLE_META['usr_std'];
 }
-function myRank() {
-  return getRoleMeta(currentRole).rank;
-}
 function canTarget(myRole, theirRole) {
-  return getRoleMeta(myRole).rank > getRoleMeta(theirRole).rank;
+  return (getRoleMeta(myRole).rank) > (getRoleMeta(theirRole).rank);
 }
 
-/*
-════════════════════════════════════════════════════════
-  BUILD ADMIN PANEL — role-restricted sections
-  Mod    (rank 2): log + broadcast
-  Admin  (rank 3): + embed links, sources, online, banned
-  Head/Owner (4+): + stats, notes, lockdown, vault
-════════════════════════════════════════════════════════
-*/
-function buildAdminPanel() {
-  const rank = myRank();
-  const grid = document.getElementById('admin-grid-container');
-  grid.innerHTML = '';
-
-  // If somehow rank 1 user sees this (shouldn't happen), show nothing
-  if (rank < 2) {
-    grid.innerHTML = '<div class="no-access-msg"><span class="lock-icon">🔒</span><strong>No Access</strong><br/>This area is restricted to staff only.</div>';
-    return;
-  }
-
-  // ── HEAD ADMIN & OWNER only: Stats ──
-  if (rank >= 4) {
-    const statsCard = makeCard('admin-full');
-    statsCard.innerHTML = `
-      <h3>📊 Site Statistics</h3>
-      <div class="stat-row">
-        <div class="stat-chip"><div class="stat-val" id="stat-online">0</div><div class="stat-lbl">Online Now</div></div>
-        <div class="stat-chip"><div class="stat-val" id="stat-bans">0</div><div class="stat-lbl">Total Bans</div></div>
-        <div class="stat-chip"><div class="stat-val" id="stat-uptime">0m 0s</div><div class="stat-lbl">Session Uptime</div></div>
-      </div>`;
-    grid.appendChild(statsCard);
-  }
-
-  // ── ADMIN+ only: Embed Links ──
-  if (rank >= 3) {
-    const embedCard = makeCard('admin-full');
-    embedCard.innerHTML = `
-      <h3>🔗 Embed Links <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— add multiple links visible in the Embeds tab</span></h3>
-      <div class="embed-label-row">
-        <label style="white-space:nowrap;">Title</label>
-        <input type="text" id="embed-title-input" placeholder="e.g. Blooket, Slope, Cool Game…" maxlength="40"/>
-      </div>
-      <div class="embed-input-row">
-        <input type="text" id="embed-url-input" placeholder="Paste URL — e.g. https://example.com/game"/>
-        <button class="embed-set-btn" onclick="addEmbedLink()">Add Link</button>
-      </div>`;
-    grid.appendChild(embedCard);
-  }
-
-  // ── ADMIN+ only: Sources ──
-  if (rank >= 3) {
-    const srcCard = makeCard('admin-full');
-    srcCard.innerHTML = `
-      <h3>🌐 Sources <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— links that open directly in a new tab</span></h3>
-      <div class="embed-label-row">
-        <label style="white-space:nowrap;">Title</label>
-        <input type="text" id="source-title-input" placeholder="e.g. Wikipedia, Notes, YouTube…" maxlength="40"/>
-      </div>
-      <div class="embed-input-row">
-        <input type="text" id="source-url-input" placeholder="Paste URL — e.g. https://example.com"/>
-        <button class="embed-set-btn" onclick="addSourceLink()">Add Source</button>
-      </div>`;
-    grid.appendChild(srcCard);
-  }
-
-  // ── ADMIN+ only: Online Users + Banned Users ──
-  if (rank >= 3) {
-    const onlineCard = makeCard('');
-    onlineCard.innerHTML = `
-      <h3>🟢 Online Users <span id="online-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
-      <ul class="online-list" id="online-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No one online yet</li></ul>`;
-    grid.appendChild(onlineCard);
-
-    const banCard = makeCard('');
-    banCard.innerHTML = `
-      <h3>🚫 Banned Users <span id="ban-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
-      <ul class="ban-list" id="ban-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li></ul>`;
-    grid.appendChild(banCard);
-  }
-
-  // ── MOD+ : Activity Log ──
-  if (rank >= 2) {
-    const logCard = makeCard('admin-full');
-    logCard.innerHTML = `
-      <h3>📋 Activity Log</h3>
-      <div class="admin-log" id="activity-log">
-        <div style="color:rgba(255,255,255,.25);font-size:.78rem;text-align:center;padding:12px 0;">No activity yet.</div>
-      </div>`;
-    grid.appendChild(logCard);
-  }
-
-  // ── MOD+ : Global Message ──
-  if (rank >= 2) {
-    const msgCard = makeCard('admin-full');
-    msgCard.innerHTML = `
-      <h3>📢 Global Message <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— broadcasts to every device live</span></h3>
-      <div class="global-msg-row">
-        <textarea id="global-msg-input" placeholder="Type a message to broadcast to everyone…"></textarea>
-
-```
-    <div class="msg-btn-col">
-      <button class="send-btn" onclick="sendGlobalMsg()" style="padding:13px 24px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#fff,#d7d7d7);color:#000;font-weight:700;font-size:.85rem;transition:all .2s;box-shadow:0 4px 20px rgba(255,255,255,.14);">Broadcast</button>
-      <button class="send-btn" style="padding:13px 24px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.08);box-shadow:none;font-size:.72rem;color:#fff;transition:all .2s;" onclick="clearGlobalMsg()">Clear</button>
-    </div>
-  </div>`;
-grid.appendChild(msgCard);
-```
-
-}
-
-// ── HEAD ADMIN+ only: Notes, Lockdown, Vault ──
-if (rank >= 4) {
-const notesCard = makeCard(’’);
-notesCard.innerHTML = ` <h3>📝 Private Admin Notes</h3> <textarea class="admin-note-area" id="admin-notes" placeholder="Write private notes here — saved automatically…" oninput="saveNotes()"></textarea> <div class="note-saved" id="note-saved">✓ Saved</div>`;
-grid.appendChild(notesCard);
-
-```
-const lockCard = makeCard('');
-lockCard.innerHTML = `
-  <h3>🔒 Site Lockdown</h3>
-  <p style="font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.7;">Shuts the site for ALL users on every device. Relaunch password: <strong style="color:#fff;">41</strong></p>
-  <button class="lockdown-btn" onclick="triggerLockdown()">⚠️ Initiate Lockdown</button>`;
-grid.appendChild(lockCard);
-
-const vaultCard = makeCard('admin-full');
-vaultCard.innerHTML = `
-  <h3>🔑 Password Vault <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— you can only see passwords for roles below yours</span></h3>
-  <div class="pw-vault" id="pw-vault-inner"></div>`;
-grid.appendChild(vaultCard);
-
-// Load notes and build vault after DOM is ready
-setTimeout(() => {
-  const notesEl = document.getElementById('admin-notes');
-  if (notesEl) notesEl.value = localStorage.getItem(NOTES_KEY) || '';
-  buildVault();
-}, 0);
-```
-
-}
-}
-
-function makeCard(extraClass) {
-const card = document.createElement(‘div’);
-card.className = ‘admin-card’ + (extraClass ? ’ ’ + extraClass : ‘’);
-return card;
-}
-
-// Show/hide admin dock tab based on role
-function applyRoleUI() {
-const rank = myRank();
-const adminBtn = document.getElementById(‘dock-admin’);
-const separator = document.getElementById(‘admin-separator’);
-if (rank >= 2) {
-adminBtn.style.display = ‘’;
-separator.style.display = ‘’;
-} else {
-adminBtn.style.display = ‘none’;
-separator.style.display = ‘none’;
-}
-}
-
-// FIREBASE LOGIN
+// Shared Firebase login function
 function doFirebaseLogin(name, role, onError) {
-myRef = db.ref(‘online’).push();
-myRef.set({
-name: name,
-role: role,
-joined: new Date().toLocaleTimeString([],{hour:‘2-digit’,minute:‘2-digit’}),
-ts: Date.now()
-}).then(() => {
-hasFullyLoggedIn = true;
-myRef.onDisconnect().remove();
-startPresenceListener();
-startBanListener();
-startGlobalMsgListener();
-startLockdownListener();
-startEmbedListener();
-startSourceListener();
-startUptime();
-document.getElementById(‘consent-overlay’).style.display = ‘none’;
-document.getElementById(‘topbar-name’).textContent = name;
-const rb = document.getElementById(‘topbar-role’);
-const meta = getRoleMeta(role);
-rb.textContent = meta.label;
-rb.className = ’role-badge ’ + meta.cls;
-applyRoleUI();
-buildAdminPanel();
-addLog(`${name} logged in.`, ‘join’);
-showPage(‘app-page’);
-sessionStart = Date.now();
-}).catch(e => {
-console.error(‘Firebase write error:’, e.code, e.message);
-hasFullyLoggedIn = false;
-if (onError) onError(e);
-});
+  myRef = db.ref('online').push();
+  myRef.set({
+    name: name,
+    role: role,
+    joined: new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),
+    ts: Date.now()
+  }).then(() => {
+    hasFullyLoggedIn = true;
+    myRef.onDisconnect().remove();
+    startPresenceListener();
+    startBanListener();
+    startGlobalMsgListener();
+    startLockdownListener();
+    startEmbedListener();
+    startSourceListener();
+    startUptime();
+    document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
+    document.getElementById('consent-overlay').style.display = 'none';
+    document.getElementById('topbar-name').textContent = name;
+    const rb = document.getElementById('topbar-role');
+    const meta = getRoleMeta(role);
+    rb.textContent = meta.label;
+    rb.className = 'role-badge ' + meta.cls;
+    
+    // RESTRICTION: Hide Admin dock & tab for normal users (rank < 2)
+    document.getElementById('dock-admin').style.display = meta.rank >= 2 ? '' : 'none';
+    
+    addLog(`${name} logged in.`, 'join');
+    buildVault();
+    showPage('app-page');
+    sessionStart = Date.now();
+  }).catch(e => {
+    console.error('Firebase write error:', e.code, e.message);
+    hasFullyLoggedIn = false;
+    if (onError) onError(e);
+  });
 }
 
-// PETALS + CANVAS
+// PETALS + CANVAS (unchanged)
 function makePetal() {
-const el = document.createElement(‘div’);
-el.className = ‘petal’;
-const sz = 18 + Math.random() * 22;
-el.style.left = Math.random() * 100 + ‘vw’;
-el.style.animationDuration = (8 + Math.random() * 12) + ‘s’;
-el.style.animationDelay = (Math.random() * 12) + ‘s’;
-const cols = [’#ffffff’,’#f0f0f0’,’#dcdcdc’,’#bbbbbb’];
-const c = cols[Math.floor(Math.random() * cols.length)];
-el.innerHTML = `<svg width="${sz}" height="${sz*1.2}" viewBox="0 0 50 60" fill="none"><ellipse cx="25" cy="30" rx="18" ry="28" fill="${c}" opacity=".85"/><ellipse cx="25" cy="20" rx="10" ry="18" fill="white" opacity=".3"/></svg>`;
-document.body.appendChild(el);
-setTimeout(() => el.remove(), 25000);
+  const el = document.createElement('div');
+  el.className = 'petal';
+  const sz = 18 + Math.random() * 22;
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.animationDuration = (8 + Math.random() * 12) + 's';
+  el.style.animationDelay = (Math.random() * 12) + 's';
+  const cols = ['#ffffff','#f0f0f0','#dcdcdc','#bbbbbb'];
+  const c = cols[Math.floor(Math.random() * cols.length)];
+  el.innerHTML = `<svg width="${sz}" height="${sz*1.2}" viewBox="0 0 50 60" fill="none"><ellipse cx="25" cy="30" rx="18" ry="28" fill="${c}" opacity=".85"/><ellipse cx="25" cy="20" rx="10" ry="18" fill="white" opacity=".3"/></svg>`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 25000);
 }
 setInterval(makePetal, 600);
 
-// Cursor glow
+// Cursor glow follow
 (function() {
-const glow = document.getElementById(‘cursor-glow’);
-if (!glow) return;
-let gx = window.innerWidth/2, gy = window.innerHeight/2;
-let tx = gx, ty = gy;
-document.addEventListener(‘mousemove’, e => { tx = e.clientX; ty = e.clientY; });
-(function animGlow() {
-gx += (tx - gx) * .08;
-gy += (ty - gy) * .08;
-if (glow) glow.style.transform = `translate(${gx - 150}px, ${gy - 150}px)`;
-requestAnimationFrame(animGlow);
-})();
+  const glow = document.getElementById('cursor-glow');
+  if (!glow) return;
+  let gx = window.innerWidth/2, gy = window.innerHeight/2;
+  let tx = gx, ty = gy;
+  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  (function animGlow() {
+    gx += (tx - gx) * .08;
+    gy += (ty - gy) * .08;
+    if (glow) glow.style.transform = `translate(${gx - 150}px, ${gy - 150}px)`;
+    requestAnimationFrame(animGlow);
+  })();
 })();
 
 (function(){
-const c = document.getElementById(‘bg-canvas’), ctx = c.getContext(‘2d’);
-let W, H;
-const resize = () => { W = c.width = innerWidth; H = c.height = innerHeight; };
-resize(); addEventListener(‘resize’, resize);
-const stars = Array.from({length:340}, () => ({
-x: Math.random(), y: Math.random(),
-r: Math.random()*1.8+.1,
-baseAlpha: Math.random()*.7+.1,
-twinkleSpeed: Math.random()*.04+.005,
-twinklePhase: Math.random()*Math.PI*2,
-ox: 0, oy: 0
-}));
-stars.forEach(s => { s.ox = s.x; s.oy = s.y; });
-const shoots = [];
-function spawnShoot() {
-shoots.push({ x: Math.random()*1.2-.1, y: Math.random()*.5, vx: (Math.random()*.006+.004)*(Math.random()<.5?1:-1), vy: Math.random()*.003+.002, len: Math.random()*120+60, alpha: 1, life: 1 });
-}
-setInterval(() => { if(Math.random()<.4) spawnShoot(); }, 2200);
-let bhX = .5, bhY = .42, bhRadius = 0, bhTargetR = Math.min(innerWidth,innerHeight)*.055, time = 0;
-let mx = .5, my = .5;
-document.addEventListener(‘mousemove’, e => { mx += (e.clientX/innerWidth - mx)*.04; my += (e.clientY/innerHeight - my)*.04; });
-(function frame(){
-time += .012;
-bhRadius += (bhTargetR - bhRadius)*.03;
-bhTargetR = Math.min(W,H)*.055 + Math.sin(time*.3)*Math.min(W,H)*.008;
-const cx = bhX*W + (mx-.5)*30, cy = bhY*H + (my-.5)*20;
-ctx.clearRect(0,0,W,H);
-const bg = ctx.createRadialGradient(cx,cy,bhRadius*.5,W*.5,H*.5,Math.max(W,H));
-bg.addColorStop(0,‘rgba(0,0,0,1)’);bg.addColorStop(.15,‘rgba(4,4,8,1)’);bg.addColorStop(.5,‘rgba(6,6,12,1)’);bg.addColorStop(1,‘rgba(2,2,4,1)’);
-ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-for(let y=0;y<H;y+=4){ctx.fillStyle=‘rgba(255,255,255,.012)’;ctx.fillRect(0,y,W,1);}
-for(let ring=0;ring<7;ring++){
-const rInner=bhRadius*(1.3+ring*.35),rOuter=rInner+bhRadius*.22,alpha=(.55-ring*.07)*(.85+.15*Math.sin(time*.7+ring));
-const grad=ctx.createRadialGradient(cx,cy,rInner,cx,cy,rOuter);
-const baseA=alpha*(ring===0?.9:.6);
-grad.addColorStop(0,`rgba(255,255,255,${baseA})`);grad.addColorStop(.4,`rgba(200,200,200,${baseA*.4})`);grad.addColorStop(1,‘rgba(255,255,255,0)’);
-ctx.save();ctx.globalAlpha=1;ctx.scale(1,.32+ring*.04);ctx.translate(0,cy*(1/(.32+ring*.04)-1));
-ctx.beginPath();ctx.arc(cx,cy,rOuter,0,Math.PI*2);ctx.arc(cx,cy,rInner,0,Math.PI*2,true);ctx.fillStyle=grad;ctx.fill();ctx.restore();
-}
-for(let jet=-1;jet<=1;jet+=2){
-const jGrad=ctx.createLinearGradient(cx,cy,cx,cy+jet*H*.55);
-jGrad.addColorStop(0,‘rgba(255,255,255,.18)’);jGrad.addColorStop(.3,‘rgba(255,255,255,.06)’);jGrad.addColorStop(1,‘rgba(255,255,255,0)’);
-ctx.save();ctx.globalAlpha=.7+.3*Math.sin(time*1.2);
-const jW=bhRadius*.18;ctx.beginPath();ctx.moveTo(cx-jW,cy);ctx.lineTo(cx+jW,cy);ctx.lineTo(cx+jW*.15,cy+jet*H*.55);ctx.lineTo(cx-jW*.15,cy+jet*H*.55);ctx.fillStyle=jGrad;ctx.fill();ctx.restore();
-}
-stars.forEach(s=>{
-s.twinklePhase+=s.twinkleSpeed;
-const alpha=s.baseAlpha*(.6+.4*Math.sin(s.twinklePhase));
-let sx=s.ox*W+(mx-.5)*18,sy=s.oy*H+(my-.5)*14;
-const dx=sx-cx,dy=sy-cy,dist=Math.sqrt(dx*dx+dy*dy),lensR=bhRadius*6;
-if(dist<lensR&&dist>bhRadius*1.4){const strength=(lensR-dist)/lensR,angle=Math.atan2(dy,dx)+strength*1.6,newDist=dist+strength*bhRadius*2.2;sx=cx+Math.cos(angle)*newDist;sy=cy+Math.sin(angle)*newDist;}
-if(dist<bhRadius*1.15)return;
-const stretch=dist<bhRadius*4?1+(bhRadius*3/(dist+1))*.3:1;
-ctx.save();ctx.globalAlpha=alpha*Math.min(1,(dist-bhRadius)/(bhRadius*.8));ctx.translate(sx,sy);ctx.scale(stretch,1/stretch);ctx.beginPath();ctx.arc(0,0,s.r,0,Math.PI*2);ctx.fillStyle=’#fff’;ctx.fill();ctx.restore();
-});
-for(let i=shoots.length-1;i>=0;i–){
-const s=shoots[i];s.x+=s.vx;s.y+=s.vy;s.life-=.008;
-if(s.life<=0){shoots.splice(i,1);continue;}
-const x1=s.x*W,y1=s.y*H,x0=x1-s.vx/Math.abs(s.vx)*s.len,y0=y1-s.vy/Math.abs(s.vy)*s.len*.5;
-const sg=ctx.createLinearGradient(x0,y0,x1,y1);sg.addColorStop(0,‘rgba(255,255,255,0)’);sg.addColorStop(1,`rgba(255,255,255,${s.life*.9})`);
-ctx.beginPath();ctx.moveTo(x0,y0);ctx.lineTo(x1,y1);ctx.strokeStyle=sg;ctx.lineWidth=1.5;ctx.stroke();
-}
-const ehGrad=ctx.createRadialGradient(cx,cy,0,cx,cy,bhRadius);ehGrad.addColorStop(.6,‘rgba(0,0,0,1)’);ehGrad.addColorStop(.85,‘rgba(0,0,0,.98)’);ehGrad.addColorStop(1,‘rgba(0,0,0,0)’);
-ctx.beginPath();ctx.arc(cx,cy,bhRadius,0,Math.PI*2);ctx.fillStyle=ehGrad;ctx.fill();
-ctx.save();ctx.globalAlpha=.9+.1*Math.sin(time*2);
-const pGrad=ctx.createRadialGradient(cx,cy,bhRadius*.9,cx,cy,bhRadius*1.18);pGrad.addColorStop(0,‘rgba(255,255,255,0)’);pGrad.addColorStop(.5,‘rgba(255,255,255,.55)’);pGrad.addColorStop(1,‘rgba(255,255,255,0)’);
-ctx.beginPath();ctx.arc(cx,cy,bhRadius*1.1,0,Math.PI*2);ctx.strokeStyle=pGrad;ctx.lineWidth=bhRadius*.22;ctx.stroke();ctx.restore();
-requestAnimationFrame(frame);
-})();
+  const c = document.getElementById('bg-canvas'), ctx = c.getContext('2d');
+  let W, H;
+  const resize = () => { W = c.width = innerWidth; H = c.height = innerHeight; };
+  resize(); addEventListener('resize', resize);
+
+  const stars = Array.from({length:340}, () => ({
+    x: Math.random(), y: Math.random(),
+    r: Math.random()*1.8+.1,
+    baseAlpha: Math.random()*.7+.1,
+    twinkleSpeed: Math.random()*.04+.005,
+    twinklePhase: Math.random()*Math.PI*2,
+    ox: 0, oy: 0
+  }));
+  stars.forEach(s => { s.ox = s.x; s.oy = s.y; });
+
+  const shoots = [];
+  function spawnShoot() {
+    shoots.push({
+      x: Math.random()*1.2-.1, y: Math.random()*.5,
+      vx: (Math.random()*.006+.004) * (Math.random()<.5?1:-1),
+      vy: Math.random()*.003+.002,
+      len: Math.random()*120+60,
+      alpha: 1, life: 1
+    });
+  }
+  setInterval(() => { if(Math.random()<.4) spawnShoot(); }, 2200);
+
+  let bhX = .5, bhY = .42;
+  let bhRadius = 0, bhTargetR = Math.min(innerWidth,innerHeight)*.055;
+  let time = 0;
+
+  let mx = .5, my = .5;
+  document.addEventListener('mousemove', e => {
+    mx += (e.clientX/innerWidth - mx) * .04;
+    my += (e.clientY/innerHeight - my) * .04;
+  });
+
+  (function frame(){
+    time += .012;
+    bhRadius += (bhTargetR - bhRadius) * .03;
+    bhTargetR = Math.min(W,H)*.055 + Math.sin(time*.3)*Math.min(W,H)*.008;
+
+    const cx = bhX * W + (mx-.5)*30;
+    const cy = bhY * H + (my-.5)*20;
+
+    ctx.clearRect(0,0,W,H);
+
+    const bg = ctx.createRadialGradient(cx, cy, bhRadius*.5, W*.5, H*.5, Math.max(W,H));
+    bg.addColorStop(0, 'rgba(0,0,0,1)');
+    bg.addColorStop(.15, 'rgba(4,4,8,1)');
+    bg.addColorStop(.5, 'rgba(6,6,12,1)');
+    bg.addColorStop(1, 'rgba(2,2,4,1)');
+    ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+    for(let y=0;y<H;y+=4){
+      ctx.fillStyle='rgba(255,255,255,.012)';
+      ctx.fillRect(0,y,W,1);
+    }
+
+    for(let ring=0; ring<7; ring++){
+      const rInner = bhRadius*(1.3+ring*.35);
+      const rOuter = rInner + bhRadius*.22;
+      const alpha = (.55 - ring*.07) * (.85+.15*Math.sin(time*.7+ring));
+      const grad = ctx.createRadialGradient(cx,cy,rInner,cx,cy,rOuter);
+      const baseA = alpha*(ring===0?.9:.6);
+      grad.addColorStop(0, `rgba(255,255,255,${baseA})`);
+      grad.addColorStop(.4, `rgba(200,200,200,${baseA*.4})`);
+      grad.addColorStop(1, `rgba(255,255,255,0)`);
+      ctx.save();
+      ctx.globalAlpha = 1;
+      ctx.scale(1, .32+ring*.04);
+      ctx.translate(0, cy*(1/(.32+ring*.04)-1));
+      ctx.beginPath();
+      ctx.arc(cx, cy, rOuter, 0, Math.PI*2);
+      ctx.arc(cx, cy, rInner, 0, Math.PI*2, true);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    for(let jet=-1; jet<=1; jet+=2){
+      const jGrad = ctx.createLinearGradient(cx, cy, cx, cy + jet*H*.55);
+      jGrad.addColorStop(0, `rgba(255,255,255,.18)`);
+      jGrad.addColorStop(.3, `rgba(255,255,255,.06)`);
+      jGrad.addColorStop(1, `rgba(255,255,255,0)`);
+      ctx.save();
+      ctx.globalAlpha = .7+.3*Math.sin(time*1.2);
+      const jW = bhRadius*.18;
+      ctx.beginPath();
+      ctx.moveTo(cx-jW, cy);
+      ctx.lineTo(cx+jW, cy);
+      ctx.lineTo(cx+jW*.15, cy+jet*H*.55);
+      ctx.lineTo(cx-jW*.15, cy+jet*H*.55);
+      ctx.fillStyle = jGrad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    stars.forEach(s => {
+      s.twinklePhase += s.twinkleSpeed;
+      const alpha = s.baseAlpha * (.6+.4*Math.sin(s.twinklePhase));
+
+      let sx = s.ox * W + (mx-.5)*18;
+      let sy = s.oy * H + (my-.5)*14;
+      const dx = sx - cx, dy = sy - cy;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      const lensR = bhRadius*6;
+      if(dist < lensR && dist > bhRadius*1.4){
+        const strength = (lensR-dist)/lensR;
+        const angle = Math.atan2(dy,dx) + strength*1.6;
+        const newDist = dist + strength*bhRadius*2.2;
+        sx = cx + Math.cos(angle)*newDist;
+        sy = cy + Math.sin(angle)*newDist;
+      }
+      if(dist < bhRadius*1.15) return;
+
+      const stretch = dist<bhRadius*4 ? 1+(bhRadius*3/(dist+1))*.3 : 1;
+      ctx.save();
+      ctx.globalAlpha = alpha * Math.min(1, (dist-bhRadius)/(bhRadius*.8));
+      ctx.translate(sx, sy);
+      ctx.scale(stretch, 1/stretch);
+      ctx.beginPath();
+      ctx.arc(0, 0, s.r, 0, Math.PI*2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.restore();
+    });
+
+    for(let i=shoots.length-1; i>=0; i--){
+      const s = shoots[i];
+      s.x += s.vx; s.y += s.vy; s.life -= .008;
+      if(s.life<=0){ shoots.splice(i,1); continue; }
+      const x1 = s.x*W, y1 = s.y*H;
+      const x0 = x1-s.vx/Math.abs(s.vx)*s.len, y0 = y1-s.vy/Math.abs(s.vy)*s.len*.5;
+      const sg = ctx.createLinearGradient(x0,y0,x1,y1);
+      sg.addColorStop(0,'rgba(255,255,255,0)');
+      sg.addColorStop(1,`rgba(255,255,255,${s.life*.9})`);
+      ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1);
+      ctx.strokeStyle=sg; ctx.lineWidth=1.5; ctx.stroke();
+    }
+
+    const ehGrad = ctx.createRadialGradient(cx,cy,0,cx,cy,bhRadius);
+    ehGrad.addColorStop(.6,'rgba(0,0,0,1)');
+    ehGrad.addColorStop(.85,'rgba(0,0,0,.98)');
+    ehGrad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(cx,cy,bhRadius,0,Math.PI*2);
+    ctx.fillStyle=ehGrad; ctx.fill();
+
+    ctx.save();
+    ctx.globalAlpha = .9+.1*Math.sin(time*2);
+    const pGrad = ctx.createRadialGradient(cx,cy,bhRadius*.9,cx,cy,bhRadius*1.18);
+    pGrad.addColorStop(0,'rgba(255,255,255,0)');
+    pGrad.addColorStop(.5,'rgba(255,255,255,.55)');
+    pGrad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.beginPath(); ctx.arc(cx,cy,bhRadius*1.1,0,Math.PI*2);
+    ctx.strokeStyle=pGrad; ctx.lineWidth=bhRadius*.22; ctx.stroke();
+    ctx.restore();
+
+    requestAnimationFrame(frame);
+  })();
 })();
 
-// PASSWORD
+// PASSWORD — with rate limiting
 let _pwAttempts = 0, _pwCooldown = false;
 function checkPassword() {
-const v = document.getElementById(‘pw-input’).value.trim();
-const err = document.getElementById(‘pw-err’);
-const rem = document.getElementById(‘remember-me’).checked;
-err.style.display = ‘none’;
-if (_pwCooldown) { err.textContent = ‘Too many attempts. Wait a moment.’; err.style.display = ‘block’; return; }
-_pwAttempts++;
-if (_pwAttempts >= 5) { _pwCooldown = true; setTimeout(() => { _pwCooldown = false; _pwAttempts = 0; }, 15000); }
-if (v === ‘67’) { localStorage.setItem(BANNED_KEY,‘1’); showPage(‘banned-page’); return; }
-const rolePws = { ‘TTT’:‘usr_std’, ‘ShadowMod’:‘mod_v1’, ‘GridAdmin’:‘adm_x2’, ‘NexusHead’:‘head_adm’, ‘Triple T’:‘sys_rx7’, ‘TripleT’:‘sys_rx7’ };
-const matchedRole = rolePws[v];
-if (matchedRole) {
-pendingRole = matchedRole;
-if (rem) _remSave(v, null, matchedRole);
-else localStorage.removeItem(REMEMBER_KEY);
-showPage(‘name-page’);
-return;
-}
-err.textContent = ‘Incorrect access code. Try again.’;
-err.style.display = ‘block’;
-document.getElementById(‘pw-input’).value = ‘’;
+  const v = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('pw-err');
+  const rem = document.getElementById('remember-me').checked;
+  err.style.display = 'none';
+
+  if (_pwCooldown) {
+    err.textContent = 'Too many attempts. Wait a moment.';
+    err.style.display = 'block';
+    return;
+  }
+  _pwAttempts++;
+  if (_pwAttempts >= 5) {
+    _pwCooldown = true;
+    setTimeout(() => { _pwCooldown = false; _pwAttempts = 0; }, 15000);
+  }
+
+  if (v === '67') { localStorage.setItem(BANNED_KEY,'1'); showPage('banned-page'); return; }
+
+  const rolePws = {
+    'TTT':        'usr_std',
+    'ShadowMod':  'mod_v1',
+    'GridAdmin':  'adm_x2',
+    'NexusHead':  'head_adm',
+    'Triple T':   'sys_rx7',
+    'TripleT':    'sys_rx7',
+  };
+  const matchedRole = rolePws[v];
+  if (matchedRole) {
+    pendingRole = matchedRole;
+    if (rem) _remSave(v, null, matchedRole);
+    else localStorage.removeItem(REMEMBER_KEY);
+    showPage('name-page');
+    return;
+  }
+  err.textContent = 'Incorrect access code. Try again.';
+  err.style.display = 'block';
+  document.getElementById('pw-input').value = '';
 }
 
 function _remSave(pw, name, role) {
-try { localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({pw, name, role}))); } catch(e) {}
+  try { localStorage.setItem(REMEMBER_KEY, btoa(JSON.stringify({pw, name, role}))); } catch(e) {}
 }
 
 function toggleHint() {
-const h = document.getElementById(‘hint-box’);
-h.style.display = h.style.display === ‘block’ ? ‘none’ : ‘block’;
+  const h = document.getElementById('hint-box');
+  h.style.display = h.style.display === 'block' ? 'none' : 'block';
 }
 
 // NAME GATE
 function checkName() {
-const raw = document.getElementById(‘name-input’).value.trim();
-const err = document.getElementById(‘name-err’);
-err.style.display = ‘none’;
-const bad = !raw || raw.length < 2 || raw.length > 30
-|| /\d/.test(raw)
-|| /[<>”’&;{}]/.test(raw)
-|| (raw.length > 3 && /^(.)\1+$/.test(raw.replace(/\s/g,’’)))
-|| raw.split(’ ‘).filter(Boolean).length < 2;
-if (bad) {
-err.textContent = ‘Invalid name. Enter your real full name (First Last).’;
-err.style.display = ‘block’;
-document.getElementById(‘name-input’).value = ‘’;
-return;
-}
-currentName = raw.replace(/[^a-zA-Z\s-’.]/g, ‘’).trim();
-currentRole = pendingRole;
-try {
-const saved = localStorage.getItem(REMEMBER_KEY);
-if (saved) { const d = JSON.parse(atob(saved)); _remSave(d.pw, currentName, currentRole); }
-} catch(e) {}
-document.getElementById(‘cc1’).checked = false;
-document.getElementById(‘cc2’).checked = false;
-document.getElementById(‘cc3’).checked = false;
-document.getElementById(‘consent-err’).style.display = ‘none’;
-document.getElementById(‘consent-overlay’).style.display = ‘flex’;
+  const raw = document.getElementById('name-input').value.trim();
+  const err = document.getElementById('name-err');
+  err.style.display = 'none';
+  const bad = !raw || raw.length < 2 || raw.length > 30
+    || /\d/.test(raw)
+    || /[<>"'&;{}]/.test(raw)
+    || (raw.length > 3 && /^(.)\1+$/.test(raw.replace(/\s/g,'')))
+    || raw.split(' ').filter(Boolean).length < 2;
+  if (bad) {
+    err.textContent = 'Invalid name. Enter your real full name (First Last).';
+    err.style.display = 'block';
+    document.getElementById('name-input').value = '';
+    return;
+  }
+  currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
+  currentRole = pendingRole;
+
+  try {
+    const saved = localStorage.getItem(REMEMBER_KEY);
+    if (saved) {
+      const d = JSON.parse(atob(saved));
+      _remSave(d.pw, currentName, currentRole);
+    }
+  } catch(e) {}
+  document.getElementById('cc1').checked = false;
+  document.getElementById('cc2').checked = false;
+  document.getElementById('cc3').checked = false;
+  document.getElementById('consent-err').style.display = 'none';
+  document.getElementById('consent-overlay').style.display = 'flex';
 }
 
 // CONSENT
 function authorizeConsent() {
-const consentErr = document.getElementById(‘consent-err’);
-if (!document.getElementById(‘cc1’).checked || !document.getElementById(‘cc2’).checked || !document.getElementById(‘cc3’).checked) {
-consentErr.textContent = ‘Please check all boxes to continue.’;
-consentErr.style.display = ‘block’;
-return;
-}
-consentErr.style.display = ‘none’;
-const enterBtn = document.getElementById(‘consent-authorize-btn’);
-if (enterBtn) { enterBtn.textContent = ‘Connecting…’; enterBtn.disabled = true; }
-doFirebaseLogin(currentName, currentRole, (e) => {
-if (enterBtn) { enterBtn.textContent = ‘✅ Authorize & Enter’; enterBtn.disabled = false; }
-consentErr.textContent = ’❌ Error: ’ + (e.code || e.message || ‘unknown’) + ‘. Check your Firebase rules.’;
-consentErr.style.display = ‘block’;
-});
+  const consentErr = document.getElementById('consent-err');
+  if (!document.getElementById('cc1').checked || !document.getElementById('cc2').checked || !document.getElementById('cc3').checked) {
+    consentErr.textContent = 'Please check all boxes to continue.';
+    consentErr.style.display = 'block';
+    return;
+  }
+  consentErr.style.display = 'none';
+
+  const enterBtn = document.getElementById('consent-authorize-btn');
+  if (enterBtn) { enterBtn.textContent = 'Connecting…'; enterBtn.disabled = true; }
+
+  doFirebaseLogin(currentName, currentRole, (e) => {
+    if (enterBtn) { enterBtn.textContent = '✅ Authorize & Enter'; enterBtn.disabled = false; }
+    consentErr.textContent = '❌ Error: ' + (e.code || e.message || 'unknown') + '. Check your Firebase rules.';
+    consentErr.style.display = 'block';
+  });
 }
 
 function leaveConsent() {
-document.getElementById(‘consent-overlay’).style.display = ‘none’;
-document.body.innerHTML = ‘’;
-window.location = ‘about:blank’;
+  document.getElementById('consent-overlay').style.display = 'none';
+  document.body.innerHTML = '';
+  window.location = 'about:blank';
 }
 
 function logout() {
-if (myRef) { myRef.remove().catch(() => {}); myRef = null; }
-hasFullyLoggedIn = false;
-currentRole = null;
-currentName = null;
-pendingRole = null;
-liveUsers = {};
-sessionStart = null;
-if (typeof backToGames === ‘function’) backToGames();
-if (typeof closeEmbedViewer === ‘function’) closeEmbedViewer();
-if (typeof closeFullscreen === ‘function’) closeFullscreen();
-document.getElementById(‘consent-overlay’).style.display = ‘none’;
-[‘cc1’,‘cc2’,‘cc3’].forEach(id => { const el = document.getElementById(id); if (el) el.checked = false; });
-document.getElementById(‘topbar-name’).textContent = ‘User’;
-const rb = document.getElementById(‘topbar-role’);
-rb.textContent = ‘STD’;
-rb.className = ‘role-badge role-std’;
-// Reset admin panel
-const grid = document.getElementById(‘admin-grid-container’);
-if (grid) grid.innerHTML = ‘’;
-// Hide admin tab
-document.getElementById(‘dock-admin’).style.display = ‘none’;
-document.getElementById(‘admin-separator’).style.display = ‘none’;
-// Switch back to games tab
-switchTab(‘games’, document.getElementById(‘dock-games’));
-const saved = localStorage.getItem(REMEMBER_KEY);
-if (saved) {
-try {
-const { pw, name } = JSON.parse(atob(saved));
-document.getElementById(‘pw-input’).value = pw || ‘’;
-document.getElementById(‘name-input’).value = name || ‘’;
-document.getElementById(‘remember-me’).checked = true;
-} catch(e) { localStorage.removeItem(REMEMBER_KEY); }
-} else {
-document.getElementById(‘pw-input’).value = ‘’;
-document.getElementById(‘name-input’).value = ‘’;
-document.getElementById(‘remember-me’).checked = false;
-}
-showToast(‘👋 Logged out.’);
-showPage(‘pw-page’);
+  if (myRef) { myRef.remove().catch(() => {}); myRef = null; }
+
+  hasFullyLoggedIn = false;
+  currentRole = null;
+  currentName = null;
+  pendingRole = null;
+  liveUsers = {};
+  sessionStart = null;
+
+  if (typeof backToGames === 'function') backToGames();
+  if (typeof closeEmbedViewer === 'function') closeEmbedViewer();
+  if (typeof closeFullscreen === 'function') closeFullscreen();
+
+  document.getElementById('consent-overlay').style.display = 'none';
+  ['cc1','cc2','cc3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.checked = false;
+  });
+
+  document.getElementById('topbar-name').textContent = 'User';
+  const rb = document.getElementById('topbar-role');
+  rb.textContent = 'STD';
+  rb.className = 'role-badge role-std';
+  // DO NOT reset dock-admin here — it will be controlled on next login
+
+  const saved = localStorage.getItem(REMEMBER_KEY);
+  if (saved) {
+    try {
+      const { pw, name } = JSON.parse(atob(saved));
+      document.getElementById('pw-input').value = pw || '';
+      document.getElementById('name-input').value = name || '';
+      document.getElementById('remember-me').checked = true;
+    } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
+  } else {
+    document.getElementById('pw-input').value = '';
+    document.getElementById('name-input').value = '';
+    document.getElementById('remember-me').checked = false;
+  }
+
+  showToast('👋 Logged out.');
+  showPage('pw-page');
 }
 
 // FIREBASE LISTENERS
 function startPresenceListener() {
-let prev = new Set();
-let isInitialLoad = true;
-db.ref(‘online’).on(‘value’, snap => {
-const data = snap.val() || {};
-const cur = new Set(Object.keys(data));
-const oldUsers = Object.assign({}, liveUsers);
-if (isInitialLoad) { isInitialLoad = false; prev = cur; liveUsers = data; renderOnline(); updateStats(); return; }
-cur.forEach(k => { if (!prev.has(k) && data[k]?.name) addLog(`${data[k].name} joined.`, ‘join’); });
-prev.forEach(k => { if (!cur.has(k) && oldUsers[k]?.name) addLog(`${oldUsers[k].name} left.`, ‘leave’); });
-prev = cur;
-liveUsers = data;
-renderOnline();
-updateStats();
-});
+  let prev = new Set();
+  let isInitialLoad = true;
+  db.ref('online').on('value', snap => {
+    const data = snap.val() || {};
+    const cur = new Set(Object.keys(data));
+    const oldUsers = Object.assign({}, liveUsers);
+
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      prev = cur;
+      liveUsers = data;
+      renderOnline();
+      updateStats();
+      return;
+    }
+
+    cur.forEach(k => { if (!prev.has(k) && data[k]?.name) addLog(`${data[k].name} joined.`, 'join'); });
+    prev.forEach(k => { if (!cur.has(k) && oldUsers[k]?.name) addLog(`${oldUsers[k].name} left.`, 'leave'); });
+    prev = cur;
+    liveUsers = data;
+    renderOnline();
+    updateStats();
+  });
 }
 
 function startBanListener() {
-db.ref(‘bans’).on(‘value’, snap => {
-const bans = snap.val() || {};
-renderBans(bans);
-updateStats();
-if (!hasFullyLoggedIn || !myRef || !currentName) return;
-if (localStorage.getItem(BANNED_KEY)) return;
-const myUid = myRef.key;
-const hit = Object.values(bans).find(b => b.uid === myUid || b.name === currentName);
-if (hit) { localStorage.setItem(BANNED_KEY, ‘1’); location.reload(); }
-});
+  db.ref('bans').on('value', snap => {
+    const bans = snap.val() || {};
+    renderBans(bans);
+    updateStats();
+    if (!hasFullyLoggedIn || !myRef || !currentName) return;
+    if (localStorage.getItem(BANNED_KEY)) return;
+    const myUid = myRef.key;
+    const hit = Object.values(bans).find(b => b.uid === myUid || b.name === currentName);
+    if (hit) {
+      localStorage.setItem(BANNED_KEY, '1');
+      location.reload();
+    }
+  });
 }
 
 function startGlobalMsgListener() {
-db.ref(‘globalMsg’).on(‘value’, snap => {
-const d = snap.val();
-if (d && d.text) {
-document.getElementById(‘global-banner-text’).textContent = ’📢 Admin: ’ + d.text;
-document.getElementById(‘global-banner’).classList.add(‘active’);
-if (d.text !== lastGlobalMsg) { addLog(`Global message: "${d.text}"`, ‘msg’); lastGlobalMsg = d.text; }
-} else {
-document.getElementById(‘global-banner’).classList.remove(‘active’);
-lastGlobalMsg = null;
-}
-});
+  db.ref('globalMsg').on('value', snap => {
+    const d = snap.val();
+    if (d && d.text) {
+      document.getElementById('global-banner-text').textContent = '📢 Admin: ' + d.text;
+      document.getElementById('global-banner').classList.add('active');
+      if (d.text !== lastGlobalMsg) {
+        addLog(`Global message: "${d.text}"`, 'msg');
+        lastGlobalMsg = d.text;
+      }
+    } else {
+      document.getElementById('global-banner').classList.remove('active');
+      lastGlobalMsg = null;
+    }
+  });
 }
 
 function startLockdownListener() {
-db.ref(‘lockdown’).on(‘value’, snap => {
-const locked = snap.val();
-document.getElementById(‘lockdown-overlay’).classList.toggle(‘active’, locked === true);
-if (locked === true) addLog(‘Site lockdown activated.’, ‘lock’);
-});
+  db.ref('lockdown').on('value', snap => {
+    const locked = snap.val();
+    document.getElementById('lockdown-overlay').classList.toggle('active', locked === true);
+    if (locked === true) addLog('Site lockdown activated.', 'lock');
+  });
 }
 
 function startEmbedListener() {
-db.ref(‘embedLinks’).on(‘value’, snap => { renderEmbedLinks(snap.val() || {}); });
+  db.ref('embedLinks').on('value', snap => {
+    const data = snap.val() || {};
+    renderEmbedLinks(data);
+  });
 }
 
 function renderEmbedLinks(data) {
-const grid = document.getElementById(‘embed-links-grid’);
-const emptyMsg = document.getElementById(‘embed-empty-msg’);
-if (!grid) return;
-grid.innerHTML = ‘’;
-const entries = Object.entries(data);
-if (!entries.length) { if (emptyMsg) emptyMsg.style.display = ‘block’; return; }
-if (emptyMsg) emptyMsg.style.display = ‘none’;
-entries.forEach(([key, d]) => {
-if (!d || !d.url) return;
-const card = document.createElement(‘div’);
-card.className = ‘embed-link-card’;
-const title = document.createElement(‘div’); title.className = ‘embed-link-card-title’; title.textContent = d.title || ‘Untitled’;
-const url = document.createElement(‘div’); url.className = ‘embed-link-card-url’; url.textContent = d.url;
-const actions = document.createElement(‘div’); actions.className = ‘embed-link-card-actions’;
-const playBtn = document.createElement(‘button’); playBtn.className = ‘embed-link-play-btn’; playBtn.textContent = ‘▶ Open’;
-playBtn.onclick = () => openEmbedViewer(d.url, d.title || ‘Untitled’);
-actions.appendChild(playBtn);
-if (myRank() >= 3) {
-const delBtn = document.createElement(‘button’); delBtn.className = ‘embed-link-del-btn’; delBtn.textContent = ‘✕’;
-delBtn.onclick = () => deleteEmbedLink(key, d.title);
-actions.appendChild(delBtn);
-}
-card.appendChild(title); card.appendChild(url); card.appendChild(actions);
-grid.appendChild(card);
-});
+  const grid = document.getElementById('embed-links-grid');
+  const emptyMsg = document.getElementById('embed-empty-msg');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const entries = Object.entries(data);
+  if (!entries.length) {
+    if (emptyMsg) emptyMsg.style.display = 'block';
+    return;
+  }
+  if (emptyMsg) emptyMsg.style.display = 'none';
+  entries.forEach(([key, d]) => {
+    if (!d || !d.url) return;
+    const card = document.createElement('div');
+    card.className = 'embed-link-card';
+    const title = document.createElement('div');
+    title.className = 'embed-link-card-title';
+    title.textContent = d.title || 'Untitled';
+    const url = document.createElement('div');
+    url.className = 'embed-link-card-url';
+    url.textContent = d.url;
+    const actions = document.createElement('div');
+    actions.className = 'embed-link-card-actions';
+    const playBtn = document.createElement('button');
+    playBtn.className = 'embed-link-play-btn';
+    playBtn.textContent = '▶ Open';
+    playBtn.onclick = () => openEmbedViewer(d.url, d.title || 'Untitled');
+    actions.appendChild(playBtn);
+    // UPDATED PERMISSIONS: Mod (rank 2) and above can delete embeds
+    if (getRoleMeta(currentRole).rank >= 2) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'embed-link-del-btn';
+      delBtn.textContent = '✕';
+      delBtn.onclick = () => deleteEmbedLink(key, d.title);
+      actions.appendChild(delBtn);
+    }
+    card.appendChild(title);
+    card.appendChild(url);
+    card.appendChild(actions);
+    grid.appendChild(card);
+  });
 }
 
 function addEmbedLink() {
-const url = document.getElementById(‘embed-url-input’).value.trim();
-const title = document.getElementById(‘embed-title-input’).value.trim() || ‘Untitled’;
-if (!url) { showToast(‘⚠️ Paste a URL first.’); return; }
-let safeUrl = url;
-if (!/^https?:///i.test(safeUrl)) safeUrl = ‘https://’ + safeUrl;
-if (/^(javascript|data|vbscript|blob):/i.test(safeUrl.replace(/\s/g,’’))) { showToast(‘⚠️ Invalid URL.’); return; }
-try { new URL(safeUrl); } catch(e) { showToast(‘⚠️ Not a valid URL.’); return; }
-db.ref(‘embedLinks’).push({ url: safeUrl, title, ts: Date.now() })
-.then(() => { showToast(‘✅ Link added!’); document.getElementById(‘embed-url-input’).value = ‘’; document.getElementById(‘embed-title-input’).value = ‘’; })
-.catch(() => showToast(‘❌ Firebase error.’));
-addLog(`${currentName} added embed: "${title}"`, ‘embed’);
+  const url = document.getElementById('embed-url-input').value.trim();
+  const title = document.getElementById('embed-title-input').value.trim() || 'Untitled';
+  if (!url) { showToast('⚠️ Paste a URL first.'); return; }
+  let safeUrl = url;
+  if (!/^https?:\/\//i.test(safeUrl)) safeUrl = 'https://' + safeUrl;
+  if (/^(javascript|data|vbscript|blob):/i.test(safeUrl.replace(/\s/g, ''))) {
+    showToast('⚠️ Invalid URL.'); return;
+  }
+  try { new URL(safeUrl); } catch(e) {
+    showToast('⚠️ Not a valid URL.'); return;
+  }
+  db.ref('embedLinks').push({ url: safeUrl, title, ts: Date.now() })
+    .then(() => {
+      showToast('✅ Link added!');
+      document.getElementById('embed-url-input').value = '';
+      document.getElementById('embed-title-input').value = '';
+    })
+    .catch(() => showToast('❌ Firebase error.'));
+  addLog(`${currentName} added embed: "${title}"`, 'embed');
 }
 
 function deleteEmbedLink(key, title) {
-db.ref(‘embedLinks/’ + key).remove().then(() => showToast(‘🗑 Link removed.’)).catch(() => showToast(‘❌ Remove failed.’));
-addLog(`${currentName} removed embed: "${title}"`, ‘embed’);
+  db.ref('embedLinks/' + key).remove()
+    .then(() => showToast('🗑 Link removed.'))
+    .catch(() => showToast('❌ Remove failed.'));
+  addLog(`${currentName} removed embed: "${title}"`, 'embed');
 }
 
 function startSourceListener() {
-db.ref(‘sourceLinks’).on(‘value’, snap => { renderSourceLinks(snap.val() || {}); });
+  db.ref('sourceLinks').on('value', snap => {
+    renderSourceLinks(snap.val() || {});
+  });
 }
 
 function renderSourceLinks(data) {
-const grid = document.getElementById(‘sources-grid’);
-const empty = document.getElementById(‘sources-empty-msg’);
-if (!grid) return;
-grid.innerHTML = ‘’;
-const entries = Object.entries(data);
-if (!entries.length) { if(empty) empty.style.display=‘block’; return; }
-if (empty) empty.style.display = ‘none’;
-const iconFor = url => {
-if (url.includes(‘youtube’)) return ‘▶️’;
-if (url.includes(‘google’)) return ‘🔍’;
-if (url.includes(‘github’)) return ‘💻’;
-if (url.includes(‘wikipedia’)) return ‘📖’;
-if (url.includes(‘reddit’)) return ‘💬’;
-if (url.includes(‘twitter’) || url.includes(‘x.com’)) return ‘🐦’;
-if (url.includes(‘discord’)) return ‘💬’;
-return ‘🌐’;
-};
-entries.forEach(([key, d]) => {
-if (!d || !d.url) return;
-const card = document.createElement(‘div’); card.className = ‘source-card’;
-const icon = document.createElement(‘div’); icon.className = ‘source-card-icon’; icon.textContent = iconFor(d.url);
-const title = document.createElement(‘div’); title.className = ‘source-card-title’; title.textContent = d.title || ‘Untitled’;
-const url = document.createElement(‘div’); url.className = ‘source-card-url’; url.textContent = d.url;
-const actions = document.createElement(‘div’); actions.className = ‘source-card-actions’;
-const openBtn = document.createElement(‘a’); openBtn.className = ‘source-open-btn’; openBtn.textContent = ‘↗ Open’; openBtn.href = d.url; openBtn.target = ‘_blank’; openBtn.rel = ‘noopener’;
-actions.appendChild(openBtn);
-if (myRank() >= 3) {
-const delBtn = document.createElement(‘button’); delBtn.className = ‘source-del-btn’; delBtn.textContent = ‘✕’;
-delBtn.onclick = () => deleteSourceLink(key, d.title);
-actions.appendChild(delBtn);
-}
-card.appendChild(icon); card.appendChild(title); card.appendChild(url); card.appendChild(actions);
-grid.appendChild(card);
-});
+  const grid = document.getElementById('sources-grid');
+  const empty = document.getElementById('sources-empty-msg');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const entries = Object.entries(data);
+  if (!entries.length) { if(empty) empty.style.display='block'; return; }
+  if (empty) empty.style.display = 'none';
+  const iconFor = url => {
+    if (url.includes('youtube')) return '▶️';
+    if (url.includes('google')) return '🔍';
+    if (url.includes('github')) return '💻';
+    if (url.includes('wikipedia')) return '📖';
+    if (url.includes('reddit')) return '💬';
+    if (url.includes('twitter') || url.includes('x.com')) return '🐦';
+    if (url.includes('discord')) return '💬';
+    return '🌐';
+  };
+  entries.forEach(([key, d]) => {
+    if (!d || !d.url) return;
+    const card = document.createElement('div');
+    card.className = 'source-card';
+    const icon = document.createElement('div');
+    icon.className = 'source-card-icon';
+    icon.textContent = iconFor(d.url);
+    const title = document.createElement('div');
+    title.className = 'source-card-title';
+    title.textContent = d.title || 'Untitled';
+    const url = document.createElement('div');
+    url.className = 'source-card-url';
+    url.textContent = d.url;
+    const actions = document.createElement('div');
+    actions.className = 'source-card-actions';
+    const openBtn = document.createElement('a');
+    openBtn.className = 'source-open-btn';
+    openBtn.textContent = '↗ Open';
+    openBtn.href = d.url;
+    openBtn.target = '_blank';
+    openBtn.rel = 'noopener';
+    actions.appendChild(openBtn);
+    // UPDATED PERMISSIONS: Mod (rank 2) and above can delete sources
+    if (getRoleMeta(currentRole).rank >= 2) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'source-del-btn';
+      delBtn.textContent = '✕';
+      delBtn.onclick = () => deleteSourceLink(key, d.title);
+      actions.appendChild(delBtn);
+    }
+    card.appendChild(icon);
+    card.appendChild(title);
+    card.appendChild(url);
+    card.appendChild(actions);
+    grid.appendChild(card);
+  });
 }
 
 function addSourceLink() {
-const url = document.getElementById(‘source-url-input’).value.trim();
-const title = document.getElementById(‘source-title-input’).value.trim() || ‘Untitled’;
-if (!url) { showToast(‘⚠️ Paste a URL first.’); return; }
-let safeUrl = url;
-if (!/^https?:///i.test(safeUrl)) safeUrl = ‘https://’ + safeUrl;
-if (/^(javascript|data|vbscript):/i.test(safeUrl)) { showToast(‘⚠️ Invalid URL.’); return; }
-try { new URL(safeUrl); } catch(e) { showToast(‘⚠️ Not a valid URL.’); return; }
-db.ref(‘sourceLinks’).push({ url: safeUrl, title, ts: Date.now() })
-.then(() => { showToast(‘✅ Source added!’); document.getElementById(‘source-url-input’).value = ‘’; document.getElementById(‘source-title-input’).value = ‘’; })
-.catch(() => showToast(‘❌ Firebase error.’));
-addLog(`${currentName} added source: "${title}"`, ‘embed’);
+  const url = document.getElementById('source-url-input').value.trim();
+  const title = document.getElementById('source-title-input').value.trim() || 'Untitled';
+  if (!url) { showToast('⚠️ Paste a URL first.'); return; }
+  let safeUrl = url;
+  if (!/^https?:\/\//i.test(safeUrl)) safeUrl = 'https://' + safeUrl;
+  if (/^(javascript|data|vbscript):/i.test(safeUrl)) { showToast('⚠️ Invalid URL.'); return; }
+  try { new URL(safeUrl); } catch(e) { showToast('⚠️ Not a valid URL.'); return; }
+  db.ref('sourceLinks').push({ url: safeUrl, title, ts: Date.now() })
+    .then(() => {
+      showToast('✅ Source added!');
+      document.getElementById('source-url-input').value = '';
+      document.getElementById('source-title-input').value = '';
+    })
+    .catch(() => showToast('❌ Firebase error.'));
+  addLog(`${currentName} added source: "${title}"`, 'embed');
 }
 
 function deleteSourceLink(key, title) {
-db.ref(‘sourceLinks/’ + key).remove().then(() => showToast(‘🗑 Source removed.’)).catch(() => showToast(‘❌ Remove failed.’));
-addLog(`${currentName} removed source: "${title}"`, ‘embed’);
+  db.ref('sourceLinks/' + key).remove()
+    .then(() => showToast('🗑 Source removed.'))
+    .catch(() => showToast('❌ Remove failed.'));
+  addLog(`${currentName} removed source: "${title}"`, 'embed');
 }
 
 function openEmbedViewer(url, title) {
-if (!url || !/^https?:///i.test(url)) return;
-currentEmbedUrl = url;
-currentEmbedTitle = title || ‘Embedded’;
-const embedsPanel = document.getElementById(‘panel-embeds’);
-if (embedsPanel && !embedsPanel.classList.contains(‘active’)) { switchTab(‘embeds’, document.getElementById(‘dock-embeds’)); }
-document.getElementById(‘embed-links-list’).style.display = ‘none’;
-const viewer = document.getElementById(‘embed-viewer’);
-viewer.classList.add(‘active’);
-document.getElementById(‘embed-viewer-title’).textContent = title || ‘Embedded’;
-const iframe = document.getElementById(‘embed-iframe’);
-const blockedMsg = document.getElementById(‘embed-blocked-msg’);
-const openLink = document.getElementById(‘embed-open-link’);
-blockedMsg.style.display = ‘none’;
-iframe.style.display = ‘block’;
-openLink.href = url;
-iframe.src = url;
-setTimeout(() => {
-try { const doc = iframe.contentDocument || iframe.contentWindow.document; if (!doc || doc.body.innerHTML === ‘’) { iframe.style.display = ‘none’; blockedMsg.style.display = ‘flex’; } } catch(e) {}
-}, 3000);
+  if (!url || !/^https?:\/\//i.test(url)) return;
+  currentEmbedUrl = url;
+  currentEmbedTitle = title || 'Embedded';
+  const embedsPanel = document.getElementById('panel-embeds');
+  if (embedsPanel && !embedsPanel.classList.contains('active')) {
+    switchTab('embeds', document.getElementById('dock-embeds'));
+  }
+  document.getElementById('embed-links-list').style.display = 'none';
+  const viewer = document.getElementById('embed-viewer');
+  viewer.classList.add('active');
+  document.getElementById('embed-viewer-title').textContent = title || 'Embedded';
+  const iframe = document.getElementById('embed-iframe');
+  const blockedMsg = document.getElementById('embed-blocked-msg');
+  const openLink = document.getElementById('embed-open-link');
+  blockedMsg.style.display = 'none';
+  iframe.style.display = 'block';
+  openLink.href = url;
+  iframe.src = url;
+  setTimeout(() => {
+    try {
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      if (!doc || doc.body.innerHTML === '') {
+        iframe.style.display = 'none';
+        blockedMsg.style.display = 'flex';
+      }
+    } catch(e) {}
+  }, 3000);
 }
 
 function closeEmbedViewer() {
-const viewer = document.getElementById(‘embed-viewer’); if (viewer) viewer.classList.remove(‘active’);
-const iframe = document.getElementById(‘embed-iframe’); if (iframe) { iframe.src = ‘’; iframe.style.display = ‘block’; }
-const blocked = document.getElementById(‘embed-blocked-msg’); if (blocked) blocked.style.display = ‘none’;
-const list = document.getElementById(‘embed-links-list’); if (list) list.style.display = ‘’;
-currentEmbedUrl = null; currentEmbedTitle = null;
+  const viewer = document.getElementById('embed-viewer');
+  if (viewer) viewer.classList.remove('active');
+  const iframe = document.getElementById('embed-iframe');
+  if (iframe) { iframe.src = ''; iframe.style.display = 'block'; }
+  const blocked = document.getElementById('embed-blocked-msg');
+  if (blocked) blocked.style.display = 'none';
+  const list = document.getElementById('embed-links-list');
+  if (list) list.style.display = '';
+  currentEmbedUrl = null;
+  currentEmbedTitle = null;
 }
 
 function openFullscreen() {
-if (!currentEmbedUrl) return;
-document.getElementById(‘fullscreen-title-bar’).textContent = currentEmbedTitle || ‘Embedded’;
-document.getElementById(‘fullscreen-iframe’).src = currentEmbedUrl;
-document.getElementById(‘fullscreen-overlay’).classList.add(‘active’);
+  if (!currentEmbedUrl) return;
+  document.getElementById('fullscreen-title-bar').textContent = currentEmbedTitle || 'Embedded';
+  document.getElementById('fullscreen-iframe').src = currentEmbedUrl;
+  document.getElementById('fullscreen-overlay').classList.add('active');
 }
 
 function closeFullscreen() {
-document.getElementById(‘fullscreen-overlay’).classList.remove(‘active’);
-const iframe = document.getElementById(‘fullscreen-iframe’);
-iframe.src = ‘about:blank’;
-setTimeout(() => { iframe.src = ‘’; }, 50);
+  document.getElementById('fullscreen-overlay').classList.remove('active');
+  const iframe = document.getElementById('fullscreen-iframe');
+  iframe.src = 'about:blank';
+  setTimeout(() => { iframe.src = ''; }, 50);
+}
+
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
 }
 
 function renderOnline() {
-const ul = document.getElementById(‘online-list’);
-if (!ul) return;
-const entries = Object.entries(liveUsers);
-const countEl = document.getElementById(‘online-count’);
-if (countEl) countEl.textContent = entries.length;
-if (!entries.length) { ul.innerHTML = ‘<li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No one online</li>’; return; }
-ul.innerHTML = ‘’;
-entries.forEach(([uid, u]) => {
-if (!u || !u.name) return;
-const isMe = myRef && myRef.key === uid;
-const li = document.createElement(‘li’);
-const unameDiv = document.createElement(‘div’); unameDiv.className = ‘uname’;
-const dot = document.createElement(‘div’); dot.className = ‘dot’; unameDiv.appendChild(dot);
-const nameCol = document.createElement(‘div’); nameCol.style.cssText = ‘display:flex;flex-direction:column;gap:2px;’;
-const nameSpan = document.createElement(‘span’); nameSpan.textContent = u.name;
-if (isMe) { const youTag = document.createElement(‘span’); youTag.style.cssText = ‘color:rgba(255,255,255,.4);font-size:.68rem;’; youTag.textContent = ’ (You)’; nameSpan.appendChild(youTag); }
-const joinedSpan = document.createElement(‘span’); joinedSpan.style.cssText = ‘font-size:.68rem;color:rgba(255,255,255,.3);’; joinedSpan.textContent = ’Joined ’ + (u.joined || ‘Today’);
-nameCol.appendChild(nameSpan); nameCol.appendChild(joinedSpan); unameDiv.appendChild(nameCol);
-const badge = document.createElement(‘span’);
-const theirRole = isMe ? currentRole : (u.role || ‘usr_std’);
-const theirMeta = getRoleMeta(theirRole);
-badge.className = ’role-badge ’ + theirMeta.cls; badge.style.fontSize = ‘.6rem’; badge.textContent = theirMeta.label;
-unameDiv.appendChild(badge); li.appendChild(unameDiv);
-if (!isMe && canTarget(currentRole, theirRole)) {
-const banBtn = document.createElement(‘button’); banBtn.className = ‘ban-btn’; banBtn.textContent = ‘Ban’;
-banBtn.onclick = () => openBanModal(uid, u.name);
-li.appendChild(banBtn);
-}
-ul.appendChild(li);
-});
+  const ul = document.getElementById('online-list');
+  if (!ul) return;
+  const entries = Object.entries(liveUsers);
+  document.getElementById('online-count').textContent = entries.length;
+  if (!entries.length) {
+    ul.innerHTML = '<li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No one online</li>';
+    return;
+  }
+  ul.innerHTML = '';
+  entries.forEach(([uid, u]) => {
+    if (!u || !u.name) return;
+    const isMe = myRef && myRef.key === uid;
+    const li = document.createElement('li');
+    const unameDiv = document.createElement('div');
+    unameDiv.className = 'uname';
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    unameDiv.appendChild(dot);
+    const nameCol = document.createElement('div');
+    nameCol.style.cssText = 'display:flex;flex-direction:column;gap:2px;';
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = u.name;
+    if (isMe) {
+      const youTag = document.createElement('span');
+      youTag.style.cssText = 'color:rgba(255,255,255,.4);font-size:.68rem;';
+      youTag.textContent = ' (You)';
+      nameSpan.appendChild(youTag);
+    }
+    const joinedSpan = document.createElement('span');
+    joinedSpan.style.cssText = 'font-size:.68rem;color:rgba(255,255,255,.3);';
+    joinedSpan.textContent = 'Joined ' + (u.joined || 'Today');
+    nameCol.appendChild(nameSpan);
+    nameCol.appendChild(joinedSpan);
+    unameDiv.appendChild(nameCol);
+    const badge = document.createElement('span');
+    const theirRole = isMe ? currentRole : (u.role || 'usr_std');
+    const theirMeta = getRoleMeta(theirRole);
+    badge.className = 'role-badge ' + theirMeta.cls;
+    badge.style.fontSize = '.6rem';
+    badge.textContent = theirMeta.label;
+    unameDiv.appendChild(badge);
+    li.appendChild(unameDiv);
+    if (!isMe && canTarget(currentRole, theirRole)) {
+      const banBtn = document.createElement('button');
+      banBtn.className = 'ban-btn';
+      banBtn.textContent = 'Ban';
+      banBtn.onclick = () => openBanModal(uid, u.name);
+      li.appendChild(banBtn);
+    }
+    ul.appendChild(li);
+  });
 }
 
 function renderBans(bans) {
-const ul = document.getElementById(‘ban-list’);
-if (!ul) return;
-const entries = Object.entries(bans);
-const countEl = document.getElementById(‘ban-count’);
-if (countEl) countEl.textContent = entries.length;
-if (!entries.length) { ul.innerHTML = ‘<li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li>’; return; }
-ul.innerHTML = ‘’;
-entries.forEach(([key, b]) => {
-if (!b || !b.name) return;
-const li = document.createElement(‘li’); li.style.cssText = ‘flex-direction:column;align-items:flex-start;gap:6px;’;
-const row = document.createElement(‘div’); row.style.cssText = ‘display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;’;
-const info = document.createElement(‘div’); info.className = ‘ban-info’;
-const nameEl = document.createElement(‘span’); nameEl.className = ‘ban-name’; nameEl.textContent = b.name;
-const timeEl = document.createElement(‘span’); timeEl.className = ‘ban-meta’; timeEl.textContent = b.time || ‘’;
-const reasonEl = document.createElement(‘span’); reasonEl.className = ‘ban-meta’; reasonEl.style.color = ‘#fff’; reasonEl.textContent = ’Reason: ’ + (b.reason || ‘No reason given’);
-info.appendChild(nameEl); info.appendChild(timeEl); info.appendChild(reasonEl);
-row.appendChild(info);
-if (myRank() >= 3) {
-const unbanBtn = document.createElement(‘button’); unbanBtn.className = ‘ban-btn’; unbanBtn.textContent = ‘Unban’;
-unbanBtn.onclick = () => unbanUser(key, b.name);
-row.appendChild(unbanBtn);
-}
-li.appendChild(row); ul.appendChild(li);
-});
+  const ul = document.getElementById('ban-list');
+  if (!ul) return;
+  const entries = Object.entries(bans);
+  document.getElementById('ban-count').textContent = entries.length;
+  if (!entries.length) {
+    ul.innerHTML = '<li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li>';
+    return;
+  }
+  ul.innerHTML = '';
+  entries.forEach(([key, b]) => {
+    if (!b || !b.name) return;
+    const li = document.createElement('li');
+    li.style.cssText = 'flex-direction:column;align-items:flex-start;gap:6px;';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;';
+    const info = document.createElement('div');
+    info.className = 'ban-info';
+    const nameEl = document.createElement('span');
+    nameEl.className = 'ban-name';
+    nameEl.textContent = b.name;
+    const timeEl = document.createElement('span');
+    timeEl.className = 'ban-meta';
+    timeEl.textContent = b.time || '';
+    const reasonEl = document.createElement('span');
+    reasonEl.className = 'ban-meta';
+    reasonEl.style.color = '#fff';
+    reasonEl.textContent = 'Reason: ' + (b.reason || 'No reason given');
+    info.appendChild(nameEl);
+    info.appendChild(timeEl);
+    info.appendChild(reasonEl);
+    row.appendChild(info);
+    // Unban still restricted to Admin+ (rank >= 3)
+    if (getRoleMeta(currentRole).rank >= 3) {
+      const unbanBtn = document.createElement('button');
+      unbanBtn.className = 'ban-btn';
+      unbanBtn.textContent = 'Unban';
+      unbanBtn.onclick = () => unbanUser(key, b.name);
+      row.appendChild(unbanBtn);
+    }
+    li.appendChild(row);
+    ul.appendChild(li);
+  });
 }
 
 function openBanModal(uid, name) {
-if (myRank() < 2) return;
-pendingBanUid = uid;
-document.getElementById(‘ban-modal-name’).textContent = ’User: ’ + name;
-document.getElementById(‘ban-reason’).value = ‘’;
-document.getElementById(‘ban-modal’).style.display = ‘flex’;
+  if (getRoleMeta(currentRole).rank < 2) return;
+  pendingBanUid = uid;
+  document.getElementById('ban-modal-name').textContent = 'User: ' + name;
+  document.getElementById('ban-reason').value = '';
+  document.getElementById('ban-modal').style.display = 'flex';
 }
-function closeBanModal() { document.getElementById(‘ban-modal’).style.display = ‘none’; pendingBanUid = null; }
-
+function closeBanModal() {
+  document.getElementById('ban-modal').style.display = 'none';
+  pendingBanUid = null;
+}
 async function confirmBan() {
-if (myRank() < 2) return;
-if (!pendingBanUid) return;
-const uid = pendingBanUid;
-const u = liveUsers[uid];
-const reason = document.getElementById(‘ban-reason’).value.trim() || ‘No reason given’;
-if (!u) { closeBanModal(); return; }
-if (!canTarget(currentRole, u.role || ‘usr_std’)) { showToast(‘⛔ You cannot ban someone with equal or higher rank.’); closeBanModal(); return; }
-try {
-await db.ref(‘bans’).push().set({ name: u.name, reason, time: new Date().toLocaleString(), uid, bannedBy: currentName });
-await db.ref(‘online/’ + uid).remove();
-closeBanModal();
-addLog(`${currentName} banned ${u.name}: "${reason}"`, ‘ban’);
-showToast(`🚫 Banned: ${u.name}`);
-} catch(e) { showToast(‘❌ Ban failed — Firebase error.’); }
+  if (getRoleMeta(currentRole).rank < 2) return;
+  if (!pendingBanUid) return;
+  const uid = pendingBanUid;
+  const u = liveUsers[uid];
+  const reason = document.getElementById('ban-reason').value.trim() || 'No reason given';
+  if (!u) { closeBanModal(); return; }
+  if (!canTarget(currentRole, u.role || 'usr_std')) {
+    showToast('⛔ You cannot ban someone with equal or higher rank.');
+    closeBanModal();
+    return;
+  }
+  try {
+    await db.ref('bans').push().set({ name: u.name, reason, time: new Date().toLocaleString(), uid, bannedBy: currentName });
+    await db.ref('online/' + uid).remove();
+    closeBanModal();
+    addLog(`${currentName} banned ${u.name}: "${reason}"`, 'ban');
+    showToast(`🚫 Banned: ${u.name}`);
+  } catch(e) {
+    showToast('❌ Ban failed — Firebase error.');
+  }
 }
-
 async function unbanUser(key, name) {
-if (myRank() < 3) return;
-try {
-await db.ref(‘bans/’ + key).remove();
-addLog(`${currentName} unbanned ${name}.`, ‘join’);
-showToast(`✅ Unbanned: ${name}`);
-} catch(e) { showToast(‘❌ Unban failed — Firebase error.’); }
+  if (getRoleMeta(currentRole).rank < 3) return;
+  try {
+    await db.ref('bans/' + key).remove();
+    addLog(`${currentName} unbanned ${name}.`, 'join');
+    showToast(`✅ Unbanned: ${name}`);
+  } catch(e) {
+    showToast('❌ Unban failed — Firebase error.');
+  }
 }
 
 function checkUnban() {
-const pw = document.getElementById(‘unban-pw’).value.trim();
-const err = document.getElementById(‘unban-err’);
-const suc = document.getElementById(‘unban-success’);
-err.style.display = ‘none’;
-if (pw === ‘The Big Sahur’) {
-localStorage.removeItem(BANNED_KEY);
-suc.style.display = ‘block’;
-document.getElementById(‘unban-pw’).value = ‘’;
-setTimeout(() => location.reload(), 1800);
-} else {
-err.textContent = ‘Incorrect override code.’;
-err.style.display = ‘block’;
-document.getElementById(‘unban-pw’).value = ‘’;
-}
+  const pw = document.getElementById('unban-pw').value.trim();
+  const err = document.getElementById('unban-err');
+  const suc = document.getElementById('unban-success');
+  err.style.display = 'none';
+  if (pw === 'The Big Sahur') {
+    localStorage.removeItem(BANNED_KEY);
+    suc.style.display = 'block';
+    document.getElementById('unban-pw').value = '';
+    setTimeout(() => location.reload(), 1800);
+  } else {
+    err.textContent = 'Incorrect override code.';
+    err.style.display = 'block';
+    document.getElementById('unban-pw').value = '';
+  }
 }
 
 let _lastBroadcast = 0;
 function sendGlobalMsg() {
-if (myRank() < 2) return;
-const now = Date.now();
-if (now - _lastBroadcast < 3000) { showToast(‘⚠️ Wait a moment before broadcasting again.’); return; }
-_lastBroadcast = now;
-const msg = document.getElementById(‘global-msg-input’).value.trim();
-if (!msg) return;
-db.ref(‘globalMsg’).set({ text: msg, ts: Date.now() }).then(() => showToast(‘📢 Broadcast sent!’)).catch(() => showToast(‘❌ Broadcast failed — Firebase error.’));
-document.getElementById(‘global-msg-input’).value = ‘’;
+  if (getRoleMeta(currentRole).rank < 2) return;
+  const now = Date.now();
+  if (now - _lastBroadcast < 3000) { showToast('⚠️ Wait a moment before broadcasting again.'); return; }
+  _lastBroadcast = now;
+  const msg = document.getElementById('global-msg-input').value.trim();
+  if (!msg) return;
+  db.ref('globalMsg').set({ text: msg, ts: Date.now() })
+    .then(() => showToast('📢 Broadcast sent!'))
+    .catch(() => showToast('❌ Broadcast failed — Firebase error.'));
+  document.getElementById('global-msg-input').value = '';
 }
 function clearGlobalMsg() {
-if (myRank() < 2) return;
-db.ref(‘globalMsg’).remove().then(() => showToast(‘📢 Message cleared.’)).catch(() => showToast(‘❌ Clear failed.’));
-addLog(‘Admin cleared the global message.’, ‘msg’);
+  if (getRoleMeta(currentRole).rank < 2) return;
+  db.ref('globalMsg').remove()
+    .then(() => showToast('📢 Message cleared.'))
+    .catch(() => showToast('❌ Clear failed.'));
+  addLog('Admin cleared the global message.', 'msg');
 }
 function dismissBanner() {
-document.getElementById(‘global-banner’).classList.remove(‘active’);
-if (myRank() >= 2) db.ref(‘globalMsg’).remove();
+  document.getElementById('global-banner').classList.remove('active');
+  if (getRoleMeta(currentRole).rank >= 2) db.ref('globalMsg').remove();
 }
 function triggerLockdown() {
-if (myRank() < 4) return;
-db.ref(‘lockdown’).set(true).catch(() => showToast(‘❌ Lockdown failed — Firebase error.’));
+  if (getRoleMeta(currentRole).rank < 4) return;
+  db.ref('lockdown').set(true)
+    .catch(() => showToast('❌ Lockdown failed — Firebase error.'));
 }
 function checkLockdown() {
-const pw = document.getElementById(‘lockdown-pw’).value.trim();
-const err = document.getElementById(‘lockdown-err’);
-if (pw === ‘41’) {
-db.ref(‘lockdown’).remove().then(() => showToast(‘✅ Site relaunched for all users.’)).catch(() => showToast(‘❌ Relaunch failed — Firebase error.’));
-document.getElementById(‘lockdown-pw’).value = ‘’;
-err.style.display = ‘none’;
-} else {
-err.textContent = ‘Incorrect relaunch code.’;
-err.style.display = ‘block’;
-document.getElementById(‘lockdown-pw’).value = ‘’;
-}
+  const pw = document.getElementById('lockdown-pw').value.trim();
+  const err = document.getElementById('lockdown-err');
+  if (pw === '41') {
+    db.ref('lockdown').remove()
+      .then(() => showToast('✅ Site relaunched for all users.'))
+      .catch(() => showToast('❌ Relaunch failed — Firebase error.'));
+    document.getElementById('lockdown-pw').value = '';
+    err.style.display = 'none';
+  } else {
+    err.textContent = 'Incorrect relaunch code.';
+    err.style.display = 'block';
+    document.getElementById('lockdown-pw').value = '';
+  }
 }
 
 function updateStats() {
-const onlineEl = document.getElementById(‘stat-online’);
-const banEl = document.getElementById(‘stat-bans’);
-const banCountEl = document.getElementById(‘ban-count’);
-if (onlineEl) onlineEl.textContent = Object.keys(liveUsers).length;
-if (banEl && banCountEl) banEl.textContent = banCountEl.textContent;
+  document.getElementById('stat-online').textContent = Object.keys(liveUsers).length;
+  document.getElementById('stat-bans').textContent = document.getElementById('ban-count').textContent;
 }
-
 function startUptime() {
-sessionStart = Date.now();
-setInterval(() => {
-const uptimeEl = document.getElementById(‘stat-uptime’);
-if (!uptimeEl) return;
-const s = Math.floor((Date.now() - sessionStart) / 1000);
-const m = Math.floor(s / 60), r = s % 60;
-uptimeEl.textContent = `${m}m ${r}s`;
-}, 1000);
+  sessionStart = Date.now();
+  setInterval(() => {
+    const s = Math.floor((Date.now() - sessionStart) / 1000);
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    document.getElementById('stat-uptime').textContent = `${m}m ${r}s`;
+  }, 1000);
 }
 
 const logEntries = [];
 function addLog(text, tag) {
-const t = new Date().toLocaleTimeString([],{hour:‘2-digit’,minute:‘2-digit’});
-logEntries.unshift({t, text: String(text), tag: String(tag)});
-if (logEntries.length > 60) logEntries.pop();
-const el = document.getElementById(‘activity-log’);
-if (!el) return;
-el.innerHTML = ‘’;
-logEntries.forEach(e => {
-const entry = document.createElement(‘div’); entry.className = ‘log-entry’;
-const timeSpan = document.createElement(‘span’); timeSpan.className = ‘log-time’; timeSpan.textContent = e.t;
-const tagSpan = document.createElement(‘span’); tagSpan.className = ’log-tag ’ + e.tag; tagSpan.textContent = e.tag.toUpperCase();
-const textSpan = document.createElement(‘span’); textSpan.className = ‘log-text’; textSpan.textContent = e.text;
-entry.appendChild(timeSpan); entry.appendChild(tagSpan); entry.appendChild(textSpan);
-el.appendChild(entry);
-});
+  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  logEntries.unshift({t, text: String(text), tag: String(tag)});
+  if (logEntries.length > 60) logEntries.pop();
+  const el = document.getElementById('activity-log');
+  if (!el) return;
+  el.innerHTML = '';
+  logEntries.forEach(e => {
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'log-time';
+    timeSpan.textContent = e.t;
+    const tagSpan = document.createElement('span');
+    tagSpan.className = 'log-tag ' + e.tag;
+    tagSpan.textContent = e.tag.toUpperCase();
+    const textSpan = document.createElement('span');
+    textSpan.className = 'log-text';
+    textSpan.textContent = e.text;
+    entry.appendChild(timeSpan);
+    entry.appendChild(tagSpan);
+    entry.appendChild(textSpan);
+    el.appendChild(entry);
+  });
 }
 
 let noteTimer;
 function saveNotes() {
-clearTimeout(noteTimer);
-noteTimer = setTimeout(() => {
-localStorage.setItem(NOTES_KEY, document.getElementById(‘admin-notes’).value);
-const s = document.getElementById(‘note-saved’);
-if (s) { s.style.display = ‘block’; setTimeout(() => s.style.display = ‘none’, 1800); }
-}, 800);
+  clearTimeout(noteTimer);
+  noteTimer = setTimeout(() => {
+    localStorage.setItem(NOTES_KEY, document.getElementById('admin-notes').value);
+    const s = document.getElementById('note-saved');
+    s.style.display = 'block';
+    setTimeout(() => s.style.display = 'none', 1800);
+  }, 800);
 }
 
 const _vaultData = [
-{ id:‘v_trap’,  label:‘🪤 Trap / Ban Code’,    secret: atob(‘Njc=’),                  rank: 0, section:‘Portal Entry’ },
-{ id:‘v_user’,  label:‘👤 User Password’,       secret: atob(‘VFRU’),                  rank: 1, section:null },
-{ id:‘v_mod’,   label:‘🛡️ Mod Password’,        secret: atob(‘U2hhZG93TW9k’),          rank: 2, section:null },
-{ id:‘v_adm’,   label:‘⚙️ Admin Password’,      secret: atob(‘R3JpZEFkbWlu’),          rank: 3, section:null },
-{ id:‘v_hadm’,  label:‘💠 Head Admin Password’, secret: atob(‘TmV4dXNIZWFk’),          rank: 4, section:null },
-{ id:‘v_owner’, label:‘👑 Owner Password’,      secret: atob(‘VHJpcGxlIFQ=’),          rank: 5, section:null },
-{ id:‘v_unban’, label:‘🔓 Unban Override’,      secret: atob(‘VGhlIEJpZyBTYWh1cg==’),  rank: 0, section:‘Overrides’ },
-{ id:‘v_lock’,  label:‘🔒 Lockdown Relaunch’,   secret: atob(‘NDE=’),                  rank: 0, section:null },
+  { id:'v_trap',  label:'🪤 Trap / Ban Code',       secret: atob('Njc='),              rank: 0, section:'Portal Entry' },
+  { id:'v_user',  label:'👤 User Password',          secret: atob('VFRU'),              rank: 1, section:null },
+  { id:'v_mod',   label:'🛡️ Mod Password',           secret: atob('U2hhZG93TW9k'),      rank: 2, section:null },
+  { id:'v_adm',   label:'⚙️ Admin Password',         secret: atob('R3JpZEFkbWlu'),      rank: 3, section:null },
+  { id:'v_hadm',  label:'💠 Head Admin Password',    secret: atob('TmV4dXNIZWFk'),      rank: 4, section:null },
+  { id:'v_owner', label:'👑 Owner Password',         secret: atob('VHJpcGxlIFQ='),      rank: 5, section:null },
+  { id:'v_unban', label:'🔓 Unban Override',         secret: atob('VGhlIEJpZyBTYWh1cg=='), rank: 0, section:'Overrides' },
+  { id:'v_lock',  label:'🔒 Lockdown Relaunch',      secret: atob('NDE='),              rank: 0, section:null },
 ];
 
 function buildVault() {
-const vault = document.getElementById(‘pw-vault-inner’);
-if (!vault) return;
-vault.innerHTML = ‘’;
-const myR = myRank();
-let lastSection = null;
-_vaultData.forEach(row => {
-if (row.rank >= myR) return;
-if (row.section && row.section !== lastSection) {
-lastSection = row.section;
-const lbl = document.createElement(‘div’); lbl.className = ‘pw-section-label’; lbl.textContent = row.section;
-vault.appendChild(lbl);
-}
-const rowDiv = document.createElement(‘div’); rowDiv.className = ‘pw-row’;
-const lbl = document.createElement(‘div’); lbl.className = ‘pw-label’; lbl.textContent = row.label;
-const val = document.createElement(‘div’); val.className = ‘pw-val’; val.id = row.id; val.dataset.secret = row.secret;
-const btn = document.createElement(‘button’); btn.className = ‘pw-show-btn’; btn.textContent = ‘Show’;
-btn.onclick = () => togglePw(row.id, btn);
-rowDiv.appendChild(lbl); rowDiv.appendChild(val); rowDiv.appendChild(btn);
-vault.appendChild(rowDiv);
-});
-if (!vault.children.length) {
-vault.innerHTML = ‘<div style="color:rgba(255,255,255,.3);font-size:.8rem;text-align:center;padding:12px;">No passwords available for your role.</div>’;
-}
+  const vault = document.getElementById('pw-vault-inner');
+  if (!vault) return;
+  vault.innerHTML = '';
+  const myRank = getRoleMeta(currentRole).rank;
+  let lastSection = null;
+  _vaultData.forEach(row => {
+    if (row.rank >= myRank) return;
+    if (row.section && row.section !== lastSection) {
+      lastSection = row.section;
+      const lbl = document.createElement('div');
+      lbl.className = 'pw-section-label';
+      lbl.textContent = row.section;
+      vault.appendChild(lbl);
+    }
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'pw-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'pw-label';
+    lbl.textContent = row.label;
+    const val = document.createElement('div');
+    val.className = 'pw-val';
+    val.id = row.id;
+    val.dataset.secret = row.secret;
+    const btn = document.createElement('button');
+    btn.className = 'pw-show-btn';
+    btn.textContent = 'Show';
+    btn.onclick = () => togglePw(row.id, btn);
+    rowDiv.appendChild(lbl);
+    rowDiv.appendChild(val);
+    rowDiv.appendChild(btn);
+    vault.appendChild(rowDiv);
+  });
+  if (!vault.children.length) {
+    vault.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:.8rem;text-align:center;padding:12px;">No passwords available for your role.</div>';
+  }
 }
 
 function togglePw(id, btn) {
-const el = document.getElementById(id);
-if (!el) return;
-const revealed = el.classList.toggle(‘show’);
-el.textContent = revealed ? (el.dataset.secret || ‘’) : ‘’;
-btn.textContent = revealed ? ‘Hide’ : ‘Show’;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const revealed = el.classList.toggle('show');
+  el.textContent = revealed ? (el.dataset.secret || '') : '';
+  btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
 function switchTab(name, btn) {
-document.querySelectorAll(’.tab-panel’).forEach(p => p.classList.remove(‘active’));
-document.querySelectorAll(’.dock-item’).forEach(b => b.classList.remove(‘active’));
-const panel = document.getElementById(‘panel-’ + name);
-if (panel) panel.classList.add(‘active’);
-if (btn) btn.classList.add(‘active’);
-if (name !== ‘embeds’) closeEmbedViewer();
+  // RESTRICTION: Normal users (rank < 2) cannot access Admin panel at all
+  if (name === 'admin') {
+    const r = getRoleMeta(currentRole || 'usr_std').rank;
+    if (r < 2) {
+      showToast('⛔ Admin panel restricted to Moderators and higher roles.');
+      return;
+    }
+  }
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.dock-item').forEach(b => b.classList.remove('active'));
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name !== 'embeds') closeEmbedViewer();
 }
 
-// GAMES
+// GAMES (unchanged)
 let currentGame = null, gameLoop = null, minesweeperTimer = null;
 
 function launchGame(g) {
-clearInterval(gameLoop); clearInterval(minesweeperTimer); gameLoop = null; minesweeperTimer = null;
-if (window._skH) { document.removeEventListener(‘keydown’, window._skH); window._skH = null; }
-if (window._tkH) { document.removeEventListener(‘keydown’, window._tkH); window._tkH = null; }
-if (window._g2kH) { document.removeEventListener(‘keydown’, window._g2kH); window._g2kH = null; }
-document.getElementById(‘game-embed’).innerHTML = ‘’;
-currentGame = g;
-document.getElementById(‘games-list’).style.display = ‘none’;
-document.getElementById(‘embed-viewer’).classList.remove(‘active’);
-document.getElementById(‘game-frame-wrap’).classList.add(‘active’);
-document.getElementById(‘game-score’).textContent = ‘’;
-if (g === ‘snake’) startSnake();
-if (g === ‘tetris’) startTetris();
-if (g === ‘2048’) start2048();
-if (g === ‘minesweeper’) startMinesweeper();
+  clearInterval(gameLoop);
+  clearInterval(minesweeperTimer);
+  gameLoop = null;
+  minesweeperTimer = null;
+  if (window._skH) { document.removeEventListener('keydown', window._skH); window._skH = null; }
+  if (window._tkH) { document.removeEventListener('keydown', window._tkH); window._tkH = null; }
+  if (window._g2kH) { document.removeEventListener('keydown', window._g2kH); window._g2kH = null; }
+  document.getElementById('game-embed').innerHTML = '';
+  currentGame = g;
+  document.getElementById('games-list').style.display = 'none';
+  document.getElementById('embed-viewer').classList.remove('active');
+  document.getElementById('game-frame-wrap').classList.add('active');
+  document.getElementById('game-score').textContent = '';
+  if (g === 'snake') startSnake();
+  if (g === 'tetris') startTetris();
+  if (g === '2048') start2048();
+  if (g === 'minesweeper') startMinesweeper();
 }
-function restartGame() { if (currentGame) launchGame(currentGame); }
+function restartGame() {
+  if (currentGame) launchGame(currentGame);
+}
 function backToGames() {
-clearInterval(gameLoop); clearInterval(minesweeperTimer); gameLoop = null; minesweeperTimer = null; currentGame = null;
-if (window._skH) { document.removeEventListener(‘keydown’, window._skH); window._skH = null; }
-if (window._tkH) { document.removeEventListener(‘keydown’, window._tkH); window._tkH = null; }
-if (window._g2kH) { document.removeEventListener(‘keydown’, window._g2kH); window._g2kH = null; }
-document.getElementById(‘game-embed’).innerHTML = ‘’;
-document.getElementById(‘games-list’).style.display = ‘’;
-document.getElementById(‘game-frame-wrap’).classList.remove(‘active’);
-document.getElementById(‘game-score’).textContent = ‘’;
+  clearInterval(gameLoop);
+  clearInterval(minesweeperTimer);
+  gameLoop = null;
+  minesweeperTimer = null;
+  currentGame = null;
+  if (window._skH) { document.removeEventListener('keydown', window._skH); window._skH = null; }
+  if (window._tkH) { document.removeEventListener('keydown', window._tkH); window._tkH = null; }
+  if (window._g2kH) { document.removeEventListener('keydown', window._g2kH); window._g2kH = null; }
+  const embed = document.getElementById('game-embed');
+  embed.innerHTML = '';
+  document.getElementById('games-list').style.display = '';
+  document.getElementById('game-frame-wrap').classList.remove('active');
+  document.getElementById('game-score').textContent = '';
 }
 function mkCanvas(w,h) {
-const c = document.createElement(‘canvas’); c.width = w; c.height = h;
-c.style.cssText = ‘border-radius:14px;border:1px solid rgba(255,255,255,.16);background:#090909;display:block;max-width:100%;touch-action:none;’;
-document.getElementById(‘game-embed’).appendChild(c); return c;
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = h;
+  c.style.cssText = 'border-radius:14px;border:1px solid rgba(255,255,255,.16);background:#090909;display:block;max-width:100%;touch-action:none;';
+  document.getElementById('game-embed').appendChild(c);
+  return c;
 }
-function setScore(s) { document.getElementById(‘game-score’).textContent = s; }
+function setScore(s) {
+  document.getElementById('game-score').textContent = s;
+}
 
 function startSnake() {
-const SZ=20,COLS=25,ROWS=22;
-const c=mkCanvas(COLS*SZ,ROWS*SZ),ctx=c.getContext(‘2d’);
-let snake=[{x:12,y:11},{x:11,y:11},{x:10,y:11}],dir={x:1,y:0},nd={x:1,y:0},food=sf(),score=0,dead=false;
-function sf(){let f;do{f={x:Math.floor(Math.random()*COLS),y:Math.floor(Math.random()*ROWS)};}while(snake.some(s=>s.x===f.x&&s.y===f.y));return f;}
-function draw(){
-ctx.fillStyle=’#090909’;ctx.fillRect(0,0,c.width,c.height);
-ctx.strokeStyle=‘rgba(255,255,255,.05)’;
-for(let x=0;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*SZ,0);ctx.lineTo(x*SZ,c.height);ctx.stroke();}
-for(let y=0;y<ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*SZ);ctx.lineTo(c.width,y*SZ);ctx.stroke();}
-ctx.fillStyle=’#fff’;ctx.shadowColor=’#fff’;ctx.shadowBlur=14;ctx.beginPath();ctx.arc(food.x*SZ+SZ/2,food.y*SZ+SZ/2,SZ/2-2,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;
-snake.forEach((s,i)=>{ctx.fillStyle=i===0?’#fff’:`rgba(255,255,255,${Math.max(.25,.85-i*.08)})`;ctx.fillRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2);});
-if(dead){ctx.fillStyle=‘rgba(0,0,0,.7)’;ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle=’#fff’;ctx.font=‘bold 28px Cinzel Decorative,serif’;ctx.textAlign=‘center’;ctx.fillText(‘GAME OVER’,c.width/2,c.height/2-16);ctx.fillStyle=‘rgba(255,255,255,.75)’;ctx.font=‘14px Raleway,sans-serif’;ctx.fillText(‘Press ↺ Restart’,c.width/2,c.height/2+16);}
-}
-function step(){
-if(dead)return;dir=nd;const h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
-if(h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS||snake.some(s=>s.x===h.x&&s.y===h.y)){dead=true;draw();return;}
-snake.unshift(h);
-if(h.x===food.x&&h.y===food.y){score++;setScore(’Score: ’+score);food=sf();}else{snake.pop();}
-draw();
-}
-window._skH=e=>{const m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};if(m[e.key]){const d=m[e.key];if(!(d.x===-dir.x&&d.y===-dir.y))nd=d;e.preventDefault();}};
-document.removeEventListener(‘keydown’,window._skH);document.addEventListener(‘keydown’,window._skH);
-clearInterval(gameLoop);gameLoop=setInterval(step,110);draw();setScore(‘Score: 0’);
+  const SZ = 20, COLS = 25, ROWS = 22;
+  const c = mkCanvas(COLS*SZ, ROWS*SZ), ctx = c.getContext('2d');
+  let snake = [{x:12,y:11},{x:11,y:11},{x:10,y:11}],
+    dir = {x:1,y:0}, nd = {x:1,y:0},
+    food = sf(), score = 0, dead = false;
+
+  function sf() {
+    let f;
+    do {
+      f = {x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)};
+    } while (snake.some(s => s.x===f.x && s.y===f.y));
+    return f;
+  }
+
+  function draw() {
+    ctx.fillStyle = '#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.strokeStyle = 'rgba(255,255,255,.05)';
+    for(let x=0;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*SZ,0);ctx.lineTo(x*SZ,c.height);ctx.stroke();}
+    for(let y=0;y<ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*SZ);ctx.lineTo(c.width,y*SZ);ctx.stroke();}
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(food.x*SZ+SZ/2, food.y*SZ+SZ/2, SZ/2-2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    snake.forEach((s,i) => {
+      ctx.fillStyle = i===0 ? '#fff' : `rgba(255,255,255,${Math.max(.25,.85 - i*.08)})`;
+      ctx.fillRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2);
+    });
+    if(dead){
+      ctx.fillStyle='rgba(0,0,0,.7)';
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 28px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',c.width/2,c.height/2-16);
+      ctx.fillStyle='rgba(255,255,255,.75)';
+      ctx.font='14px Raleway,sans-serif';
+      ctx.fillText('Press ↺ Restart',c.width/2,c.height/2+16);
+    }
+  }
+
+  function step() {
+    if(dead) return;
+    dir = nd;
+    const h = {x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+    if(h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS||snake.some(s=>s.x===h.x&&s.y===h.y)){
+      dead = true;
+      draw();
+      return;
+    }
+    snake.unshift(h);
+    if(h.x===food.x&&h.y===food.y){
+      score++;
+      setScore('Score: ' + score);
+      food = sf();
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+
+  window._skH = e => {
+    const m = {
+      ArrowUp:{x:0,y:-1},
+      ArrowDown:{x:0,y:1},
+      ArrowLeft:{x:-1,y:0},
+      ArrowRight:{x:1,y:0}
+    };
+    if(m[e.key]) {
+      const d = m[e.key];
+      if (!(d.x === -dir.x && d.y === -dir.y)) nd = d;
+      e.preventDefault();
+    }
+  };
+  document.removeEventListener('keydown', window._skH);
+  document.addEventListener('keydown', window._skH);
+  clearInterval(gameLoop);
+  gameLoop = setInterval(step,110);
+  draw();
+  setScore('Score: 0');
 }
 
 function startTetris() {
-const W=10,H=20,SZ=28;
-const c=mkCanvas(W*SZ+120,H*SZ),ctx=c.getContext(‘2d’);
-const PS=[{s:[[1,1,1,1]]},{s:[[1,1],[1,1]]},{s:[[0,1,0],[1,1,1]]},{s:[[1,0,0],[1,1,1]]},{s:[[0,0,1],[1,1,1]]},{s:[[0,1,1],[1,1,0]]},{s:[[1,1,0],[0,1,1]]}];
-let board=Array.from({length:H},()=>Array(W).fill(0)),cur,cx,cy,score=0,level=1,lines=0,over=false;
-function np(){const p=PS[Math.floor(Math.random()*PS.length)];cur={s:p.s.map(r=>[…r])};cx=Math.floor((W-cur.s[0].length)/2);cy=0;if(col())over=true;}
-function col(ox=0,oy=0,sh=cur.s){for(let r=0;r<sh.length;r++)for(let c2=0;c2<sh[r].length;c2++){if(sh[r][c2]&&(cy+r+oy>=H||cx+c2+ox<0||cx+c2+ox>=W||board[cy+r+oy]?.[cx+c2+ox]))return true;}return false;}
-function rot(sh){return sh[0].map((_,i)=>sh.map(r=>r[i]).reverse());}
-function place(){cur.s.forEach((r,ri)=>r.forEach((v,ci)=>{if(v)board[cy+ri][cx+ci]=1;}));let cl=0;board=board.filter(r=>{if(r.every(v=>v)){cl++;return false;}return true;});while(board.length<H)board.unshift(Array(W).fill(0));lines+=cl;score+=cl*100*level;const prevLevel=level;if(lines>=level*5)level++;setScore(`Score: ${score} Lv: ${level}`);if(level!==prevLevel){clearInterval(gameLoop);gameLoop=setInterval(()=>{drop();},Math.max(100,500-level*40));}np();}
-function drop(){if(over)return;if(!col(0,1))cy++;else place();draw();}
-function draw(){ctx.fillStyle=’#090909’;ctx.fillRect(0,0,c.width,c.height);for(let r=0;r<H;r++)for(let cl=0;cl<W;cl++){if(board[r][cl]){ctx.fillStyle=’#fff’;ctx.fillRect(cl*SZ+1,r*SZ+1,SZ-2,SZ-2);}else{ctx.strokeStyle=‘rgba(255,255,255,.05)’;ctx.strokeRect(cl*SZ,r*SZ,SZ,SZ);}}
-if(!over)cur.s.forEach((row,ri)=>row.forEach((v,ci)=>{if(v){ctx.fillStyle=’#fff’;ctx.shadowColor=’#fff’;ctx.shadowBlur=8;ctx.fillRect((cx+ci)*SZ+1,(cy+ri)*SZ+1,SZ-2,SZ-2);ctx.shadowBlur=0;}}));
-if(over){ctx.fillStyle=‘rgba(0,0,0,.72)’;ctx.fillRect(0,0,W*SZ,H*SZ);ctx.fillStyle=’#fff’;ctx.font=‘bold 22px Cinzel Decorative,serif’;ctx.textAlign=‘center’;ctx.fillText(‘GAME OVER’,W*SZ/2,H*SZ/2-14);ctx.fillStyle=‘rgba(255,255,255,.7)’;ctx.font=‘13px Raleway,sans-serif’;ctx.fillText(‘↺ Restart’,W*SZ/2,H*SZ/2+14);}
-}
-window._tkH=e=>{if(over)return;if(e.key===‘ArrowLeft’&&!col(-1))cx–;else if(e.key===‘ArrowRight’&&!col(1))cx++;else if(e.key===‘ArrowDown’)drop();else if(e.key===‘ArrowUp’){const r=rot(cur.s);if(!col(0,0,r))cur.s=r;}else if(e.key===’ ’){while(!col(0,1))cy++;place();}else return;e.preventDefault();draw();};
-document.removeEventListener(‘keydown’,window._tkH);document.addEventListener(‘keydown’,window._tkH);
-np();draw();setScore(‘Score: 0 Lv: 1’);clearInterval(gameLoop);gameLoop=setInterval(()=>{drop();},Math.max(100,500-level*40));
+  const W = 10, H = 20, SZ = 28;
+  const c = mkCanvas(W*SZ+120, H*SZ), ctx = c.getContext('2d');
+  const PS = [
+    {s:[[1,1,1,1]]},
+    {s:[[1,1],[1,1]]},
+    {s:[[0,1,0],[1,1,1]]},
+    {s:[[1,0,0],[1,1,1]]},
+    {s:[[0,0,1],[1,1,1]]},
+    {s:[[0,1,1],[1,1,0]]},
+    {s:[[1,1,0],[0,1,1]]}
+  ];
+  let board = Array.from({length:H},()=>Array(W).fill(0)), cur, cx, cy, score=0, level=1, lines=0, over=false;
+
+  function np() {
+    const p = PS[Math.floor(Math.random()*PS.length)];
+    cur = {s:p.s.map(r=>[...r])};
+    cx = Math.floor((W-cur.s[0].length)/2);
+    cy = 0;
+    if(col()) over = true;
+  }
+  function col(ox=0,oy=0,sh=cur.s) {
+    for(let r=0;r<sh.length;r++) for(let c2=0;c2<sh[r].length;c2++) {
+      if(sh[r][c2] && (cy+r+oy>=H || cx+c2+ox<0 || cx+c2+ox>=W || board[cy+r+oy]?.[cx+c2+ox])) return true;
+    }
+    return false;
+  }
+  function rot(sh){return sh[0].map((_,i)=>sh.map(r=>r[i]).reverse());}
+  function place() {
+    cur.s.forEach((r,ri)=>r.forEach((v,ci)=>{if(v)board[cy+ri][cx+ci]=1;}));
+    let cl=0;
+    board = board.filter(r=>{if(r.every(v=>v)){cl++;return false;}return true;});
+    while(board.length<H) board.unshift(Array(W).fill(0));
+    lines += cl;
+    score += cl*100*level;
+    const prevLevel = level;
+    if(lines >= level*5) level++;
+    setScore(`Score: ${score} Lv: ${level}`);
+    if (level !== prevLevel) {
+      clearInterval(gameLoop);
+      gameLoop = setInterval(()=>{drop();}, Math.max(100, 500 - level * 40));
+    }
+    np();
+  }
+  function drop() {
+    if(over) return;
+    if(!col(0,1)) cy++;
+    else place();
+    draw();
+  }
+  function draw() {
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    for(let r=0;r<H;r++) for(let cl=0;cl<W;cl++){
+      if(board[r][cl]){
+        ctx.fillStyle='#fff';
+        ctx.fillRect(cl*SZ+1,r*SZ+1,SZ-2,SZ-2);
+      } else {
+        ctx.strokeStyle='rgba(255,255,255,.05)';
+        ctx.strokeRect(cl*SZ,r*SZ,SZ,SZ);
+      }
+    }
+    if(!over) cur.s.forEach((row,ri)=>row.forEach((v,ci)=>{
+      if(v){
+        ctx.fillStyle='#fff';
+        ctx.shadowColor='#fff';
+        ctx.shadowBlur=8;
+        ctx.fillRect((cx+ci)*SZ+1,(cy+ri)*SZ+1,SZ-2,SZ-2);
+        ctx.shadowBlur=0;
+      }
+    }));
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.72)';
+      ctx.fillRect(0,0,W*SZ,H*SZ);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 22px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',W*SZ/2,H*SZ/2-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',W*SZ/2,H*SZ/2+14);
+    }
+  }
+  window._tkH = e => {
+    if(over) return;
+    if(e.key==='ArrowLeft' && !col(-1)) cx--;
+    else if(e.key==='ArrowRight' && !col(1)) cx++;
+    else if(e.key==='ArrowDown') drop();
+    else if(e.key==='ArrowUp') {
+      const r = rot(cur.s);
+      if(!col(0,0,r)) cur.s = r;
+    } else if(e.key===' ') {
+      while(!col(0,1)) cy++;
+      place();
+    } else return;
+    e.preventDefault();
+    draw();
+  };
+  document.removeEventListener('keydown', window._tkH);
+  document.addEventListener('keydown', window._tkH);
+  np();
+  draw();
+  setScore('Score: 0 Lv: 1');
+  clearInterval(gameLoop);
+  gameLoop = setInterval(()=>{drop();}, Math.max(100,500-level*40));
 }
 
 function start2048() {
-const SZ=100,GAP=10,N=4,cw=N*SZ+(N+1)*GAP;
-const c=mkCanvas(cw,cw+60),ctx=c.getContext(‘2d’);
-let grid=Array.from({length:N},()=>Array(N).fill(0)),score=0,best=0;
-function ar(){let e=[];grid.forEach((r,ri)=>r.forEach((v,ci)=>{if(!v)e.push([ri,ci]);}));if(!e.length)return;const[r,cl]=e[Math.floor(Math.random()*e.length)];grid[r][cl]=Math.random()<.9?2:4;}
-ar();ar();
-function slide(row){let r=row.filter(v=>v);for(let i=0;i<r.length-1;i++)if(r[i]===r[i+1]){r[i]*=2;score+=r[i];r.splice(i+1,1);}while(r.length<N)r.push(0);return r;}
-function move(dir){let moved=false,ng=grid.map(r=>[…r]);if(dir===‘left’||dir===‘right’){ng=ng.map(r=>{const s=dir===‘left’?slide(r):slide([…r].reverse()).reverse();if(s.join()!==r.join())moved=true;return s;});}else{for(let cc=0;cc<N;cc++){let col=grid.map(r=>r[cc]);const s=dir===‘up’?slide(col):slide([…col].reverse()).reverse();if(s.join()!==col.join())moved=true;s.forEach((v,r)=>ng[r][cc]=v);}}if(moved){grid=ng;ar();if(score>best)best=score;setScore(`Score: ${score} Best: ${best}`);}draw();}
-function draw(){ctx.fillStyle=’#090909’;ctx.fillRect(0,0,c.width,c.height);for(let r=0;r<N;r++)for(let cl=0;cl<N;cl++){const v=grid[r][cl],x=GAP+cl*(SZ+GAP),y=60+GAP+r*(SZ+GAP);ctx.fillStyle=v?’#fff’:’#1d1d1d’;ctx.beginPath();ctx.roundRect(x,y,SZ,SZ,10);ctx.fill();if(v){ctx.fillStyle=’#000’;ctx.font=`bold ${v>=1000?20:v>=100?24:28}px Raleway,sans-serif`;ctx.textAlign=‘center’;ctx.textBaseline=‘middle’;ctx.fillText(v,x+SZ/2,y+SZ/2);}}const over=isGameOver();if(over){ctx.fillStyle=‘rgba(0,0,0,.65)’;ctx.fillRect(0,60,cw,cw);ctx.fillStyle=’#fff’;ctx.font=‘bold 26px Cinzel Decorative,serif’;ctx.textAlign=‘center’;ctx.fillText(‘GAME OVER’,cw/2,60+cw/2-14);ctx.fillStyle=‘rgba(255,255,255,.7)’;ctx.font=‘13px Raleway,sans-serif’;ctx.fillText(‘↺ Restart’,cw/2,60+cw/2+14);}}
-function isGameOver(){for(let r=0;r<N;r++)for(let cl=0;cl<N;cl++)if(!grid[r][cl])return false;for(let r=0;r<N;r++)for(let cl=0;cl<N;cl++){const v=grid[r][cl];if(cl+1<N&&grid[r][cl+1]===v)return false;if(r+1<N&&grid[r+1][cl]===v)return false;}return true;}
-window._g2kH=e=>{const m={ArrowLeft:‘left’,ArrowRight:‘right’,ArrowUp:‘up’,ArrowDown:‘down’};if(m[e.key]){move(m[e.key]);e.preventDefault();}};
-document.removeEventListener(‘keydown’,window._g2kH);document.addEventListener(‘keydown’,window._g2kH);
-draw();setScore(‘Score: 0’);
+  const SZ=100,GAP=10,N=4,cw=N*SZ+(N+1)*GAP;
+  const c=mkCanvas(cw,cw+60),ctx=c.getContext('2d');
+  let grid=Array.from({length:N},()=>Array(N).fill(0)),score=0,best=0;
+  function ar(){
+    let e=[];
+    grid.forEach((r,ri)=>r.forEach((v,ci)=>{if(!v)e.push([ri,ci]);}));
+    if(!e.length)return;
+    const [r,cl]=e[Math.floor(Math.random()*e.length)];
+    grid[r][cl]=Math.random()<.9?2:4;
+  }
+  ar(); ar();
+  function slide(row){
+    let r=row.filter(v=>v);
+    for(let i=0;i<r.length-1;i++) if(r[i]===r[i+1]) { r[i]*=2; score+=r[i]; r.splice(i+1,1); }
+    while(r.length<N) r.push(0);
+    return r;
+  }
+  function move(dir){
+    let moved=false, ng=grid.map(r=>[...r]);
+    if(dir==='left'||dir==='right'){
+      ng = ng.map(r=>{
+        const s = dir==='left' ? slide(r) : slide([...r].reverse()).reverse();
+        if(s.join()!==r.join()) moved=true;
+        return s;
+      });
+    } else {
+      for(let cc=0;cc<N;cc++){
+        let col=grid.map(r=>r[cc]);
+        const s = dir==='up' ? slide(col) : slide([...col].reverse()).reverse();
+        if(s.join()!==col.join()) moved=true;
+        s.forEach((v,r)=>ng[r][cc]=v);
+      }
+    }
+    if(moved){
+      grid=ng;
+      ar();
+      if(score>best) best=score;
+      setScore(`Score: ${score} Best: ${best}`);
+    }
+    draw();
+  }
+  function draw(){
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++){
+      const v=grid[r][cl], x=GAP+cl*(SZ+GAP), y=60+GAP+r*(SZ+GAP);
+      ctx.fillStyle = v ? '#fff' : '#1d1d1d';
+      ctx.beginPath();
+      ctx.roundRect(x,y,SZ,SZ,10);
+      ctx.fill();
+      if(v){
+        ctx.fillStyle='#000';
+        ctx.font=`bold ${v>=1000?20:v>=100?24:28}px Raleway,sans-serif`;
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(v,x+SZ/2,y+SZ/2);
+      }
+    }
+    const over = isGameOver();
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,60,cw,cw);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 26px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',cw/2,60+cw/2-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',cw/2,60+cw/2+14);
+    }
+  }
+  function isGameOver(){
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++) if(!grid[r][cl]) return false;
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++){
+      const v = grid[r][cl];
+      if(cl+1<N && grid[r][cl+1]===v) return false;
+      if(r+1<N && grid[r+1][cl]===v) return false;
+    }
+    return true;
+  }
+  window._g2kH = e => {
+    const m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};
+    if(m[e.key]){ move(m[e.key]); e.preventDefault(); }
+  };
+  document.removeEventListener('keydown',window._g2kH);
+  document.addEventListener('keydown',window._g2kH);
+  draw();
+  setScore('Score: 0');
 }
 
 function startMinesweeper() {
-const COLS=16,ROWS=16,MINES=40,SZ=32;
-const c=mkCanvas(COLS*SZ,ROWS*SZ+44),ctx=c.getContext(‘2d’);
-const NC=[’’,’#ffffff’,’#dcdcdc’,’#cfcfcf’,’#bdbdbd’,’#aaaaaa’,’#999999’,’#888888’,’#777777’];
-let board,revealed,flagged,over,won,first,startT;
-function init(){board=Array.from({length:ROWS},()=>Array(COLS).fill(0));revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));flagged=Array.from({length:ROWS},()=>Array(COLS).fill(false));over=false;won=false;first=true;clearInterval(minesweeperTimer);minesweeperTimer=null;startT=null;setScore(‘🚩 ‘+MINES+’ ⏱ 0s’);draw();}
-function plant(sr,sc){let p=0;while(p<MINES){const r=Math.floor(Math.random()*ROWS),cc=Math.floor(Math.random()*COLS);if(!board[r][cc]&&!(r===sr&&cc===sc)){board[r][cc]=-1;p++;}}for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){if(board[r][cc]===-1)continue;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(board[r+dr]?.[cc+dc]===-1)n++;board[r][cc]=n;}}
-function reveal(startR,startC){const queue=[[startR,startC]];while(queue.length){const[r,cc]=queue.shift();if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc]||flagged[r][cc])continue;revealed[r][cc]=true;if(board[r][cc]===0){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(dr===0&&dc===0)continue;queue.push([r+dr,cc+dc]);}}}}
-function checkWin(){for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++)if(board[r][cc]!==-1&&!revealed[r][cc])return false;return true;}
-function draw(){ctx.fillStyle=’#090909’;ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle=‘rgba(255,255,255,.06)’;ctx.fillRect(0,0,c.width,44);ctx.fillStyle=‘rgba(255,255,255,.8)’;ctx.font=‘13px Raleway,sans-serif’;ctx.textAlign=‘center’;const el=startT?Math.floor((Date.now()-startT)/1000):0;ctx.fillText(`🚩 ${MINES-flagged.flat().filter(Boolean).length} ⏱ ${el}s`,c.width/2,27);ctx.textAlign=‘left’;
-for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){const x=cc*SZ,y=44+r*SZ;if(revealed[r][cc]){ctx.fillStyle=board[r][cc]===-1?‘rgba(255,255,255,.12)’:‘rgba(255,255,255,.06)’;ctx.fillRect(x+1,y+1,SZ-2,SZ-2);if(board[r][cc]===-1){ctx.font=‘18px serif’;ctx.textAlign=‘center’;ctx.fillText(‘💣’,x+SZ/2,y+SZ/2+6);ctx.textAlign=‘left’;}else if(board[r][cc]>0){ctx.fillStyle=NC[board[r][cc]];ctx.font=‘bold 14px Raleway,sans-serif’;ctx.textAlign=‘center’;ctx.fillText(board[r][cc],x+SZ/2,y+SZ/2+5);ctx.textAlign=‘left’;}}else{ctx.fillStyle=‘rgba(255,255,255,.04)’;ctx.fillRect(x+1,y+1,SZ-2,SZ-2);ctx.strokeStyle=‘rgba(255,255,255,.12)’;ctx.strokeRect(x,y,SZ,SZ);if(flagged[r][cc]){ctx.font=‘16px serif’;ctx.textAlign=‘center’;ctx.fillText(‘🚩’,x+SZ/2,y+SZ/2+5);ctx.textAlign=‘left’;}}}
-const hy=44+(c.height-44)/2;
-if(over){ctx.fillStyle=‘rgba(0,0,0,.65)’;ctx.fillRect(0,44,c.width,c.height-44);ctx.fillStyle=’#fff’;ctx.font=‘bold 24px Cinzel Decorative,serif’;ctx.textAlign=‘center’;ctx.fillText(‘💥 BOOM!’,c.width/2,hy-14);ctx.fillStyle=‘rgba(255,255,255,.7)’;ctx.font=‘13px Raleway,sans-serif’;ctx.fillText(‘↺ Restart’,c.width/2,hy+14);ctx.textAlign=‘left’;}
-if(won){ctx.fillStyle=‘rgba(0,0,0,.65)’;ctx.fillRect(0,44,c.width,c.height-44);ctx.fillStyle=’#fff’;ctx.font=‘bold 22px Cinzel Decorative,serif’;ctx.textAlign=‘center’;ctx.fillText(‘YOU WIN! 🎉’,c.width/2,hy-14);ctx.fillStyle=‘rgba(255,255,255,.7)’;ctx.font=‘13px Raleway,sans-serif’;ctx.fillText(‘↺ Restart’,c.width/2,hy+14);ctx.textAlign=‘left’;}
-}
-c.addEventListener(‘click’,e=>{if(over||won)return;const rect=c.getBoundingClientRect();const sx=c.width/rect.width,sy=c.height/rect.height;const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;if(my<44)return;const cc=Math.floor(mx/SZ),r=Math.floor((my-44)/SZ);if(r<0||r>=ROWS||cc<0||cc>=COLS||flagged[r][cc])return;if(first){plant(r,cc);first=false;startT=Date.now();minesweeperTimer=setInterval(()=>draw(),1000);}if(board[r][cc]===-1){revealed[r][cc]=true;over=true;clearInterval(minesweeperTimer);minesweeperTimer=null;}else{reveal(r,cc);if(checkWin()){won=true;clearInterval(minesweeperTimer);minesweeperTimer=null;}}draw();});
-c.addEventListener(‘contextmenu’,e=>{e.preventDefault();if(over||won)return;const rect=c.getBoundingClientRect();const sx=c.width/rect.width,sy=c.height/rect.height;const mx=(e.clientX-rect.left)*sx,my=(e.clientY-rect.top)*sy;if(my<44)return;const cc=Math.floor(mx/SZ),r=Math.floor((my-44)/SZ);if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc])return;flagged[r][cc]=!flagged[r][cc];draw();});
-init();
+  const COLS=16,ROWS=16,MINES=40,SZ=32;
+  const c=mkCanvas(COLS*SZ,ROWS*SZ+44),ctx=c.getContext('2d');
+  const NC=['','#ffffff','#dcdcdc','#cfcfcf','#bdbdbd','#aaaaaa','#999999','#888888','#777777'];
+  let board,revealed,flagged,over,won,first,startT;
+  function init(){
+    board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+    revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+    flagged=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+    over=false;won=false;first=true;
+    clearInterval(minesweeperTimer);minesweeperTimer=null;startT=null;
+    setScore('🚩 '+MINES+' ⏱ 0s');
+    draw();
+  }
+  function plant(sr,sc){
+    let p=0;
+    while(p<MINES){
+      const r=Math.floor(Math.random()*ROWS),cc=Math.floor(Math.random()*COLS);
+      if(!board[r][cc] && !(r===sr&&cc===sc)){board[r][cc]=-1;p++;}
+    }
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){
+      if(board[r][cc]===-1)continue;
+      let n=0;
+      for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(board[r+dr]?.[cc+dc]===-1)n++;
+      board[r][cc]=n;
+    }
+  }
+  function reveal(startR, startC){
+    const queue = [[startR, startC]];
+    while(queue.length){
+      const [r, cc] = queue.shift();
+      if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc]||flagged[r][cc]) continue;
+      revealed[r][cc] = true;
+      if(board[r][cc]===0){
+        for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+          if(dr===0&&dc===0) continue;
+          queue.push([r+dr, cc+dc]);
+        }
+      }
+    }
+  }
+  function checkWin(){
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++) if(board[r][cc]!==-1&&!revealed[r][cc]) return false;
+    return true;
+  }
+  function draw(){
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='rgba(255,255,255,.06)';
+    ctx.fillRect(0,0,c.width,44);
+    ctx.fillStyle='rgba(255,255,255,.8)';
+    ctx.font='13px Raleway,sans-serif';
+    ctx.textAlign='center';
+    const el = startT ? Math.floor((Date.now()-startT)/1000) : 0;
+    ctx.fillText(`🚩 ${MINES-flagged.flat().filter(Boolean).length} ⏱ ${el}s`,c.width/2,27);
+    ctx.textAlign='left';
+
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){
+      const x=cc*SZ,y=44+r*SZ;
+      if(revealed[r][cc]){
+        ctx.fillStyle=board[r][cc]===-1?'rgba(255,255,255,.12)':'rgba(255,255,255,.06)';
+        ctx.fillRect(x+1,y+1,SZ-2,SZ-2);
+        if(board[r][cc]===-1){
+          ctx.font='18px serif';
+          ctx.textAlign='center';
+          ctx.fillText('💣',x+SZ/2,y+SZ/2+6);
+          ctx.textAlign='left';
+        } else if(board[r][cc]>0){
+          ctx.fillStyle=NC[board[r][cc]];
+          ctx.font='bold 14px Raleway,sans-serif';
+          ctx.textAlign='center';
+          ctx.fillText(board[r][cc],x+SZ/2,y+SZ/2+5);
+          ctx.textAlign='left';
+        }
+      } else {
+        ctx.fillStyle='rgba(255,255,255,.04)';
+        ctx.fillRect(x+1,y+1,SZ-2,SZ-2);
+        ctx.strokeStyle='rgba(255,255,255,.12)';
+        ctx.strokeRect(x,y,SZ,SZ);
+        if(flagged[r][cc]){
+          ctx.font='16px serif';
+          ctx.textAlign='center';
+          ctx.fillText('🚩',x+SZ/2,y+SZ/2+5);
+          ctx.textAlign='left';
+        }
+      }
+    }
+
+    const hy=44+(c.height-44)/2;
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,44,c.width,c.height-44);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 24px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('💥 BOOM!',c.width/2,hy-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',c.width/2,hy+14);
+      ctx.textAlign='left';
+    }
+    if(won){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,44,c.width,c.height-44);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 22px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('YOU WIN! 🎉',c.width/2,hy-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',c.width/2,hy+14);
+      ctx.textAlign='left';
+    }
+  }
+
+  c.addEventListener('click',e=>{
+    if(over||won)return;
+    const rect=c.getBoundingClientRect();
+    const sx=c.width/rect.width, sy=c.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+    if(my<44)return;
+    const cc=Math.floor(mx/SZ), r=Math.floor((my-44)/SZ);
+    if(r<0||r>=ROWS||cc<0||cc>=COLS||flagged[r][cc])return;
+    if(first){
+      plant(r,cc);
+      first=false;
+      startT=Date.now();
+      minesweeperTimer=setInterval(()=>draw(),1000);
+    }
+    if(board[r][cc]===-1){
+      revealed[r][cc]=true;
+      over=true;
+      clearInterval(minesweeperTimer);minesweeperTimer=null;
+    } else {
+      reveal(r,cc);
+      if(checkWin()){
+        won=true;
+        clearInterval(minesweeperTimer);minesweeperTimer=null;
+      }
+    }
+    draw();
+  });
+
+  c.addEventListener('contextmenu',e=>{
+    e.preventDefault();
+    if(over||won)return;
+    const rect=c.getBoundingClientRect();
+    const sx=c.width/rect.width, sy=c.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+    if(my<44)return;
+    const cc=Math.floor(mx/SZ), r=Math.floor((my-44)/SZ);
+    if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc])return;
+    flagged[r][cc]=!flagged[r][cc];
+    draw();
+  });
+
+  init();
 }
 
 function showToast(msg) {
-const t = document.createElement(‘div’); t.className = ‘toast’; t.textContent = msg;
-document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
 }
 
-document.addEventListener(‘keydown’, e => {
-if (e.key !== ‘Enter’) return;
-if (document.getElementById(‘lockdown-overlay’).classList.contains(‘active’)) { checkLockdown(); return; }
-if (document.getElementById(‘ban-modal’).style.display === ‘flex’) { confirmBan(); return; }
-if (!document.getElementById(‘pw-page’).classList.contains(‘hidden’)) { checkPassword(); return; }
-if (!document.getElementById(‘name-page’).classList.contains(‘hidden’)) { checkName(); return; }
-if (!document.getElementById(‘banned-page’).classList.contains(‘hidden’)) { checkUnban(); return; }
-const appVisible = !document.getElementById(‘app-page’).classList.contains(‘hidden’);
-const gameActive = document.getElementById(‘game-frame-wrap’).classList.contains(‘active’);
-const embedActive = document.getElementById(‘embed-viewer’).classList.contains(‘active’);
-if (appVisible && !gameActive && !embedActive) {
-const msgInput = document.getElementById(‘global-msg-input’);
-if (msgInput && document.activeElement === msgInput) { sendGlobalMsg(); }
-}
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('lockdown-overlay').classList.contains('active')) {
+    checkLockdown(); return;
+  }
+  if (document.getElementById('ban-modal').style.display === 'flex') {
+    confirmBan(); return;
+  }
+  if (!document.getElementById('pw-page').classList.contains('hidden')) {
+    checkPassword(); return;
+  }
+  if (!document.getElementById('name-page').classList.contains('hidden')) {
+    checkName(); return;
+  }
+  if (!document.getElementById('banned-page').classList.contains('hidden')) {
+    checkUnban(); return;
+  }
+  const appVisible = !document.getElementById('app-page').classList.contains('hidden');
+  const gameActive = document.getElementById('game-frame-wrap').classList.contains('active');
+  const embedActive = document.getElementById('embed-viewer').classList.contains('active');
+  if (appVisible && !gameActive && !embedActive) {
+    if (document.activeElement === document.getElementById('global-msg-input')) {
+      sendGlobalMsg();
+    }
+  }
 });
 
-document.addEventListener(‘keydown’, e => { if (e.key === ‘Escape’) closeFullscreen(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeFullscreen();
+});
 </script>
 
 </body>
