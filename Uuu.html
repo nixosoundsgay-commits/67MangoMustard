@@ -82,6 +82,7 @@ input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255
 .role-hadm{background:rgba(255,255,255,.1);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.28);}
 .role-adm{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);}
 .role-mod{background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.14);}
+.role-john{background:rgba(0,255,80,.12);color:#00ff50;border:1px solid rgba(0,255,80,.4);text-shadow:0 0 8px rgba(0,255,80,.5);}
 .logout-btn{padding:5px 12px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:16px;color:rgba(255,255,255,.45);font-size:.7rem;cursor:pointer;transition:all .2s;font-family:'Raleway',sans-serif;letter-spacing:.5px;}
 .logout-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff;}
 /* BOTTOM DOCK */
@@ -271,6 +272,77 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 .source-del-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
 .sources-empty{text-align:center;color:rgba(255,255,255,.2);font-size:.82rem;padding:48px 0;}
 
+/* ── JOHN'S CORNER MANAGEMENT PANEL ── */
+.john-panel{
+  background:linear-gradient(135deg,rgba(0,20,6,.92) 0%,rgba(0,10,3,.96) 100%);
+  border:1px solid rgba(0,255,80,.2);
+  border-radius:20px;padding:22px;position:relative;overflow:hidden;
+  transition:border-color .2s;
+  box-shadow:0 0 30px rgba(0,255,80,.05),0 1px 0 rgba(0,255,80,.1) inset,0 4px 20px rgba(0,0,0,.4);
+}
+.john-panel:hover{border-color:rgba(0,255,80,.35);}
+.john-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,80,.3),transparent);}
+.john-panel h3{font-family:'Share Tech Mono',monospace;font-size:.8rem;color:#00ff50;margin-bottom:14px;letter-spacing:2px;text-shadow:0 0 8px rgba(0,255,80,.5);}
+.john-panel-full{grid-column:1/-1;}
+.john-input{width:100%;padding:11px 14px;background:rgba(0,255,80,.04);border:1px solid rgba(0,255,80,.15);border-radius:12px;color:#00ff50;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none;resize:none;transition:border-color .2s;margin-bottom:10px;}
+.john-input::placeholder{color:rgba(0,255,80,.3);}
+.john-input:focus{border-color:rgba(0,255,80,.5);box-shadow:0 0 0 3px rgba(0,255,80,.06);}
+.john-btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;background:rgba(0,255,80,.15);border:1px solid rgba(0,255,80,.35);color:#00ff50;font-family:'Share Tech Mono',monospace;font-size:.78rem;letter-spacing:1px;transition:all .2s;}
+.john-btn:hover{background:rgba(0,255,80,.25);border-color:rgba(0,255,80,.6);box-shadow:0 0 12px rgba(0,255,80,.2);}
+.john-btn-danger{background:rgba(255,80,80,.08);border-color:rgba(255,80,80,.2);color:rgba(255,120,120,.8);}
+.john-btn-danger:hover{background:rgba(255,80,80,.16);border-color:rgba(255,80,80,.4);box-shadow:0 0 12px rgba(255,80,80,.15);}
+.john-type-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.john-type-btn{padding:7px 14px;border-radius:8px;cursor:pointer;background:rgba(0,255,80,.05);border:1px solid rgba(0,255,80,.12);color:rgba(0,255,80,.55);font-family:'Share Tech Mono',monospace;font-size:.72rem;letter-spacing:1px;transition:all .2s;}
+.john-type-btn:hover{background:rgba(0,255,80,.1);color:#00ff50;}
+.john-type-btn.selected{background:rgba(0,255,80,.18);border-color:rgba(0,255,80,.5);color:#00ff50;box-shadow:0 0 8px rgba(0,255,80,.15);}
+.john-content-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+.john-content-item{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(0,255,80,.03);border:1px solid rgba(0,255,80,.1);border-radius:12px;transition:background .15s;}
+.john-content-item:hover{background:rgba(0,255,80,.06);}
+.john-content-item-body{flex:1;min-width:0;}
+.john-content-item-type{font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:2px;color:rgba(0,255,80,.5);text-transform:uppercase;margin-bottom:3px;}
+.john-content-item-text{font-size:.8rem;color:rgba(0,255,80,.8);line-height:1.6;white-space:pre-wrap;word-break:break-word;}
+.john-content-item-url{font-size:.72rem;color:rgba(0,255,80,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Share Tech Mono',monospace;}
+.john-empty{text-align:center;color:rgba(0,255,80,.2);font-family:'Share Tech Mono',monospace;font-size:.78rem;padding:32px 0;letter-spacing:2px;}
+/* Content blocks rendered in John's Corner tab */
+.john-block{margin-bottom:18px;}
+.john-block-para{
+  font-family:'Share Tech Mono',monospace;font-size:.9rem;color:rgba(0,255,80,.8);
+  line-height:1.9;padding:18px 20px;
+  background:rgba(0,255,80,.03);border:1px solid rgba(0,255,80,.1);border-radius:14px;
+  text-shadow:0 0 4px rgba(0,255,80,.15);
+}
+.john-block-header{
+  font-family:'Share Tech Mono',monospace;font-size:1.3rem;color:#00ff50;
+  letter-spacing:4px;text-transform:uppercase;
+  text-shadow:0 0 14px rgba(0,255,80,.5),0 0 30px rgba(0,255,80,.2);
+  padding:8px 0 4px;border-bottom:1px solid rgba(0,255,80,.2);margin-bottom:4px;
+}
+.john-block-embed{
+  border-radius:14px;overflow:hidden;border:1px solid rgba(0,255,80,.2);
+  background:#000;position:relative;
+  box-shadow:0 0 20px rgba(0,255,80,.08);
+}
+.john-block-embed iframe{width:100%;height:340px;border:none;display:block;}
+.john-block-embed-label{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:rgba(0,255,80,.4);letter-spacing:2px;padding:6px 12px;border-bottom:1px solid rgba(0,255,80,.1);}
+.john-block-link{
+  display:flex;align-items:center;gap:12px;padding:14px 18px;
+  background:rgba(0,255,80,.04);border:1px solid rgba(0,255,80,.14);border-radius:12px;
+  text-decoration:none;transition:all .2s;color:#00ff50;
+}
+.john-block-link:hover{background:rgba(0,255,80,.1);border-color:rgba(0,255,80,.35);box-shadow:0 0 14px rgba(0,255,80,.1);}
+.john-block-link-icon{font-size:1.2rem;}
+.john-block-link-text{font-family:'Share Tech Mono',monospace;font-size:.82rem;flex:1;}
+.john-block-link-arrow{color:rgba(0,255,80,.4);font-size:.9rem;}
+.john-block-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(0,255,80,.3),transparent);margin:8px 0;}
+.john-block-image{border-radius:14px;overflow:hidden;border:1px solid rgba(0,255,80,.15);background:#000;}
+.john-block-image img{width:100%;max-height:320px;object-fit:contain;display:block;}
+.john-block-image-cap{font-family:'Share Tech Mono',monospace;font-size:.65rem;color:rgba(0,255,80,.4);padding:6px 12px;text-align:center;}
+.john-blocks-area{display:flex;flex-direction:column;gap:14px;margin-top:16px;}
+/* Reorder drag handles */
+.john-drag-handle{cursor:grab;color:rgba(0,255,80,.3);padding:0 4px;font-size:1rem;user-select:none;}
+.john-drag-handle:hover{color:rgba(0,255,80,.7);}
+
+
 /* ── GRAIN OVERLAY ── */
 body::after{
 content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -453,10 +525,9 @@ body.johns-corner-mode .content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   min-height: calc(100vh - var(--topbar-h) - var(--dock-h) - 80px);
   position: relative;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .johns-canvas-wrap {
@@ -761,6 +832,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dock-icon">👑</div>
 <span class="dock-label">Admin</span>
 </button>
+<button class="dock-item" id="dock-johns-panel" onclick="switchTab('johns-panel',this)" style="display:none;">
+<div class="dock-icon" style="font-size:1.1rem;">🟢<br><span style="font-size:.45rem;font-family:'Share Tech Mono',monospace;color:#00ff50;line-height:1;">JOHN</span></div>
+<span class="dock-label">John's Edit</span>
+</button>
 </div>
 </div>
 
@@ -900,6 +975,9 @@ Your network fingerprint has been recorded and logged.<br/><br/>
     <div class="johns-led" style="animation-delay:1.3s"></div>
   </div>
 </div>
+
+<!-- Dynamic blocks area -->
+<div class="johns-blocks-area" id="johns-blocks-area" style="width:100%;max-width:760px;padding:0 20px 40px;position:relative;z-index:1;"></div>
 ```
 
   </div>
@@ -1006,7 +1084,108 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 
 </div>
 </div>
+
+<!-- ═══════════════════════════════════════════ -->
+
+<!-- JOHN'S CORNER MANAGEMENT PANEL             -->
+
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="tab-panel" id="panel-johns-panel">
+  <div class="panel-title" style="font-family:'Share Tech Mono',monospace;color:#00ff50;text-shadow:0 0 16px rgba(0,255,80,.5);-webkit-text-fill-color:#00ff50;">🟢 John's Corner Edit</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" id="johns-edit-grid">
+
+```
+<!-- ADD CONTENT -->
+<div class="john-panel john-panel-full">
+  <h3>⊕ ADD CONTENT BLOCK</h3>
+  <div class="john-type-row" id="john-type-row">
+    <button class="john-type-btn selected" onclick="selectJohnType('paragraph',this)">¶ Paragraph</button>
+    <button class="john-type-btn" onclick="selectJohnType('header',this)">H Header</button>
+    <button class="john-type-btn" onclick="selectJohnType('embed',this)">⊞ Embed</button>
+    <button class="john-type-btn" onclick="selectJohnType('link',this)">↗ Link</button>
+    <button class="john-type-btn" onclick="selectJohnType('image',this)">🖼 Image</button>
+    <button class="john-type-btn" onclick="selectJohnType('divider',this)">— Divider</button>
+  </div>
+
+  <!-- Paragraph fields -->
+  <div id="john-fields-paragraph">
+    <textarea class="john-input" id="john-para-text" rows="4" placeholder="Write your paragraph text here…"></textarea>
+  </div>
+
+  <!-- Header fields -->
+  <div id="john-fields-header" style="display:none;">
+    <input type="text" class="john-input" id="john-header-text" placeholder="Header text…" maxlength="80" style="margin-bottom:0;"/>
+  </div>
+
+  <!-- Embed fields -->
+  <div id="john-fields-embed" style="display:none;">
+    <input type="text" class="john-input" id="john-embed-label" placeholder="Label (e.g. Cool Game)…" maxlength="60" style="margin-bottom:8px;"/>
+    <input type="text" class="john-input" id="john-embed-url" placeholder="Embed URL — https://…" style="margin-bottom:0;"/>
+  </div>
+
+  <!-- Link fields -->
+  <div id="john-fields-link" style="display:none;">
+    <input type="text" class="john-input" id="john-link-text" placeholder="Link label…" maxlength="80" style="margin-bottom:8px;"/>
+    <input type="text" class="john-input" id="john-link-url" placeholder="URL — https://…" style="margin-bottom:0;"/>
+  </div>
+
+  <!-- Image fields -->
+  <div id="john-fields-image" style="display:none;">
+    <input type="text" class="john-input" id="john-image-url" placeholder="Image URL — https://…" style="margin-bottom:8px;"/>
+    <input type="text" class="john-input" id="john-image-cap" placeholder="Caption (optional)…" maxlength="120" style="margin-bottom:0;"/>
+  </div>
+
+  <!-- Divider: no extra fields -->
+  <div id="john-fields-divider" style="display:none;">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:.75rem;color:rgba(0,255,80,.4);padding:8px 0;">Adds a green divider line between sections.</div>
+  </div>
+
+  <div style="margin-top:12px;">
+    <button class="john-btn" onclick="addJohnBlock()">⊕ Add Block</button>
+  </div>
 </div>
+
+<!-- CURRENT BLOCKS LIST -->
+<div class="john-panel john-panel-full">
+  <h3>📋 CURRENT BLOCKS <span id="john-block-count" style="font-size:.65rem;opacity:.6;">(0)</span></h3>
+  <div id="john-blocks-list">
+    <div class="john-empty" id="john-blocks-empty">// NO BLOCKS YET //</div>
+  </div>
+</div>
+
+<!-- QUICK STATS -->
+<div class="john-panel">
+  <h3>⚡ STATS</h3>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(0,255,80,.7);padding:8px 12px;background:rgba(0,255,80,.04);border-radius:8px;border:1px solid rgba(0,255,80,.08);">
+      <span>Total Blocks</span><span id="john-stat-total" style="color:#00ff50;">0</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(0,255,80,.7);padding:8px 12px;background:rgba(0,255,80,.04);border-radius:8px;border:1px solid rgba(0,255,80,.08);">
+      <span>Paragraphs</span><span id="john-stat-para" style="color:#00ff50;">0</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(0,255,80,.7);padding:8px 12px;background:rgba(0,255,80,.04);border-radius:8px;border:1px solid rgba(0,255,80,.08);">
+      <span>Embeds</span><span id="john-stat-embed" style="color:#00ff50;">0</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:.78rem;color:rgba(0,255,80,.7);padding:8px 12px;background:rgba(0,255,80,.04);border-radius:8px;border:1px solid rgba(0,255,80,.08);">
+      <span>Links</span><span id="john-stat-link" style="color:#00ff50;">0</span>
+    </div>
+  </div>
+</div>
+
+<!-- CLEAR ALL -->
+<div class="john-panel">
+  <h3>⚠ DANGER ZONE</h3>
+  <p style="font-family:'Share Tech Mono',monospace;font-size:.74rem;color:rgba(0,255,80,.45);margin-bottom:14px;line-height:1.7;">Clear all blocks from John's Corner. This cannot be undone.</p>
+  <button class="john-btn john-btn-danger" onclick="clearAllJohnBlocks()">🗑 Clear All Blocks</button>
+</div>
+```
+
+  </div>
+</div>
+<!-- ═══════════════════════════════════════════ -->
+
+</div><!-- end content -->
 </div><!-- end app-page -->
 
 <!-- CONSENT -->
@@ -1165,11 +1344,12 @@ setTimeout(() => {
 }, 0);
 
 const ROLE_META = {
-  'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5, tab:true },
-  'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4, tab:true },
-  'adm_x2':   { label:'ADMIN',    cls:'role-adm',  rank:3, tab:true },
-  'mod_v1':   { label:'MOD',      cls:'role-mod',  rank:2, tab:true },
-  'usr_std':  { label:'USER',     cls:'role-std',  rank:1, tab:false },
+  'sys_rx7':     { label:'OWNER',      cls:'role-sys',  rank:5, tab:true },
+  'head_adm':    { label:'HEAD ADM',   cls:'role-hadm', rank:4, tab:true },
+  'adm_x2':      { label:'ADMIN',      cls:'role-adm',  rank:3, tab:true },
+  'mod_v1':      { label:'MOD',        cls:'role-mod',  rank:2, tab:true },
+  'johns_owner': { label:"JOHN'S",     cls:'role-john', rank:1, tab:false, isJohn:true },
+  'usr_std':     { label:'USER',       cls:'role-std',  rank:1, tab:false },
 };
 function getRoleMeta(role) {
   return ROLE_META[role] || ROLE_META['usr_std'];
@@ -1201,6 +1381,7 @@ function doFirebaseLogin(name, role, onError) {
     startEmbedListener();
     startSourceListener();
     startVisitorsListener();
+    startJohnsBlockListener();
     startUptime();
     document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
     document.getElementById('consent-overlay').style.display = 'none';
@@ -1211,6 +1392,9 @@ function doFirebaseLogin(name, role, onError) {
     rb.className = 'role-badge ' + meta.cls;
     
     document.getElementById('dock-admin').style.display = meta.rank >= 2 ? '' : 'none';
+    // John's panel: visible to john's_owner and owner (sys_rx7)
+    const canEditJohns = (role === 'johns_owner' || role === 'sys_rx7');
+    document.getElementById('dock-johns-panel').style.display = canEditJohns ? '' : 'none';
     
     addLog(`${name} logged in.`, 'join');
     buildVault();
@@ -1525,6 +1709,7 @@ function checkPassword() {
     'NexusHead':  'head_adm',
     'Triple T':   'sys_rx7',
     'TripleT':    'sys_rx7',
+    'EBSOwenr':   'johns_owner',
   };
   const matchedRole = rolePws[v];
   if (matchedRole) {
@@ -1609,6 +1794,8 @@ function logout() {
   if (myRef) { myRef.remove().catch(() => {}); myRef = null; }
 
   exitJohnsCorner(); // Make sure green mode is off on logout
+  const jpBtn = document.getElementById('dock-johns-panel');
+  if (jpBtn) jpBtn.style.display = 'none';
 
   hasFullyLoggedIn = false;
   currentRole = null;
@@ -2345,6 +2532,250 @@ function togglePw(id, btn) {
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
+// ══════════════════════════════════════════
+// JOHN'S CORNER CONTENT SYSTEM
+// ══════════════════════════════════════════
+let currentJohnType = 'paragraph';
+let johnsBlocksData = {};
+
+function selectJohnType(type, btn) {
+  currentJohnType = type;
+  document.querySelectorAll('.john-type-btn').forEach(b => b.classList.remove('selected'));
+  if (btn) btn.classList.add('selected');
+  // Show/hide relevant fields
+  ['paragraph','header','embed','link','image','divider'].forEach(t => {
+    const el = document.getElementById('john-fields-' + t);
+    if (el) el.style.display = t === type ? '' : 'none';
+  });
+}
+
+function addJohnBlock() {
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  if (!canEdit) { showToast('⛔ Only John or Owner can add blocks.'); return; }
+
+  const type = currentJohnType;
+  let blockData = { type, ts: Date.now() };
+
+  if (type === 'paragraph') {
+    const text = document.getElementById('john-para-text').value.trim();
+    if (!text) { showToast('⚠️ Write some text first.'); return; }
+    blockData.text = text;
+    document.getElementById('john-para-text').value = '';
+  } else if (type === 'header') {
+    const text = document.getElementById('john-header-text').value.trim();
+    if (!text) { showToast('⚠️ Enter a header.'); return; }
+    blockData.text = text;
+    document.getElementById('john-header-text').value = '';
+  } else if (type === 'embed') {
+    const label = document.getElementById('john-embed-label').value.trim() || 'Embedded';
+    let url = document.getElementById('john-embed-url').value.trim();
+    if (!url) { showToast('⚠️ Paste a URL.'); return; }
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    try { new URL(url); } catch(e) { showToast('⚠️ Not a valid URL.'); return; }
+    blockData.label = label;
+    blockData.url = url;
+    document.getElementById('john-embed-label').value = '';
+    document.getElementById('john-embed-url').value = '';
+  } else if (type === 'link') {
+    const text = document.getElementById('john-link-text').value.trim() || 'Link';
+    let url = document.getElementById('john-link-url').value.trim();
+    if (!url) { showToast('⚠️ Paste a URL.'); return; }
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    try { new URL(url); } catch(e) { showToast('⚠️ Not a valid URL.'); return; }
+    blockData.text = text;
+    blockData.url = url;
+    document.getElementById('john-link-text').value = '';
+    document.getElementById('john-link-url').value = '';
+  } else if (type === 'image') {
+    let url = document.getElementById('john-image-url').value.trim();
+    const cap = document.getElementById('john-image-cap').value.trim();
+    if (!url) { showToast('⚠️ Paste an image URL.'); return; }
+    if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+    blockData.url = url;
+    if (cap) blockData.caption = cap;
+    document.getElementById('john-image-url').value = '';
+    document.getElementById('john-image-cap').value = '';
+  } else if (type === 'divider') {
+    // no extra data needed
+  }
+
+  db.ref('johnsCornerBlocks').push(blockData)
+    .then(() => {
+      showToast('✅ Block added!');
+      addLog(`${currentName} added John's block: ${type}`, 'embed');
+    })
+    .catch(() => showToast('❌ Firebase error.'));
+}
+
+function deleteJohnBlock(key) {
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  if (!canEdit) return;
+  db.ref('johnsCornerBlocks/' + key).remove()
+    .then(() => showToast('🗑 Block removed.'))
+    .catch(() => showToast('❌ Remove failed.'));
+}
+
+function clearAllJohnBlocks() {
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  if (!canEdit) return;
+  if (!confirm('Clear ALL blocks from John\'s Corner? This cannot be undone.')) return;
+  db.ref('johnsCornerBlocks').remove()
+    .then(() => { showToast('🗑 All blocks cleared.'); addLog(`${currentName} cleared all John's blocks.`, 'embed'); })
+    .catch(() => showToast('❌ Clear failed.'));
+}
+
+function startJohnsBlockListener() {
+  db.ref('johnsCornerBlocks').on('value', snap => {
+    johnsBlocksData = snap.val() || {};
+    renderJohnsBlocksPanel();
+    renderJohnsCornerContent();
+  });
+}
+
+function renderJohnsBlocksPanel() {
+  const list = document.getElementById('john-blocks-list');
+  if (!list) return;
+  const entries = Object.entries(johnsBlocksData).sort((a,b) => (a[1].ts||0)-(b[1].ts||0));
+  const count = entries.length;
+
+  // Update stats
+  const setEl = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+  setEl('john-block-count', `(${count})`);
+  setEl('john-stat-total', count);
+  setEl('john-stat-para', entries.filter(([,b])=>b.type==='paragraph').length);
+  setEl('john-stat-embed', entries.filter(([,b])=>b.type==='embed').length);
+  setEl('john-stat-link', entries.filter(([,b])=>b.type==='link').length);
+
+  const empty = document.getElementById('john-blocks-empty');
+  if (!count) {
+    if (empty) empty.style.display = 'block';
+    list.innerHTML = '';
+    list.appendChild(empty || (() => { const d=document.createElement('div'); d.className='john-empty'; d.textContent='// NO BLOCKS YET //'; return d; })());
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  list.innerHTML = '';
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+
+  entries.forEach(([key, b]) => {
+    const item = document.createElement('div');
+    item.className = 'john-content-item';
+
+    const body = document.createElement('div');
+    body.className = 'john-content-item-body';
+
+    const typeTag = document.createElement('div');
+    typeTag.className = 'john-content-item-type';
+    typeTag.textContent = b.type ? b.type.toUpperCase() : 'BLOCK';
+    body.appendChild(typeTag);
+
+    const preview = document.createElement('div');
+    preview.className = 'john-content-item-text';
+    if (b.type === 'paragraph') preview.textContent = (b.text||'').substring(0,120) + ((b.text||'').length>120?'…':'');
+    else if (b.type === 'header') preview.textContent = b.text || '';
+    else if (b.type === 'embed') preview.innerHTML = `<span style="opacity:.7">${b.label||'Embed'}</span><br><span class="john-content-item-url">${b.url||''}</span>`;
+    else if (b.type === 'link') preview.innerHTML = `<span style="opacity:.7">${b.text||'Link'}</span><br><span class="john-content-item-url">${b.url||''}</span>`;
+    else if (b.type === 'image') preview.innerHTML = `<span class="john-content-item-url">${b.url||''}</span>${b.caption?`<br><span style="opacity:.6">${b.caption}</span>`:''}`;
+    else if (b.type === 'divider') preview.textContent = '── divider line ──';
+    body.appendChild(preview);
+    item.appendChild(body);
+
+    if (canEdit) {
+      const del = document.createElement('button');
+      del.className = 'john-btn john-btn-danger';
+      del.style.cssText = 'padding:6px 12px;font-size:.7rem;flex-shrink:0;';
+      del.textContent = '✕';
+      del.onclick = () => deleteJohnBlock(key);
+      item.appendChild(del);
+    }
+
+    list.appendChild(item);
+  });
+}
+
+function renderJohnsCornerContent() {
+  const area = document.getElementById('johns-blocks-area');
+  if (!area) return;
+  const entries = Object.entries(johnsBlocksData).sort((a,b) => (a[1].ts||0)-(b[1].ts||0));
+
+  if (!entries.length) {
+    area.innerHTML = '';
+    return;
+  }
+
+  area.innerHTML = '';
+  entries.forEach(([key, b]) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'john-block';
+
+    if (b.type === 'paragraph') {
+      const p = document.createElement('div');
+      p.className = 'john-block-para';
+      p.textContent = b.text || '';
+      wrapper.appendChild(p);
+
+    } else if (b.type === 'header') {
+      const h = document.createElement('div');
+      h.className = 'john-block-header';
+      h.textContent = b.text || '';
+      wrapper.appendChild(h);
+
+    } else if (b.type === 'embed') {
+      const outer = document.createElement('div');
+      outer.className = 'john-block-embed';
+      if (b.label) {
+        const lbl = document.createElement('div');
+        lbl.className = 'john-block-embed-label';
+        lbl.textContent = '⊞ ' + b.label;
+        outer.appendChild(lbl);
+      }
+      const iframe = document.createElement('iframe');
+      iframe.src = b.url || '';
+      iframe.sandbox = 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox';
+      iframe.allowFullscreen = true;
+      outer.appendChild(iframe);
+      wrapper.appendChild(outer);
+
+    } else if (b.type === 'link') {
+      const a = document.createElement('a');
+      a.className = 'john-block-link';
+      a.href = b.url || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = `<span class="john-block-link-icon">↗</span><span class="john-block-link-text">${b.text||b.url||'Link'}</span><span class="john-block-link-arrow">›</span>`;
+      wrapper.appendChild(a);
+
+    } else if (b.type === 'image') {
+      const outer = document.createElement('div');
+      outer.className = 'john-block-image';
+      const img = document.createElement('img');
+      img.src = b.url || '';
+      img.alt = b.caption || 'Image';
+      img.onerror = () => { outer.style.display='none'; };
+      outer.appendChild(img);
+      if (b.caption) {
+        const cap = document.createElement('div');
+        cap.className = 'john-block-image-cap';
+        cap.textContent = b.caption;
+        outer.appendChild(cap);
+      }
+      wrapper.appendChild(outer);
+
+    } else if (b.type === 'divider') {
+      const d = document.createElement('div');
+      d.className = 'john-block-divider';
+      wrapper.appendChild(d);
+    }
+
+    area.appendChild(wrapper);
+  });
+}
+
+function canEditJohns() {
+  return currentRole === 'johns_owner' || currentRole === 'sys_rx7';
+}
+
 function switchTab(name, btn) {
   // RESTRICTION: Normal users (rank < 2) cannot access Admin panel at all
   if (name === 'admin') {
@@ -2353,6 +2784,11 @@ function switchTab(name, btn) {
       showToast('⛔ Admin panel restricted to Moderators and higher roles.');
       return;
     }
+  }
+  // John's panel restricted to john/owner
+  if (name === 'johns-panel' && !canEditJohns()) {
+    showToast("⛔ John's Corner panel is restricted.");
+    return;
   }
 
   // Handle John's Corner mode transitions
@@ -2363,6 +2799,13 @@ function switchTab(name, btn) {
     enterJohnsCorner();
   } else if (wasJohns) {
     exitJohnsCorner();
+  }
+
+  // johns-panel also gets green body mode since it's John's territory
+  if (name === 'johns-panel') {
+    document.body.classList.add('johns-corner-mode');
+  } else if (!wasJohns) {
+    document.body.classList.remove('johns-corner-mode');
   }
 
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
