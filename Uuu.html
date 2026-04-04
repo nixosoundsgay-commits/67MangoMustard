@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>We Hate Lightspeed</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Raleway:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -270,77 +271,6 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 .source-del-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
 .sources-empty{text-align:center;color:rgba(255,255,255,.2);font-size:.82rem;padding:48px 0;}
 
-/* ── NEW PROXY TAB STYLES ── */
-#panel-proxy .proxy-container{
-  background:#111;
-  border-radius:16px;
-  overflow:hidden;
-  height:calc(100vh - var(--topbar-h) - var(--dock-h) - 120px);
-  border:1px solid rgba(255,255,255,.15);
-}
-#panel-proxy iframe{
-  width:100%;
-  height:100%;
-  border:none;
-  background:#111;
-}
-
-/* ── JOHN’S CORNER LED GREEN THEME OVERRIDE ── */
-.johns-mode{
-  --bg:#001a00;
-  --surface:rgba(0,255,65,0.12);
-  --surface2:rgba(0,255,65,0.18);
-  --border:rgba(0,255,65,0.25);
-  --border2:rgba(0,255,65,0.4);
-  --text:#00ff41;
-  --muted:#00cc33;
-  --accent:#00ff41;
-  --glass-bg:rgba(0,40,15,0.88);
-  --glass-border:#00ff41;
-}
-.johns-mode .glass{
-  background:linear-gradient(135deg,rgba(0,40,15,.92),rgba(0,25,8,.95));
-  border:2px solid #00ff41;
-  box-shadow:0 0 40px #00ff41,0 2px 0 rgba(0,255,65,.3) inset,0 32px 80px rgba(0,0,0,.9);
-}
-.johns-mode .site-title,
-.johns-mode .panel-title,
-.johns-mode .topbar .logo{
-  background:linear-gradient(90deg,#00ff41,#00cc33,#00ff41);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:0 0 20px #00ff41;
-}
-.johns-mode .blob{
-  background:radial-gradient(circle,rgba(0,255,65,.35),transparent);
-  filter:blur(70px) brightness(1.4);
-}
-.johns-mode body::after{
-  opacity:.12;
-  mix-blend-mode:screen;
-  background:repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 3px,
-    rgba(0,255,65,.25) 3px,
-    rgba(0,255,65,.25) 6px
-  );
-  animation:ledScan 4s linear infinite;
-}
-@keyframes ledScan{0%{background-position:0 0;}100%{background-position:200px 0;}}
-.johns-mode .dock{
-  border-color:#00ff41;
-  box-shadow:0 0 30px #00ff41;
-}
-.johns-mode .dock-icon{
-  border-color:#00ff41;
-  background:linear-gradient(135deg,rgba(0,255,65,.2),rgba(0,255,65,.08));
-  box-shadow:0 0 15px #00ff41;
-}
-.johns-mode .dock-item.active .dock-icon{
-  box-shadow:0 0 25px #00ff41;
-}
-
 /* ── GRAIN OVERLAY ── */
 body::after{
 content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -397,6 +327,332 @@ border-radius:50%;
 background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 70%);
 transform:translate(-50%,-50%);
 transition:opacity .3s;
+}
+
+/* ═══════════════════════════════════════════════
+   JOHN'S CORNER — GREEN LED MODE
+   Applied to body when tab is active
+═══════════════════════════════════════════════ */
+
+body.johns-corner-mode {
+  background: #000 !important;
+}
+
+body.johns-corner-mode #bg-canvas {
+  opacity: 0 !important;
+}
+
+body.johns-corner-mode .blob {
+  display: none !important;
+}
+
+body.johns-corner-mode .petal {
+  display: none !important;
+}
+
+/* Scanline overlay via ::before on body (grain is ::after) */
+body.johns-corner-mode::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,255,80,.03) 2px,
+    rgba(0,255,80,.03) 4px
+  );
+  animation: scanroll 8s linear infinite;
+}
+
+@keyframes scanroll {
+  from { background-position: 0 0; }
+  to { background-position: 0 100px; }
+}
+
+/* Topbar goes green */
+body.johns-corner-mode .topbar {
+  background: linear-gradient(180deg, rgba(0,20,6,.96) 0%, rgba(0,10,3,.98) 100%) !important;
+  border-bottom: 1px solid rgba(0,255,80,.25) !important;
+  box-shadow: 0 0 20px rgba(0,255,80,.1), 0 1px 0 rgba(0,255,80,.2) !important;
+}
+
+body.johns-corner-mode .topbar .logo {
+  background: linear-gradient(90deg, #00ff50, #00cc40) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 8px rgba(0,255,80,.6)) !important;
+}
+
+body.johns-corner-mode .user-badge {
+  background: rgba(0,255,80,.06) !important;
+  border-color: rgba(0,255,80,.2) !important;
+  color: #00ff50 !important;
+}
+
+body.johns-corner-mode .dot {
+  background: #00ff50 !important;
+  box-shadow: 0 0 6px #00ff50 !important;
+}
+
+body.johns-corner-mode .logout-btn {
+  border-color: rgba(0,255,80,.2) !important;
+  color: rgba(0,255,80,.6) !important;
+}
+body.johns-corner-mode .logout-btn:hover {
+  background: rgba(0,255,80,.12) !important;
+  color: #00ff50 !important;
+  border-color: rgba(0,255,80,.5) !important;
+}
+
+/* Dock goes green */
+body.johns-corner-mode .dock {
+  background: linear-gradient(135deg, rgba(0,15,5,.85) 0%, rgba(0,8,3,.92) 100%) !important;
+  border-color: rgba(0,255,80,.18) !important;
+  box-shadow: 0 0 0 1px rgba(0,255,80,.08) inset, 0 24px 80px rgba(0,0,0,.9), 0 0 30px rgba(0,255,80,.08) !important;
+}
+
+body.johns-corner-mode .dock-icon {
+  background: linear-gradient(135deg, rgba(0,255,80,.1) 0%, rgba(0,255,80,.04) 100%) !important;
+  border-color: rgba(0,255,80,.15) !important;
+  box-shadow: 0 1px 0 rgba(0,255,80,.12) inset, 0 4px 12px rgba(0,0,0,.6) !important;
+}
+
+body.johns-corner-mode .dock-item.active .dock-icon {
+  background: linear-gradient(135deg, rgba(0,255,80,.22) 0%, rgba(0,255,80,.12) 100%) !important;
+  border-color: rgba(0,255,80,.5) !important;
+  box-shadow: 0 1px 0 rgba(0,255,80,.3) inset, 0 0 24px rgba(0,255,80,.3), 0 4px 16px rgba(0,0,0,.6) !important;
+}
+
+body.johns-corner-mode .dock-item.active::after {
+  background: #00ff50 !important;
+  box-shadow: 0 0 8px #00ff50, 0 0 16px #00ff50 !important;
+}
+
+body.johns-corner-mode .dock-label {
+  background: rgba(0,15,5,.95) !important;
+  border-color: rgba(0,255,80,.2) !important;
+  color: #00ff50 !important;
+}
+
+/* Content area green */
+body.johns-corner-mode .content {
+  scrollbar-color: rgba(0,255,80,.3) transparent !important;
+}
+
+/* The John's Corner panel itself */
+#panel-johns {
+  position: relative;
+}
+
+/* ── JOHN'S CORNER PANEL CONTENT ── */
+.johns-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--topbar-h) - var(--dock-h) - 80px);
+  position: relative;
+  overflow: hidden;
+}
+
+.johns-canvas-wrap {
+  position: absolute;
+  inset: -20px;
+  z-index: 0;
+  overflow: hidden;
+}
+
+#johns-matrix-canvas {
+  width: 100%;
+  height: 100%;
+  opacity: 0.18;
+}
+
+.johns-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.johns-title-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.johns-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  color: #00ff50;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 10px #00ff50,
+    0 0 30px #00ff50,
+    0 0 60px rgba(0,255,80,.4),
+    0 0 100px rgba(0,255,80,.2);
+  animation: ledFlicker 4s ease-in-out infinite;
+  line-height: 1.1;
+}
+
+@keyframes ledFlicker {
+  0%,94%,96%,100% { opacity: 1; }
+  95% { opacity: 0.85; }
+}
+
+.johns-subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(.9rem, 2.5vw, 1.3rem);
+  color: rgba(0,255,80,.6);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-top: 8px;
+  text-shadow: 0 0 10px rgba(0,255,80,.4);
+  animation: ledSubPulse 3s ease-in-out infinite;
+}
+
+@keyframes ledSubPulse {
+  0%,100% { opacity: .6; }
+  50% { opacity: 1; text-shadow: 0 0 20px rgba(0,255,80,.7); }
+}
+
+.johns-divider {
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00ff50, transparent);
+  box-shadow: 0 0 8px rgba(0,255,80,.5);
+  animation: divPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes divPulse {
+  from { width: 200px; opacity: .6; }
+  to { width: 360px; opacity: 1; }
+}
+
+.johns-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(.75rem, 2vw, 1rem);
+  color: rgba(0,255,80,.5);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 6px rgba(0,255,80,.3);
+}
+
+/* LED pixel art dots decoration */
+.johns-leds {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.johns-led {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #00ff50;
+  box-shadow: 0 0 6px #00ff50, 0 0 14px rgba(0,255,80,.5);
+  animation: ledBlink 1.6s ease-in-out infinite;
+}
+
+.johns-led:nth-child(2) { animation-delay: .3s; }
+.johns-led:nth-child(3) { animation-delay: .6s; }
+.johns-led:nth-child(4) { animation-delay: .9s; }
+.johns-led:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes ledBlink {
+  0%,100% { opacity: 1; box-shadow: 0 0 6px #00ff50, 0 0 14px rgba(0,255,80,.5); }
+  50% { opacity: .25; box-shadow: none; }
+}
+
+/* Corner decorations */
+.johns-corner-deco {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-color: rgba(0,255,80,.3);
+  border-style: solid;
+  pointer-events: none;
+}
+.johns-corner-deco.tl { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+.johns-corner-deco.tr { top: 10px; right: 10px; border-width: 2px 2px 0 0; }
+.johns-corner-deco.bl { bottom: 10px; left: 10px; border-width: 0 0 2px 2px; }
+.johns-corner-deco.br { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+/* Glitch text effect */
+.johns-title-wrap::before,
+.johns-title-wrap::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  width: 100%;
+  line-height: 1.1;
+}
+.johns-title-wrap::before {
+  color: rgba(0,255,80,.6);
+  animation: glitchA 5s infinite;
+  clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+  text-shadow: 2px 0 rgba(0,255,80,.4);
+}
+.johns-title-wrap::after {
+  color: rgba(0,200,60,.4);
+  animation: glitchB 7s infinite;
+  clip-path: polygon(0 65%, 100% 65%, 100% 80%, 0 80%);
+  text-shadow: -2px 0 rgba(0,255,80,.3);
+}
+
+@keyframes glitchA {
+  0%,90%,100% { transform: translateX(0); opacity: 0; }
+  91% { transform: translateX(-4px); opacity: 1; }
+  93% { transform: translateX(4px); opacity: .8; }
+  95% { transform: translateX(0); opacity: 0; }
+}
+
+@keyframes glitchB {
+  0%,85%,100% { transform: translateX(0); opacity: 0; }
+  86% { transform: translateX(3px); opacity: 1; }
+  88% { transform: translateX(-3px); opacity: .7; }
+  90% { transform: translateX(0); opacity: 0; }
+}
+
+/* Green cursor glow override */
+body.johns-corner-mode .cursor-glow {
+  background: radial-gradient(circle, rgba(0,255,80,.06) 0%, transparent 70%) !important;
+}
+
+/* Global banner green */
+body.johns-corner-mode #global-banner {
+  background: rgba(0,15,5,.96) !important;
+  border-bottom-color: rgba(0,255,80,.2) !important;
+  color: #00ff50 !important;
+}
+body.johns-corner-mode #global-banner button {
+  background: rgba(0,255,80,.1) !important;
+  border-color: rgba(0,255,80,.2) !important;
+  color: #00ff50 !important;
+}
+
+/* Role badge green */
+body.johns-corner-mode .role-badge {
+  background: rgba(0,255,80,.08) !important;
+  border-color: rgba(0,255,80,.25) !important;
+  color: #00ff50 !important;
+}
+
+/* Dock John's icon when active */
+body.johns-corner-mode #dock-johns .dock-icon {
+  font-size: 1.4rem;
 }
 </style>
 
@@ -496,19 +752,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dock-icon">🌐</div>
 <span class="dock-label">Sources</span>
 </button>
-
-<!-- NEW: PROXY TAB DOCK -->
-<button class="dock-item" id="dock-proxy" onclick="switchTab('proxy',this)">
-<div class="dock-icon">🔌</div>
-<span class="dock-label">Proxy</span>
+<button class="dock-item" id="dock-johns" onclick="switchTab('johns',this)">
+<div class="dock-icon">🟢</div>
+<span class="dock-label">John's</span>
 </button>
-
-<!-- NEW: JOHN’S CORNER TAB DOCK -->
-<button class="dock-item" id="dock-john" onclick="switchTab('john',this)">
-<div class="dock-icon">💡</div>
-<span class="dock-label">John’s Corner</span>
-</button>
-
 <div class="dock-separator"></div>
 <button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)">
 <div class="dock-icon">👑</div>
@@ -526,6 +773,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <!-- Games -->
 <div class="tab-panel active" id="panel-games">
 <div class="panel-title">Games</div>
+
+<!-- Normal games grid -->
 
 <div id="games-list">
 <div class="games-grid" id="games-grid-inner">
@@ -550,7 +799,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <p>Click · right-click to flag</p>
 </div>
 </div>
+
 </div>
+
+<!-- Canvas games frame -->
 
 <div class="game-frame-wrap" id="game-frame-wrap">
 <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
@@ -564,12 +816,14 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <!-- Embeds -->
+
 <div class="tab-panel" id="panel-embeds">
 <div class="panel-title">🔗 Embeds</div>
 <div id="embed-links-list">
 <div class="embed-empty" id="embed-empty-msg">No embeds added yet.</div>
 <div class="embed-links-grid" id="embed-links-grid"></div>
 </div>
+<!-- Embed viewer for this tab -->
 <div id="embed-viewer">
 <div id="embed-viewer-header">
 <button class="back-btn" onclick="closeEmbedViewer()" style="margin-bottom:0;">← Back</button>
@@ -589,37 +843,71 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <!-- Sources -->
+
 <div class="tab-panel" id="panel-sources">
 <div class="panel-title">🌐 Sources</div>
 <div class="sources-empty" id="sources-empty-msg">No sources added yet.</div>
 <div class="sources-grid" id="sources-grid"></div>
 </div>
 
-<!-- NEW: PROXY TAB -->
-<div class="tab-panel" id="panel-proxy">
-<div class="panel-title">🔌 Proxy Preview</div>
-<div id="proxy-empty" class="embed-empty">No custom code has been deployed yet by an admin.</div>
-<div class="proxy-container">
-<iframe id="proxy-iframe" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals"></iframe>
-</div>
-</div>
+<!-- ═══════════════════════════════════ -->
 
-<!-- NEW: JOHN’S CORNER TAB -->
-<div class="tab-panel" id="panel-john">
-<div class="panel-title" style="background:linear-gradient(90deg,#00ff41,#00cc33); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">John’s Corner</div>
-<div style="padding:60px 30px;text-align:center;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;">
-<div style="font-size:3.8rem;letter-spacing:8px;font-family:'Cinzel Decorative',cursive;color:#00ff41;text-shadow:0 0 30px #00ff41,0 0 60px #00ff41;animation:ledPulse 1.2s ease-in-out infinite alternate;">EBS GAMES</div>
-<p style="font-size:1.4rem;color:#00cc33;text-shadow:0 0 20px #00cc33;max-width:420px;">Neon LED Mode • Full Green Theme Activated</p>
-<div style="background:rgba(0,255,65,.12);border:3px solid #00ff41;border-radius:24px;padding:32px 40px;max-width:480px;width:100%;">
-<p style="color:#00ff41;font-size:1rem;letter-spacing:2px;margin-bottom:16px;">💡 This tab instantly transforms the entire portal into a glowing green LED cyber setup.</p>
-<p style="color:#00cc33;">All buttons, glass panels, blobs, and text now pulse with neon energy.</p>
-<div style="margin-top:24px;font-size:2rem;opacity:0.9;">🌐 Enjoy the vibe while you play!</div>
+<!-- JOHN'S CORNER TAB                  -->
+
+<!-- ═══════════════════════════════════ -->
+
+<div class="tab-panel" id="panel-johns">
+  <div class="johns-main">
+    <!-- Matrix rain background canvas -->
+    <div class="johns-canvas-wrap">
+      <canvas id="johns-matrix-canvas"></canvas>
+    </div>
+
+```
+<!-- Corner decorations -->
+<div class="johns-corner-deco tl"></div>
+<div class="johns-corner-deco tr"></div>
+<div class="johns-corner-deco bl"></div>
+<div class="johns-corner-deco br"></div>
+
+<!-- Main content -->
+<div class="johns-content">
+  <!-- LED dots row -->
+  <div class="johns-leds">
+    <div class="johns-led"></div>
+    <div class="johns-led"></div>
+    <div class="johns-led"></div>
+    <div class="johns-led"></div>
+    <div class="johns-led"></div>
+  </div>
+
+  <!-- Glitch title -->
+  <div class="johns-title-wrap" data-text="EBS GAMES">
+    <div class="johns-title">EBS GAMES</div>
+    <div class="johns-subtitle">John's Corner</div>
+  </div>
+
+  <div class="johns-divider"></div>
+
+  <div class="johns-tagline">// SYSTEM ONLINE · PRESS ANY KEY \\</div>
+
+  <!-- Bottom LED dots -->
+  <div class="johns-leds">
+    <div class="johns-led" style="animation-delay:.1s"></div>
+    <div class="johns-led" style="animation-delay:.4s"></div>
+    <div class="johns-led" style="animation-delay:.7s"></div>
+    <div class="johns-led" style="animation-delay:1.0s"></div>
+    <div class="johns-led" style="animation-delay:1.3s"></div>
+  </div>
 </div>
-<button onclick="switchTab('games',document.getElementById('dock-games'))" class="btn" style="background:#00ff41;color:#001a00;max-width:280px;margin-top:20px;">Back to Games in Neon Mode</button>
+```
+
+  </div>
 </div>
-</div>
+<!-- ═══════════════════════════════════ -->
 
 <!-- Admin -->
+
 <div class="tab-panel" id="panel-admin">
 <div class="panel-title">👑 Admin Panel</div>
 <div class="admin-grid">
@@ -634,6 +922,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <!-- EMBED LINKS SECTION -->
+
 <div class="admin-card admin-full">
 <h3>🔗 Embed Links <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— add multiple links visible in the Embeds tab</span></h3>
 <div class="embed-label-row">
@@ -645,8 +934,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <button class="embed-set-btn" onclick="addEmbedLink()">Add Link</button>
 </div>
 </div>
+<!-- END EMBED SECTION -->
 
 <!-- SOURCES SECTION -->
+
 <div class="admin-card admin-full">
 <h3>🌐 Sources <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— links that open directly in a new tab</span></h3>
 <div class="embed-label-row">
@@ -658,16 +949,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <button class="embed-set-btn" onclick="addSourceLink()">Add Source</button>
 </div>
 </div>
-
-<!-- NEW: PROXY CUSTOM CODE SECTION (admin only) -->
-<div class="admin-card admin-full">
-<h3>🔌 Proxy Custom Code <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— insert any HTML/JS here. It runs live in the Proxy tab as a full preview</span></h3>
-<textarea id="proxy-code-input" rows="10" style="width:100%;background:rgba(0,255,65,.06);border:2px solid rgba(0,255,65,.4);color:#00ff41;font-family:monospace;font-size:.85rem;padding:16px;border-radius:16px;resize:vertical;outline:none;line-height:1.5;" placeholder="Paste full HTML/JS code here...&#10;&#10;Example:&#10;&lt;h1 style='color:#00ff41;text-align:center;margin-top:40px;font-size:3rem;'&gt;My Custom Proxy Page&lt;/h1&gt;&#10;&lt;script&gt;alert('Proxy is LIVE!');&lt;/script&gt;"></textarea>
-<div style="display:flex;gap:12px;margin-top:12px;">
-<button class="embed-set-btn" onclick="setProxyCode()" style="background:#00ff41;color:#001a00;font-size:.9rem;">🚀 Deploy to Proxy Tab</button>
-<button onclick="clearProxyCode()" class="btn secondary" style="padding:13px 24px;">Clear Proxy</button>
-</div>
-</div>
+<!-- END SOURCES SECTION -->
 
 <div class="admin-card">
 <h3>🟢 Online Users <span id="online-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
@@ -678,6 +960,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <h3>🚫 Banned Users <span id="ban-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
 <ul class="ban-list" id="ban-list"><li style="color:rgba(255,255,255,.3);font-size:.8rem;justify-content:center;">No bans yet</li></ul>
 </div>
+
+<!-- NEW OFFLINE BAN SYSTEM SECTION -->
 
 <div class="admin-card">
 <h3>📜 Offline Visitors <span id="visitors-count" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:2px 8px;font-size:.65rem;font-family:'Raleway',sans-serif;font-weight:600;margin-left:6px;">0</span></h3>
@@ -725,7 +1009,7 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div><!-- end app-page -->
 
-<!-- CONSENT, BAN MODAL, LOCKDOWN, FULLSCREEN (unchanged) remain exactly as in original -->
+<!-- CONSENT -->
 
 <div id="consent-overlay">
 <div style="width:min(560px,94vw);">
@@ -756,6 +1040,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 
+<!-- BAN MODAL -->
+
 <div id="ban-modal">
 <div class="glass" style="width:min(420px,92vw);padding:36px 40px;">
 <div style="font-family:'Cinzel Decorative',cursive;font-size:1rem;color:#fff;margin-bottom:6px;">Ban User</div>
@@ -769,6 +1055,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 
+<!-- LOCKDOWN OVERLAY -->
+
 <div id="lockdown-overlay">
 <h1>🔒 SITE SHUTDOWN</h1>
 <p>The site has been locked down by an administrator.<br/>Enter the relaunch code to restore access.</p>
@@ -779,6 +1067,8 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <button class="btn" onclick="checkLockdown()">Relaunch Site</button>
 </div>
 </div>
+
+<!-- FULLSCREEN OVERLAY -->
 
 <div id="fullscreen-overlay">
 <div id="fullscreen-overlay-bar">
@@ -819,13 +1109,14 @@ let bansData = {};
 let pendingBanUid = null;
 let lastGlobalMsg = null;
 let currentEmbedUrl = null, currentEmbedTitle = null;
-let window.proxyHTML = null; // NEW for proxy preview
 const BANNED_KEY = 'whl_banned_67';
 const NOTES_KEY = 'whl_notes';
 const REMEMBER_KEY = 'whl_rem';
 let hasFullyLoggedIn = false;
 
-// PAGE HELPER
+// ── JOHN'S CORNER STATE ──
+let johnsMatrixLoop = null;
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => {
     if (p.id === id) {
@@ -873,7 +1164,6 @@ setTimeout(() => {
   } catch(e) { localStorage.removeItem(REMEMBER_KEY); }
 }, 0);
 
-// ROLE SYSTEM
 const ROLE_META = {
   'sys_rx7':  { label:'OWNER',    cls:'role-sys',  rank:5, tab:true },
   'head_adm': { label:'HEAD ADM', cls:'role-hadm', rank:4, tab:true },
@@ -888,7 +1178,6 @@ function canTarget(myRole, theirRole) {
   return (getRoleMeta(myRole).rank) > (getRoleMeta(theirRole).rank);
 }
 
-// Shared Firebase login
 function doFirebaseLogin(name, role, onError) {
   myRef = db.ref('online').push();
   myRef.set({
@@ -912,7 +1201,6 @@ function doFirebaseLogin(name, role, onError) {
     startEmbedListener();
     startSourceListener();
     startVisitorsListener();
-    startProxyListener(); // NEW
     startUptime();
     document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
     document.getElementById('consent-overlay').style.display = 'none';
@@ -923,8 +1211,6 @@ function doFirebaseLogin(name, role, onError) {
     rb.className = 'role-badge ' + meta.cls;
     
     document.getElementById('dock-admin').style.display = meta.rank >= 2 ? '' : 'none';
-    document.getElementById('dock-proxy').style.display = meta.rank >= 3 ? '' : 'none'; // Proxy only for Admins+
-    document.getElementById('dock-john').style.display = ''; // John’s Corner for everyone
     
     addLog(`${name} logged in.`, 'join');
     buildVault();
@@ -937,7 +1223,7 @@ function doFirebaseLogin(name, role, onError) {
   });
 }
 
-// PETALS + CANVAS (unchanged)
+// PETALS + CANVAS
 function makePetal() {
   const el = document.createElement('div');
   el.className = 'petal';
@@ -953,7 +1239,6 @@ function makePetal() {
 }
 setInterval(makePetal, 600);
 
-// Cursor glow (unchanged)
 (function() {
   const glow = document.getElementById('cursor-glow');
   if (!glow) return;
@@ -968,7 +1253,6 @@ setInterval(makePetal, 600);
   })();
 })();
 
-// Canvas background (unchanged) — kept exactly as original
 (function(){
   const c = document.getElementById('bg-canvas'), ctx = c.getContext('2d');
   let W, H;
@@ -1132,7 +1416,88 @@ setInterval(makePetal, 600);
   })();
 })();
 
-// PASSWORD
+// ══════════════════════════════
+// JOHN'S CORNER — MATRIX RAIN
+// ══════════════════════════════
+function startJohnsMatrix() {
+  const canvas = document.getElementById('johns-matrix-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    const wrap = canvas.parentElement;
+    if (!wrap) return;
+    canvas.width = wrap.offsetWidth;
+    canvas.height = wrap.offsetHeight;
+  }
+  resize();
+
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>[]{}';
+  const fontSize = 14;
+  let cols = Math.floor(canvas.width / fontSize);
+  let drops = Array(cols).fill(1);
+
+  function draw() {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + 'px Share Tech Mono, monospace';
+
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      const alpha = Math.random() * 0.5 + 0.5;
+
+      // Head of the column — brighter
+      if (drops[i] * fontSize === canvas.height || Math.random() > 0.95) {
+        ctx.fillStyle = `rgba(180,255,200,${alpha})`;
+      } else {
+        ctx.fillStyle = `rgba(0,255,80,${alpha * 0.7})`;
+      }
+
+      ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  if (johnsMatrixLoop) clearInterval(johnsMatrixLoop);
+  johnsMatrixLoop = setInterval(draw, 40);
+
+  // Handle resize
+  window.addEventListener('resize', () => {
+    resize();
+    cols = Math.floor(canvas.width / fontSize);
+    drops = Array(cols).fill(1);
+  });
+}
+
+function stopJohnsMatrix() {
+  if (johnsMatrixLoop) {
+    clearInterval(johnsMatrixLoop);
+    johnsMatrixLoop = null;
+  }
+  // Clear the canvas
+  const canvas = document.getElementById('johns-matrix-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function enterJohnsCorner() {
+  document.body.classList.add('johns-corner-mode');
+  setTimeout(startJohnsMatrix, 50); // slight delay so panel is visible
+}
+
+function exitJohnsCorner() {
+  document.body.classList.remove('johns-corner-mode');
+  stopJohnsMatrix();
+}
+
+// PASSWORD — with rate limiting
 let _pwAttempts = 0, _pwCooldown = false;
 function checkPassword() {
   const v = document.getElementById('pw-input').value.trim();
@@ -1183,7 +1548,6 @@ function toggleHint() {
   h.style.display = h.style.display === 'block' ? 'none' : 'block';
 }
 
-// NAME GATE
 function checkName() {
   const raw = document.getElementById('name-input').value.trim();
   const err = document.getElementById('name-err');
@@ -1216,7 +1580,6 @@ function checkName() {
   document.getElementById('consent-overlay').style.display = 'flex';
 }
 
-// CONSENT + LOGOUT (unchanged except for new dock resets)
 function authorizeConsent() {
   const consentErr = document.getElementById('consent-err');
   if (!document.getElementById('cc1').checked || !document.getElementById('cc2').checked || !document.getElementById('cc3').checked) {
@@ -1245,6 +1608,8 @@ function leaveConsent() {
 function logout() {
   if (myRef) { myRef.remove().catch(() => {}); myRef = null; }
 
+  exitJohnsCorner(); // Make sure green mode is off on logout
+
   hasFullyLoggedIn = false;
   currentRole = null;
   currentName = null;
@@ -1253,7 +1618,6 @@ function logout() {
   visitorsData = {};
   bansData = {};
   sessionStart = null;
-  window.proxyHTML = null;
 
   if (typeof backToGames === 'function') backToGames();
   if (typeof closeEmbedViewer === 'function') closeEmbedViewer();
@@ -1288,7 +1652,7 @@ function logout() {
   showPage('pw-page');
 }
 
-// OFFLINE VISITORS + BAN SYSTEM (unchanged)
+// OFFLINE BAN SYSTEM
 function startVisitorsListener() {
   db.ref('visitors').on('value', snap => {
     visitorsData = snap.val() || {};
@@ -1371,7 +1735,6 @@ function offlineBan(name) {
   }).catch(() => showToast('❌ Firebase write failed'));
 }
 
-// FIREBASE LISTENERS
 function startPresenceListener() {
   let prev = new Set();
   let isInitialLoad = true;
@@ -1606,62 +1969,6 @@ function deleteSourceLink(key, title) {
   addLog(`${currentName} removed source: "${title}"`, 'embed');
 }
 
-// NEW: PROXY CODE LISTENER + RENDER
-function startProxyListener() {
-  db.ref('proxyCode').on('value', snap => {
-    window.proxyHTML = snap.val() ? snap.val().html : null;
-    // If user is currently on proxy tab, refresh preview instantly
-    if (document.getElementById('panel-proxy').classList.contains('active')) {
-      renderProxyPreview();
-    }
-  });
-}
-
-function renderProxyPreview() {
-  const empty = document.getElementById('proxy-empty');
-  const iframe = document.getElementById('proxy-iframe');
-  if (!window.proxyHTML) {
-    if (empty) empty.style.display = 'block';
-    if (iframe) iframe.style.display = 'none';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-  if (iframe) {
-    iframe.style.display = 'block';
-    iframe.srcdoc = window.proxyHTML; // runs the full HTML + JS you inserted
-  }
-}
-
-function setProxyCode() {
-  if (getRoleMeta(currentRole).rank < 3) {
-    showToast('⛔ Only Admins+ can deploy proxy code.');
-    return;
-  }
-  const code = document.getElementById('proxy-code-input').value.trim();
-  if (!code) {
-    showToast('⚠️ Enter some HTML/JS first.');
-    return;
-  }
-  db.ref('proxyCode').set({
-    html: code,
-    by: currentName,
-    ts: Date.now()
-  }).then(() => {
-    showToast('🚀 Proxy code deployed live to Proxy tab!');
-    document.getElementById('proxy-code-input').value = '';
-  }).catch(() => showToast('❌ Firebase error.'));
-  addLog(`${currentName} deployed custom proxy code`, 'embed');
-}
-
-function clearProxyCode() {
-  if (getRoleMeta(currentRole).rank < 3) return;
-  db.ref('proxyCode').remove().then(() => {
-    showToast('🗑 Proxy code cleared.');
-    window.proxyHTML = null;
-  });
-}
-
-// OPEN / CLOSE EMBED + FULLSCREEN (unchanged)
 function openEmbedViewer(url, title) {
   if (!url || !/^https?:\/\//i.test(url)) return;
   currentEmbedUrl = url;
@@ -1719,7 +2026,12 @@ function closeFullscreen() {
   setTimeout(() => { iframe.src = ''; }, 50);
 }
 
-// ONLINE / BANS RENDER (unchanged)
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str || '');
+  return d.innerHTML;
+}
+
 function renderOnline() {
   const ul = document.getElementById('online-list');
   if (!ul) return;
@@ -1879,7 +2191,6 @@ function checkUnban() {
   }
 }
 
-// GLOBAL MESSAGE + LOCKDOWN (unchanged)
 let _lastBroadcast = 0;
 function sendGlobalMsg() {
   if (getRoleMeta(currentRole).rank < 2) return;
@@ -2034,49 +2345,35 @@ function togglePw(id, btn) {
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
-// SWITCH TAB — with new logic for Proxy + John’s Corner
 function switchTab(name, btn) {
-  const r = getRoleMeta(currentRole || 'usr_std').rank;
-
-  // Restriction for Proxy (admin only)
-  if (name === 'proxy') {
-    if (r < 3) {
-      showToast('⛔ Proxy tab is restricted to Admins and above.');
+  // RESTRICTION: Normal users (rank < 2) cannot access Admin panel at all
+  if (name === 'admin') {
+    const r = getRoleMeta(currentRole || 'usr_std').rank;
+    if (r < 2) {
+      showToast('⛔ Admin panel restricted to Moderators and higher roles.');
       return;
     }
   }
 
-  // Reset John’s Corner neon theme first
-  document.body.classList.remove('johns-mode');
-  const logoEl = document.querySelector('.topbar .logo');
-  if (logoEl) logoEl.innerHTML = 'We Hate Lightspeed';
+  // Handle John's Corner mode transitions
+  const wasJohns = document.getElementById('panel-johns') &&
+                   document.getElementById('panel-johns').classList.contains('active');
+
+  if (name === 'johns') {
+    enterJohnsCorner();
+  } else if (wasJohns) {
+    exitJohnsCorner();
+  }
 
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.dock-item').forEach(b => b.classList.remove('active'));
-
   const panel = document.getElementById('panel-' + name);
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
-
   if (name !== 'embeds') closeEmbedViewer();
-
-  // John’s Corner — auto-apply green LED theme + change title
-  if (name === 'john') {
-    document.body.classList.add('johns-mode');
-    if (logoEl) {
-      logoEl.innerHTML = `<span style="color:#00ff41;text-shadow:0 0 25px #00ff41;letter-spacing:4px;">EBS GAMES</span>`;
-    }
-    // Also force render proxy in case user was on it before
-    if (window.proxyHTML) renderProxyPreview();
-  }
-
-  // If switching TO proxy tab, render the latest code
-  if (name === 'proxy') {
-    renderProxyPreview();
-  }
 }
 
-// GAMES (unchanged)
+// GAMES
 let currentGame = null, gameLoop = null, minesweeperTimer = null;
 
 function launchGame(g) {
@@ -2128,13 +2425,449 @@ function setScore(s) {
   document.getElementById('game-score').textContent = s;
 }
 
-// Snake, Tetris, 2048, Minesweeper functions are unchanged (kept exactly as original)
-function startSnake() { /* ... full original snake code ... */ }
-function startTetris() { /* ... full original tetris code ... */ }
-function start2048() { /* ... full original 2048 code ... */ }
-function startMinesweeper() { /* ... full original minesweeper code ... */ }
+function startSnake() {
+  const SZ = 20, COLS = 25, ROWS = 22;
+  const c = mkCanvas(COLS*SZ, ROWS*SZ), ctx = c.getContext('2d');
+  let snake = [{x:12,y:11},{x:11,y:11},{x:10,y:11}],
+    dir = {x:1,y:0}, nd = {x:1,y:0},
+    food = sf(), score = 0, dead = false;
 
-// Toast
+  function sf() {
+    let f;
+    do {
+      f = {x:Math.floor(Math.random()*COLS), y:Math.floor(Math.random()*ROWS)};
+    } while (snake.some(s => s.x===f.x && s.y===f.y));
+    return f;
+  }
+
+  function draw() {
+    ctx.fillStyle = '#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.strokeStyle = 'rgba(255,255,255,.05)';
+    for(let x=0;x<COLS;x++){ctx.beginPath();ctx.moveTo(x*SZ,0);ctx.lineTo(x*SZ,c.height);ctx.stroke();}
+    for(let y=0;y<ROWS;y++){ctx.beginPath();ctx.moveTo(0,y*SZ);ctx.lineTo(c.width,y*SZ);ctx.stroke();}
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = '#fff';
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(food.x*SZ+SZ/2, food.y*SZ+SZ/2, SZ/2-2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    snake.forEach((s,i) => {
+      ctx.fillStyle = i===0 ? '#fff' : `rgba(255,255,255,${Math.max(.25,.85 - i*.08)})`;
+      ctx.fillRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2);
+    });
+    if(dead){
+      ctx.fillStyle='rgba(0,0,0,.7)';
+      ctx.fillRect(0,0,c.width,c.height);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 28px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',c.width/2,c.height/2-16);
+      ctx.fillStyle='rgba(255,255,255,.75)';
+      ctx.font='14px Raleway,sans-serif';
+      ctx.fillText('Press ↺ Restart',c.width/2,c.height/2+16);
+    }
+  }
+
+  function step() {
+    if(dead) return;
+    dir = nd;
+    const h = {x:snake[0].x+dir.x, y:snake[0].y+dir.y};
+    if(h.x<0||h.x>=COLS||h.y<0||h.y>=ROWS||snake.some(s=>s.x===h.x&&s.y===h.y)){
+      dead = true;
+      draw();
+      return;
+    }
+    snake.unshift(h);
+    if(h.x===food.x&&h.y===food.y){
+      score++;
+      setScore('Score: ' + score);
+      food = sf();
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+
+  window._skH = e => {
+    const m = {
+      ArrowUp:{x:0,y:-1},
+      ArrowDown:{x:0,y:1},
+      ArrowLeft:{x:-1,y:0},
+      ArrowRight:{x:1,y:0}
+    };
+    if(m[e.key]) {
+      const d = m[e.key];
+      if (!(d.x === -dir.x && d.y === -dir.y)) nd = d;
+      e.preventDefault();
+    }
+  };
+  document.removeEventListener('keydown', window._skH);
+  document.addEventListener('keydown', window._skH);
+  clearInterval(gameLoop);
+  gameLoop = setInterval(step,110);
+  draw();
+  setScore('Score: 0');
+}
+
+function startTetris() {
+  const W = 10, H = 20, SZ = 28;
+  const c = mkCanvas(W*SZ+120, H*SZ), ctx = c.getContext('2d');
+  const PS = [
+    {s:[[1,1,1,1]]},
+    {s:[[1,1],[1,1]]},
+    {s:[[0,1,0],[1,1,1]]},
+    {s:[[1,0,0],[1,1,1]]},
+    {s:[[0,0,1],[1,1,1]]},
+    {s:[[0,1,1],[1,1,0]]},
+    {s:[[1,1,0],[0,1,1]]}
+  ];
+  let board = Array.from({length:H},()=>Array(W).fill(0)), cur, cx, cy, score=0, level=1, lines=0, over=false;
+
+  function np() {
+    const p = PS[Math.floor(Math.random()*PS.length)];
+    cur = {s:p.s.map(r=>[...r])};
+    cx = Math.floor((W-cur.s[0].length)/2);
+    cy = 0;
+    if(col()) over = true;
+  }
+  function col(ox=0,oy=0,sh=cur.s) {
+    for(let r=0;r<sh.length;r++) for(let c2=0;c2<sh[r].length;c2++) {
+      if(sh[r][c2] && (cy+r+oy>=H || cx+c2+ox<0 || cx+c2+ox>=W || board[cy+r+oy]?.[cx+c2+ox])) return true;
+    }
+    return false;
+  }
+  function rot(sh){return sh[0].map((_,i)=>sh.map(r=>r[i]).reverse());}
+  function place() {
+    cur.s.forEach((r,ri)=>r.forEach((v,ci)=>{if(v)board[cy+ri][cx+ci]=1;}));
+    let cl=0;
+    board = board.filter(r=>{if(r.every(v=>v)){cl++;return false;}return true;});
+    while(board.length<H) board.unshift(Array(W).fill(0));
+    lines += cl;
+    score += cl*100*level;
+    const prevLevel = level;
+    if(lines >= level*5) level++;
+    setScore(`Score: ${score} Lv: ${level}`);
+    if (level !== prevLevel) {
+      clearInterval(gameLoop);
+      gameLoop = setInterval(()=>{drop();}, Math.max(100, 500 - level * 40));
+    }
+    np();
+  }
+  function drop() {
+    if(over) return;
+    if(!col(0,1)) cy++;
+    else place();
+    draw();
+  }
+  function draw() {
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    for(let r=0;r<H;r++) for(let cl=0;cl<W;cl++){
+      if(board[r][cl]){
+        ctx.fillStyle='#fff';
+        ctx.fillRect(cl*SZ+1,r*SZ+1,SZ-2,SZ-2);
+      } else {
+        ctx.strokeStyle='rgba(255,255,255,.05)';
+        ctx.strokeRect(cl*SZ,r*SZ,SZ,SZ);
+      }
+    }
+    if(!over) cur.s.forEach((row,ri)=>row.forEach((v,ci)=>{
+      if(v){
+        ctx.fillStyle='#fff';
+        ctx.shadowColor='#fff';
+        ctx.shadowBlur=8;
+        ctx.fillRect((cx+ci)*SZ+1,(cy+ri)*SZ+1,SZ-2,SZ-2);
+        ctx.shadowBlur=0;
+      }
+    }));
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.72)';
+      ctx.fillRect(0,0,W*SZ,H*SZ);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 22px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',W*SZ/2,H*SZ/2-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',W*SZ/2,H*SZ/2+14);
+    }
+  }
+  window._tkH = e => {
+    if(over) return;
+    if(e.key==='ArrowLeft' && !col(-1)) cx--;
+    else if(e.key==='ArrowRight' && !col(1)) cx++;
+    else if(e.key==='ArrowDown') drop();
+    else if(e.key==='ArrowUp') {
+      const r = rot(cur.s);
+      if(!col(0,0,r)) cur.s = r;
+    } else if(e.key===' ') {
+      while(!col(0,1)) cy++;
+      place();
+    } else return;
+    e.preventDefault();
+    draw();
+  };
+  document.removeEventListener('keydown', window._tkH);
+  document.addEventListener('keydown', window._tkH);
+  np();
+  draw();
+  setScore('Score: 0 Lv: 1');
+  clearInterval(gameLoop);
+  gameLoop = setInterval(()=>{drop();}, Math.max(100,500-level*40));
+}
+
+function start2048() {
+  const SZ=100,GAP=10,N=4,cw=N*SZ+(N+1)*GAP;
+  const c=mkCanvas(cw,cw+60),ctx=c.getContext('2d');
+  let grid=Array.from({length:N},()=>Array(N).fill(0)),score=0,best=0;
+  function ar(){
+    let e=[];
+    grid.forEach((r,ri)=>r.forEach((v,ci)=>{if(!v)e.push([ri,ci]);}));
+    if(!e.length)return;
+    const [r,cl]=e[Math.floor(Math.random()*e.length)];
+    grid[r][cl]=Math.random()<.9?2:4;
+  }
+  ar(); ar();
+  function slide(row){
+    let r=row.filter(v=>v);
+    for(let i=0;i<r.length-1;i++) if(r[i]===r[i+1]) { r[i]*=2; score+=r[i]; r.splice(i+1,1); }
+    while(r.length<N) r.push(0);
+    return r;
+  }
+  function move(dir){
+    let moved=false, ng=grid.map(r=>[...r]);
+    if(dir==='left'||dir==='right'){
+      ng = ng.map(r=>{
+        const s = dir==='left' ? slide(r) : slide([...r].reverse()).reverse();
+        if(s.join()!==r.join()) moved=true;
+        return s;
+      });
+    } else {
+      for(let cc=0;cc<N;cc++){
+        let col=grid.map(r=>r[cc]);
+        const s = dir==='up' ? slide(col) : slide([...col].reverse()).reverse();
+        if(s.join()!==col.join()) moved=true;
+        s.forEach((v,r)=>ng[r][cc]=v);
+      }
+    }
+    if(moved){
+      grid=ng;
+      ar();
+      if(score>best) best=score;
+      setScore(`Score: ${score} Best: ${best}`);
+    }
+    draw();
+  }
+  function draw(){
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++){
+      const v=grid[r][cl], x=GAP+cl*(SZ+GAP), y=60+GAP+r*(SZ+GAP);
+      ctx.fillStyle = v ? '#fff' : '#1d1d1d';
+      ctx.beginPath();
+      ctx.roundRect(x,y,SZ,SZ,10);
+      ctx.fill();
+      if(v){
+        ctx.fillStyle='#000';
+        ctx.font=`bold ${v>=1000?20:v>=100?24:28}px Raleway,sans-serif`;
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(v,x+SZ/2,y+SZ/2);
+      }
+    }
+    const over = isGameOver();
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,60,cw,cw);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 26px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('GAME OVER',cw/2,60+cw/2-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',cw/2,60+cw/2+14);
+    }
+  }
+  function isGameOver(){
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++) if(!grid[r][cl]) return false;
+    for(let r=0;r<N;r++) for(let cl=0;cl<N;cl++){
+      const v = grid[r][cl];
+      if(cl+1<N && grid[r][cl+1]===v) return false;
+      if(r+1<N && grid[r+1][cl]===v) return false;
+    }
+    return true;
+  }
+  window._g2kH = e => {
+    const m={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'};
+    if(m[e.key]){ move(m[e.key]); e.preventDefault(); }
+  };
+  document.removeEventListener('keydown',window._g2kH);
+  document.addEventListener('keydown',window._g2kH);
+  draw();
+  setScore('Score: 0');
+}
+
+function startMinesweeper() {
+  const COLS=16,ROWS=16,MINES=40,SZ=32;
+  const c=mkCanvas(COLS*SZ,ROWS*SZ+44),ctx=c.getContext('2d');
+  const NC=['','#ffffff','#dcdcdc','#cfcfcf','#bdbdbd','#aaaaaa','#999999','#888888','#777777'];
+  let board,revealed,flagged,over,won,first,startT;
+  function init(){
+    board=Array.from({length:ROWS},()=>Array(COLS).fill(0));
+    revealed=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+    flagged=Array.from({length:ROWS},()=>Array(COLS).fill(false));
+    over=false;won=false;first=true;
+    clearInterval(minesweeperTimer);minesweeperTimer=null;startT=null;
+    setScore('🚩 '+MINES+' ⏱ 0s');
+    draw();
+  }
+  function plant(sr,sc){
+    let p=0;
+    while(p<MINES){
+      const r=Math.floor(Math.random()*ROWS),cc=Math.floor(Math.random()*COLS);
+      if(!board[r][cc] && !(r===sr&&cc===sc)){board[r][cc]=-1;p++;}
+    }
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){
+      if(board[r][cc]===-1)continue;
+      let n=0;
+      for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(board[r+dr]?.[cc+dc]===-1)n++;
+      board[r][cc]=n;
+    }
+  }
+  function reveal(startR, startC){
+    const queue = [[startR, startC]];
+    while(queue.length){
+      const [r, cc] = queue.shift();
+      if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc]||flagged[r][cc]) continue;
+      revealed[r][cc] = true;
+      if(board[r][cc]===0){
+        for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+          if(dr===0&&dc===0) continue;
+          queue.push([r+dr, cc+dc]);
+        }
+      }
+    }
+  }
+  function checkWin(){
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++) if(board[r][cc]!==-1&&!revealed[r][cc]) return false;
+    return true;
+  }
+  function draw(){
+    ctx.fillStyle='#090909';
+    ctx.fillRect(0,0,c.width,c.height);
+    ctx.fillStyle='rgba(255,255,255,.06)';
+    ctx.fillRect(0,0,c.width,44);
+    ctx.fillStyle='rgba(255,255,255,.8)';
+    ctx.font='13px Raleway,sans-serif';
+    ctx.textAlign='center';
+    const el = startT ? Math.floor((Date.now()-startT)/1000) : 0;
+    ctx.fillText(`🚩 ${MINES-flagged.flat().filter(Boolean).length} ⏱ ${el}s`,c.width/2,27);
+    ctx.textAlign='left';
+
+    for(let r=0;r<ROWS;r++)for(let cc=0;cc<COLS;cc++){
+      const x=cc*SZ,y=44+r*SZ;
+      if(revealed[r][cc]){
+        ctx.fillStyle=board[r][cc]===-1?'rgba(255,255,255,.12)':'rgba(255,255,255,.06)';
+        ctx.fillRect(x+1,y+1,SZ-2,SZ-2);
+        if(board[r][cc]===-1){
+          ctx.font='18px serif';
+          ctx.textAlign='center';
+          ctx.fillText('💣',x+SZ/2,y+SZ/2+6);
+          ctx.textAlign='left';
+        } else if(board[r][cc]>0){
+          ctx.fillStyle=NC[board[r][cc]];
+          ctx.font='bold 14px Raleway,sans-serif';
+          ctx.textAlign='center';
+          ctx.fillText(board[r][cc],x+SZ/2,y+SZ/2+5);
+          ctx.textAlign='left';
+        }
+      } else {
+        ctx.fillStyle='rgba(255,255,255,.04)';
+        ctx.fillRect(x+1,y+1,SZ-2,SZ-2);
+        ctx.strokeStyle='rgba(255,255,255,.12)';
+        ctx.strokeRect(x,y,SZ,SZ);
+        if(flagged[r][cc]){
+          ctx.font='16px serif';
+          ctx.textAlign='center';
+          ctx.fillText('🚩',x+SZ/2,y+SZ/2+5);
+          ctx.textAlign='left';
+        }
+      }
+    }
+
+    const hy=44+(c.height-44)/2;
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,44,c.width,c.height-44);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 24px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('💥 BOOM!',c.width/2,hy-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',c.width/2,hy+14);
+      ctx.textAlign='left';
+    }
+    if(won){
+      ctx.fillStyle='rgba(0,0,0,.65)';
+      ctx.fillRect(0,44,c.width,c.height-44);
+      ctx.fillStyle='#fff';
+      ctx.font='bold 22px Cinzel Decorative,serif';
+      ctx.textAlign='center';
+      ctx.fillText('YOU WIN! 🎉',c.width/2,hy-14);
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.font='13px Raleway,sans-serif';
+      ctx.fillText('↺ Restart',c.width/2,hy+14);
+      ctx.textAlign='left';
+    }
+  }
+
+  c.addEventListener('click',e=>{
+    if(over||won)return;
+    const rect=c.getBoundingClientRect();
+    const sx=c.width/rect.width, sy=c.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+    if(my<44)return;
+    const cc=Math.floor(mx/SZ), r=Math.floor((my-44)/SZ);
+    if(r<0||r>=ROWS||cc<0||cc>=COLS||flagged[r][cc])return;
+    if(first){
+      plant(r,cc);
+      first=false;
+      startT=Date.now();
+      minesweeperTimer=setInterval(()=>draw(),1000);
+    }
+    if(board[r][cc]===-1){
+      revealed[r][cc]=true;
+      over=true;
+      clearInterval(minesweeperTimer);minesweeperTimer=null;
+    } else {
+      reveal(r,cc);
+      if(checkWin()){
+        won=true;
+        clearInterval(minesweeperTimer);minesweeperTimer=null;
+      }
+    }
+    draw();
+  });
+
+  c.addEventListener('contextmenu',e=>{
+    e.preventDefault();
+    if(over||won)return;
+    const rect=c.getBoundingClientRect();
+    const sx=c.width/rect.width, sy=c.height/rect.height;
+    const mx=(e.clientX-rect.left)*sx, my=(e.clientY-rect.top)*sy;
+    if(my<44)return;
+    const cc=Math.floor(mx/SZ), r=Math.floor((my-44)/SZ);
+    if(r<0||r>=ROWS||cc<0||cc>=COLS||revealed[r][cc])return;
+    flagged[r][cc]=!flagged[r][cc];
+    draw();
+  });
+
+  init();
+}
+
 function showToast(msg) {
   const t = document.createElement('div');
   t.className = 'toast';
@@ -2143,7 +2876,6 @@ function showToast(msg) {
   setTimeout(() => t.remove(), 3000);
 }
 
-// Keyboard shortcuts (unchanged)
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
   if (document.getElementById('lockdown-overlay').classList.contains('active')) {
@@ -2174,16 +2906,6 @@ document.addEventListener('keydown', e => {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeFullscreen();
 });
-
-// LED pulse animation for John’s Corner title
-const ledStyle = document.createElement('style');
-ledStyle.innerHTML = `
-@keyframes ledPulse {
-  0% { text-shadow: 0 0 10px #00ff41; }
-  100% { text-shadow: 0 0 40px #00ff41, 0 0 70px #00ff41; }
-}
-`;
-document.head.appendChild(ledStyle);
 </script>
 
 </body>
