@@ -83,6 +83,8 @@ input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255
 .role-adm{background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2);}
 .role-mod{background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.14);}
 .role-john{background:rgba(0,255,80,.12);color:#00ff50;border:1px solid rgba(0,255,80,.4);text-shadow:0 0 8px rgba(0,255,80,.5);}
+.role-god{background:linear-gradient(135deg,rgba(255,200,0,.18),rgba(255,120,0,.14));color:#ffd700;border:1px solid rgba(255,200,0,.5);text-shadow:0 0 10px rgba(255,200,0,.6);animation:godShimmer 2s ease-in-out infinite;}
+@keyframes godShimmer{0%,100%{box-shadow:0 0 8px rgba(255,200,0,.3);}50%{box-shadow:0 0 20px rgba(255,200,0,.6),0 0 40px rgba(255,120,0,.2);}}
 .logout-btn{padding:5px 12px;background:transparent;border:1px solid rgba(255,255,255,.1);border-radius:16px;color:rgba(255,255,255,.45);font-size:.7rem;cursor:pointer;transition:all .2s;font-family:'Raleway',sans-serif;letter-spacing:.5px;}
 .logout-btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:#fff;}
 /* BOTTOM DOCK */
@@ -343,7 +345,48 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 .john-drag-handle:hover{color:rgba(0,255,80,.7);}
 
 
-/* ── GRAIN OVERLAY ── */
+/* ── LOW DETAIL MODE ── */
+#ld-toggle{
+  position:fixed;bottom:16px;right:16px;z-index:9995;
+  padding:7px 13px;
+  background:rgba(10,10,20,.75);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  color:rgba(255,255,255,.4);
+  font-size:.62rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  font-family:'Raleway',sans-serif;
+  transition:all .2s;
+  backdrop-filter:blur(12px);
+  display:none; /* hidden until logged in */
+}
+#ld-toggle:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.25);}
+#ld-toggle.ld-on{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7);}
+
+body.low-detail #bg-canvas{display:none !important;}
+body.low-detail .blob{display:none !important;}
+body.low-detail .petal{display:none !important;}
+body.low-detail .cursor-glow{display:none !important;}
+body.low-detail body::before{display:none !important;}
+body.low-detail body::after{display:none !important;}
+body.low-detail{background:#06060e !important;}
+body.low-detail .topbar{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background:rgba(6,6,14,.98) !important;}
+body.low-detail .dock{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background:rgba(8,8,20,.98) !important;}
+body.low-detail .content{scrollbar-color:rgba(255,255,255,.2) transparent;}
+body.low-detail .glass{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;background:rgba(10,10,20,.98) !important;}
+body.low-detail .admin-card,
+body.low-detail .game-card,
+body.low-detail .embed-link-card,
+body.low-detail .source-card,
+body.low-detail .john-panel{backdrop-filter:none !important;}
+/* Disable animations in low detail */
+body.low-detail *{animation-play-state:paused !important;}
+body.low-detail .dot{animation:none !important;opacity:1 !important;}
+body.low-detail .role-god{animation:none !important;}
+body.low-detail .btn:hover,
+body.low-detail .dock-item:hover{transform:none !important;}
 body::after{
 content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
 background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
@@ -1257,6 +1300,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <iframe id="fullscreen-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
 </div>
 
+<!-- LOW DETAIL TOGGLE -->
+
+<button id="ld-toggle" onclick="toggleLowDetail()">⚡ Low Detail</button>
+
 <script>
 /*
 ════════════════════════════════════════════════════════
@@ -1344,6 +1391,7 @@ setTimeout(() => {
 }, 0);
 
 const ROLE_META = {
+  'ttt_god':     { label:'TTT GOD',    cls:'role-god',  rank:6, tab:true },
   'sys_rx7':     { label:'OWNER',      cls:'role-sys',  rank:5, tab:true },
   'head_adm':    { label:'HEAD ADM',   cls:'role-hadm', rank:4, tab:true },
   'adm_x2':      { label:'ADMIN',      cls:'role-adm',  rank:3, tab:true },
@@ -1393,13 +1441,22 @@ function doFirebaseLogin(name, role, onError) {
     
     document.getElementById('dock-admin').style.display = meta.rank >= 2 ? '' : 'none';
     // John's panel: visible to john's_owner and owner (sys_rx7)
-    const canEditJohns = (role === 'johns_owner' || role === 'sys_rx7');
+    const canEditJohns = (role === 'johns_owner' || role === 'sys_rx7' || role === 'ttt_god');
     document.getElementById('dock-johns-panel').style.display = canEditJohns ? '' : 'none';
     
     addLog(`${name} logged in.`, 'join');
     buildVault();
     showPage('app-page');
     sessionStart = Date.now();
+    // Show low-detail toggle and restore saved preference
+    const ldBtn = document.getElementById('ld-toggle');
+    if (ldBtn) ldBtn.style.display = '';
+    try {
+      if (localStorage.getItem(LD_KEY)) {
+        document.body.classList.add('low-detail');
+        if (ldBtn) { ldBtn.textContent = '✦ Full Detail'; ldBtn.classList.add('ld-on'); }
+      }
+    } catch(e) {}
   }).catch(e => {
     console.error('Firebase write error:', e.code, e.message);
     hasFullyLoggedIn = false;
@@ -1709,7 +1766,8 @@ function checkPassword() {
     'NexusHead':  'head_adm',
     'Triple T':   'sys_rx7',
     'TripleT':    'sys_rx7',
-    'EBSOwenr':   'johns_owner',
+    'EBSOwner':   'johns_owner',
+    'TTTGOD':     'ttt_god',
   };
   const matchedRole = rolePws[v];
   if (matchedRole) {
@@ -1737,17 +1795,37 @@ function checkName() {
   const raw = document.getElementById('name-input').value.trim();
   const err = document.getElementById('name-err');
   err.style.display = 'none';
-  const bad = !raw || raw.length < 2 || raw.length > 30
-    || /\d/.test(raw)
-    || /[<>"'&;{}]/.test(raw)
-    || (raw.length > 3 && /^(.)\1+$/.test(raw.replace(/\s/g,'')))
-    || raw.split(' ').filter(Boolean).length < 2;
-  if (bad) {
-    err.textContent = 'Invalid name. Enter your real full name (First Last).';
-    err.style.display = 'block';
-    document.getElementById('name-input').value = '';
-    return;
+
+  // Special locked-name roles
+  if (pendingRole === 'johns_owner') {
+    if (raw !== 'John B') {
+      err.textContent = 'This role requires a specific identity. Access denied.';
+      err.style.display = 'block';
+      document.getElementById('name-input').value = '';
+      return;
+    }
+  } else if (pendingRole === 'ttt_god') {
+    if (raw !== 'TungTungGod') {
+      err.textContent = 'This role requires a specific identity. Access denied.';
+      err.style.display = 'block';
+      document.getElementById('name-input').value = '';
+      return;
+    }
+  } else {
+    // Normal name validation for all other roles
+    const bad = !raw || raw.length < 2 || raw.length > 30
+      || /\d/.test(raw)
+      || /[<>"'&;{}]/.test(raw)
+      || (raw.length > 3 && /^(.)\1+$/.test(raw.replace(/\s/g,'')))
+      || raw.split(' ').filter(Boolean).length < 2;
+    if (bad) {
+      err.textContent = 'Invalid name. Enter your real full name (First Last).';
+      err.style.display = 'block';
+      document.getElementById('name-input').value = '';
+      return;
+    }
   }
+
   currentName = raw.replace(/[^a-zA-Z\s\-'\.]/g, '').trim();
   currentRole = pendingRole;
 
@@ -1796,6 +1874,10 @@ function logout() {
   exitJohnsCorner(); // Make sure green mode is off on logout
   const jpBtn = document.getElementById('dock-johns-panel');
   if (jpBtn) jpBtn.style.display = 'none';
+  // Hide low-detail toggle and reset mode
+  const ldBtn = document.getElementById('ld-toggle');
+  if (ldBtn) { ldBtn.style.display = 'none'; ldBtn.textContent = '⚡ Low Detail'; ldBtn.classList.remove('ld-on'); }
+  document.body.classList.remove('low-detail');
 
   hasFullyLoggedIn = false;
   currentRole = null;
@@ -2476,14 +2558,16 @@ function saveNotes() {
 }
 
 const _vaultData = [
-  { id:'v_trap',  label:'🪤 Trap / Ban Code',       secret: atob('Njc='),              rank: 0, section:'Portal Entry' },
-  { id:'v_user',  label:'👤 User Password',          secret: atob('VFRU'),              rank: 1, section:null },
-  { id:'v_mod',   label:'🛡️ Mod Password',           secret: atob('U2hhZG93TW9k'),      rank: 2, section:null },
-  { id:'v_adm',   label:'⚙️ Admin Password',         secret: atob('R3JpZEFkbWlu'),      rank: 3, section:null },
-  { id:'v_hadm',  label:'💠 Head Admin Password',    secret: atob('TmV4dXNIZWFk'),      rank: 4, section:null },
-  { id:'v_owner', label:'👑 Owner Password',         secret: atob('VHJpcGxlIFQ='),      rank: 5, section:null },
-  { id:'v_unban', label:'🔓 Unban Override',         secret: atob('VGhlIEJpZyBTYWh1cg=='), rank: 0, section:'Overrides' },
-  { id:'v_lock',  label:'🔒 Lockdown Relaunch',      secret: atob('NDE='),              rank: 0, section:null },
+  { id:'v_trap',  label:'🪤 Trap / Ban Code',       secret: atob('Njc='),                   rank: 0, section:'Portal Entry' },
+  { id:'v_user',  label:'👤 User Password',          secret: atob('VFRU'),                   rank: 1, section:null },
+  { id:'v_mod',   label:'🛡️ Mod Password',           secret: atob('U2hhZG93TW9k'),           rank: 2, section:null },
+  { id:'v_adm',   label:'⚙️ Admin Password',         secret: atob('R3JpZEFkbWlu'),           rank: 3, section:null },
+  { id:'v_hadm',  label:'💠 Head Admin Password',    secret: atob('TmV4dXNIZWFk'),           rank: 4, section:null },
+  { id:'v_owner', label:'👑 Owner Password',         secret: atob('VHJpcGxlIFQ='),           rank: 5, section:null },
+  { id:'v_god',   label:'⚡ TTT God Password',       secret: atob('VFRUR09E'),               rank: 6, section:null },
+  { id:'v_john',  label:'🟢 John\'s Owner Password', secret: atob('RUJTT3duZXI='),           rank: 5, section:null },
+  { id:'v_unban', label:'🔓 Unban Override',         secret: atob('VGhlIEJpZyBTYWh1cg=='),   rank: 0, section:'Overrides' },
+  { id:'v_lock',  label:'🔒 Lockdown Relaunch',      secret: atob('NDE='),                   rank: 0, section:null },
 ];
 
 function buildVault() {
@@ -2550,7 +2634,7 @@ function selectJohnType(type, btn) {
 }
 
 function addJohnBlock() {
-  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7' || currentRole === 'ttt_god');
   if (!canEdit) { showToast('⛔ Only John or Owner can add blocks.'); return; }
 
   const type = currentJohnType;
@@ -2608,7 +2692,7 @@ function addJohnBlock() {
 }
 
 function deleteJohnBlock(key) {
-  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7' || currentRole === 'ttt_god');
   if (!canEdit) return;
   db.ref('johnsCornerBlocks/' + key).remove()
     .then(() => showToast('🗑 Block removed.'))
@@ -2616,7 +2700,7 @@ function deleteJohnBlock(key) {
 }
 
 function clearAllJohnBlocks() {
-  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7' || currentRole === 'ttt_god');
   if (!canEdit) return;
   if (!confirm('Clear ALL blocks from John\'s Corner? This cannot be undone.')) return;
   db.ref('johnsCornerBlocks').remove()
@@ -2656,7 +2740,7 @@ function renderJohnsBlocksPanel() {
   if (empty) empty.style.display = 'none';
 
   list.innerHTML = '';
-  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7');
+  const canEdit = (currentRole === 'johns_owner' || currentRole === 'sys_rx7' || currentRole === 'ttt_god');
 
   entries.forEach(([key, b]) => {
     const item = document.createElement('div');
@@ -2773,7 +2857,7 @@ function renderJohnsCornerContent() {
 }
 
 function canEditJohns() {
-  return currentRole === 'johns_owner' || currentRole === 'sys_rx7';
+  return currentRole === 'johns_owner' || currentRole === 'sys_rx7' || currentRole === 'ttt_god';
 }
 
 function switchTab(name, btn) {
@@ -3317,6 +3401,22 @@ function showToast(msg) {
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
+}
+
+const LD_KEY = 'whl_lowdetail';
+function toggleLowDetail() {
+  const isOn = document.body.classList.toggle('low-detail');
+  const btn = document.getElementById('ld-toggle');
+  if (btn) {
+    btn.textContent = isOn ? '✦ Full Detail' : '⚡ Low Detail';
+    btn.classList.toggle('ld-on', isOn);
+  }
+  // Pause/resume matrix if John's corner is active
+  if (isOn && johnsMatrixLoop) { clearInterval(johnsMatrixLoop); johnsMatrixLoop = null; }
+  else if (!isOn && document.getElementById('panel-johns') && document.getElementById('panel-johns').classList.contains('active')) {
+    startJohnsMatrix();
+  }
+  try { localStorage.setItem(LD_KEY, isOn ? '1' : ''); } catch(e) {}
 }
 
 document.addEventListener('keydown', e => {
