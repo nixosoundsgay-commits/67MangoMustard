@@ -1403,12 +1403,14 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <h3>💀 Jumpscare <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— hits ALL devices for 3 sec · Admin+</span></h3>
 <p style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.6;">Pick a preset or paste any image URL.</p>
 <div class="js-images-grid" id="js-images-grid">
-  <div class="js-img-option selected" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/c/c9/Scary_maze_game_zoomed.jpg',this)">😱</div>
-  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/1200px-Camponotus_flavomarginatus_ant.jpg',this)">🐜</div>
-  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Gatto_europeo4.jpg/1200px-Gatto_europeo4.jpg',this)">🐱</div>
-  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg',this)">🖼️</div>
-  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Ruoff_Home_Mortgage_Music_Center_Noblesville_Indiana.jpg/1200px-Ruoff_Home_Mortgage_Music_Center_Noblesville_Indiana.jpg',this)">👻</div>
-  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Fis_chzol2.jpg/1200px-Fis_chzol2.jpg',this)">🕷️</div>
+  <div class="js-img-option selected" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png',this)" title="Troll Face">😈</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme.jpg',this)" title="Doge">🐕</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/4/4f/Pepe_the_Frog.png',this)" title="Pepe">🐸</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/7/74/Shrek.jpg',this)" title="Shrek">🫏</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/d/dc/Grumpy_Cat_%28made_Shawn_Mendes_proud%29.jpg',this)" title="Grumpy Cat">😾</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Man_Looking_at_Woman.jpg/1280px-Man_Looking_at_Woman.jpg',this)" title="Distracted BF">👀</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/6/6c/Thisisfine.png',this)" title="This Is Fine">🔥</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/4/45/NyanCat.png',this)" title="Nyan Cat">🌈</div>
 </div>
 <div class="js-custom-row">
   <input type="url" id="js-custom-url" placeholder="Or paste any image URL…"/>
@@ -3949,7 +3951,7 @@ function triggerBrainrotLocally(images, duration) {
 // ==================================================
 // JUMPSCARE SYSTEM
 // ==================================================
-let selectedJsImageUrl = 'https://upload.wikimedia.org/wikipedia/en/c/c9/Scary_maze_game_zoomed.jpg';
+let selectedJsImageUrl = 'https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png';
 
 function selectJsImage(url, el) {
   selectedJsImageUrl = url;
@@ -3988,14 +3990,116 @@ function startJumpscareListener() {
     overlay.classList.add('active');
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.07));
-      const src = ctx.createBufferSource();
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
-      src.buffer = buf; src.connect(gain); gain.connect(ctx.destination); src.start();
+      const sr  = ctx.sampleRate;
+      const master = ctx.createGain();
+      master.gain.setValueAtTime(4.0, ctx.currentTime); // LOUD
+      master.connect(ctx.destination);
+
+      // ── 1. SCREAM BURST — massive white-noise hit ──
+      const screamLen = sr * 0.6;
+      const screamBuf = ctx.createBuffer(1, screamLen, sr);
+      const screamData = screamBuf.getChannelData(0);
+      for (let i = 0; i < screamLen; i++) {
+        screamData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (sr * 0.05));
+      }
+      const screamSrc = ctx.createBufferSource();
+      screamSrc.buffer = screamBuf;
+      const screamGain = ctx.createGain();
+      screamGain.gain.setValueAtTime(5.0, ctx.currentTime);
+      screamGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.55);
+      screamSrc.connect(screamGain);
+      screamGain.connect(master);
+      screamSrc.start(ctx.currentTime);
+
+      // ── 2. PHONK KICK PATTERN (4-on-the-floor hard kick) ──
+      function makeKick(startTime) {
+        const osc = ctx.createOscillator();
+        const env = ctx.createGain();
+        osc.frequency.setValueAtTime(180, startTime);
+        osc.frequency.exponentialRampToValueAtTime(40, startTime + 0.12);
+        env.gain.setValueAtTime(3.5, startTime);
+        env.gain.exponentialRampToValueAtTime(0.001, startTime + 0.22);
+        osc.connect(env); env.connect(master);
+        osc.start(startTime); osc.stop(startTime + 0.25);
+      }
+
+      // ── 3. 808 BASS SLIDE ──
+      function make808(startTime, freq) {
+        const osc = ctx.createOscillator();
+        const env = ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, startTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.7, startTime + 0.18);
+        env.gain.setValueAtTime(2.2, startTime);
+        env.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+        osc.connect(env); env.connect(master);
+        osc.start(startTime); osc.stop(startTime + 0.4);
+      }
+
+      // ── 4. PHONK HI-HAT (distorted noise bursts) ──
+      function makeHat(startTime, vol) {
+        const bufLen = Math.floor(sr * 0.04);
+        const nb = ctx.createBuffer(1, bufLen, sr);
+        const nd = nb.getChannelData(0);
+        for (let i = 0; i < bufLen; i++) nd[i] = Math.random() * 2 - 1;
+        const ns = ctx.createBufferSource();
+        ns.buffer = nb;
+        const hf = ctx.createBiquadFilter();
+        hf.type = 'highpass';
+        hf.frequency.value = 8000;
+        const hg = ctx.createGain();
+        hg.gain.setValueAtTime(vol, startTime);
+        hg.gain.exponentialRampToValueAtTime(0.001, startTime + 0.04);
+        ns.connect(hf); hf.connect(hg); hg.connect(master);
+        ns.start(startTime);
+      }
+
+      // ── 5. ITALIAN BRAINROT MELODY (Bombardiro Crocodilo vibe) ──
+      // Synthesized as a wonky distorted lead playing the iconic tune
+      const brainrotNotes = [
+        // freq, start, duration — "BRRR BRRR PATAPIM" melodic phrase
+        [523, 0.0,  0.12], [523, 0.13, 0.12], [659, 0.26, 0.12],
+        [523, 0.40, 0.12], [784, 0.53, 0.22], [740, 0.77, 0.12],
+        [659, 0.91, 0.28], [523, 1.21, 0.12], [659, 1.35, 0.12],
+        [784, 1.49, 0.12], [880, 1.63, 0.28], [784, 1.93, 0.12],
+        [659, 2.07, 0.22], [523, 2.31, 0.12], [440, 2.45, 0.28],
+        [523, 2.75, 0.4 ],
+      ];
+      brainrotNotes.forEach(([freq, t, dur]) => {
+        const osc = ctx.createOscillator();
+        const dist = ctx.createWaveShaper();
+        // Hard clip distortion for that phonk grit
+        const curve = new Float32Array(256);
+        for (let i = 0; i < 256; i++) {
+          const x = (i * 2) / 256 - 1;
+          curve[i] = Math.max(-0.6, Math.min(0.6, x * 4));
+        }
+        dist.curve = curve;
+        const env = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.value = freq;
+        env.gain.setValueAtTime(1.4, ctx.currentTime + t);
+        env.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + dur + 0.02);
+        osc.connect(dist); dist.connect(env); env.connect(master);
+        osc.start(ctx.currentTime + t);
+        osc.stop(ctx.currentTime + t + dur + 0.05);
+      });
+
+      // ── 6. SCHEDULE PHONK PATTERN over 3 seconds ──
+      const bpm = 140;
+      const beat = 60 / bpm;
+      for (let i = 0; i < 12; i++) {
+        const t = ctx.currentTime + 0.05 + i * beat * 0.5;
+        makeKick(t);
+        make808(t, i % 4 === 0 ? 80 : (i % 2 === 0 ? 60 : 50));
+        makeHat(t + beat * 0.25, i % 2 === 0 ? 1.8 : 1.0);
+        makeHat(t + beat * 0.375, 0.6);
+      }
+
+      // ── 7. Master fade-out near end ──
+      master.gain.setValueAtTime(4.0, ctx.currentTime + 2.4);
+      master.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3.1);
+
     } catch(e) {}
     setTimeout(() => {
       overlay.classList.remove('active');
