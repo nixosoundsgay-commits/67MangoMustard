@@ -234,8 +234,36 @@ input:focus{border-color:rgba(255,255,255,.35);box-shadow:0 0 0 3px rgba(255,255
 .consent-check-wrap label{display:flex;align-items:flex-start;gap:11px;cursor:pointer;font-size:.8rem;color:rgba(255,255,255,.7);letter-spacing:0;text-transform:none;}
 .consent-check-wrap input[type=checkbox]{width:15px;height:15px;accent-color:#fff;margin-top:2px;flex-shrink:0;}
 #ban-modal{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.8);backdrop-filter:blur(20px);display:none;align-items:center;justify-content:center;}
-.toast{position:fixed;bottom:calc(var(--dock-h) + 28px);left:50%;transform:translateX(-50%);background:rgba(10,10,20,.95);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:11px 22px;font-size:.82rem;color:#fff;z-index:10000;animation:toastIn .35s cubic-bezier(.22,1,.36,1);pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.6);}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(16px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+#toast-container{position:fixed;top:calc(var(--topbar-h) + 14px);right:18px;z-index:10010;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:290px;}
+.toast{
+  position:relative;overflow:hidden;
+  background:rgba(10,10,22,.94);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  padding:13px 16px 18px;
+  font-size:.82rem;color:#fff;
+  box-shadow:0 8px 32px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.06) inset;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  pointer-events:none;
+  transform:translateX(calc(100% + 24px));
+  opacity:0;
+  transition:transform .38s cubic-bezier(.22,1,.36,1), opacity .28s ease;
+  will-change:transform;
+}
+.toast.toast-show{transform:translateX(0);opacity:1;}
+.toast.toast-hide{transform:translateX(calc(100% + 24px));opacity:0;transition:transform .32s cubic-bezier(.55,0,1,.45),opacity .24s ease;}
+.toast-icon{font-size:1rem;margin-right:7px;vertical-align:-.1em;}
+.toast-msg{line-height:1.45;}
+.toast-bar{
+  position:absolute;bottom:0;left:0;height:3px;
+  background:linear-gradient(90deg,rgba(255,255,255,.6),rgba(255,255,255,.2));
+  border-radius:0 0 14px 14px;
+  width:100%;
+  transform-origin:left;
+  animation:toastBarShrink 3s linear forwards;
+}
+@keyframes toastBarShrink{from{transform:scaleX(1);}to{transform:scaleX(0);}}
 .hint-link{display:block;text-align:center;margin-top:14px;color:rgba(255,255,255,.35);font-size:.7rem;cursor:pointer;text-decoration:none;transition:color .2s;letter-spacing:1px;}
 .hint-link:hover{color:rgba(255,255,255,.7);}
 #hint-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;font-size:.78rem;color:#fff;margin-top:10px;display:none;text-align:center;line-height:1.7;animation:glassIn .3s ease;}
@@ -535,6 +563,27 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 }
 .chat-notif-badge.visible{display:flex;}
 #dock-chat{position:relative;}
+
+/* -- JUMPSCARE -- */
+#jumpscare-overlay{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:#000;}
+#jumpscare-overlay.active{display:flex;animation:jsFlash .08s ease;}
+@keyframes jsFlash{0%,100%{opacity:1;}50%{opacity:.3;}}
+#jumpscare-img{max-width:100vw;max-height:100vh;width:100%;height:100%;object-fit:cover;animation:jsShake .12s ease infinite;}
+@keyframes jsShake{0%{transform:translate(0,0) scale(1.04);}20%{transform:translate(-6px,4px) scale(1.06);}40%{transform:translate(8px,-5px) scale(1.03);}60%{transform:translate(-5px,7px) scale(1.05);}80%{transform:translate(6px,-3px) scale(1.04);}100%{transform:translate(0,0) scale(1.04);}}
+.js-images-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-bottom:14px;}
+.js-img-option{border-radius:10px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;aspect-ratio:1;background:#111;display:flex;align-items:center;justify-content:center;font-size:1.8rem;position:relative;}
+.js-img-option img{width:100%;height:100%;object-fit:cover;display:block;}
+.js-img-option:hover{border-color:rgba(255,255,255,.35);transform:scale(1.05);}
+.js-img-option.selected{border-color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 16px rgba(255,255,255,.15);}
+.js-img-option.selected::after{content:"checkmark";font-family:serif;content:"\2713";position:absolute;top:4px;right:6px;font-size:.8rem;color:#fff;text-shadow:0 1px 4px #000;}
+.js-fire-btn{width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#ff2020,#cc0000);color:#fff;font-family:"Cinzel Decorative",cursive;font-size:.78rem;font-weight:700;letter-spacing:2px;transition:all .2s;box-shadow:0 4px 20px rgba(255,0,0,.3);position:relative;overflow:hidden;}
+.js-fire-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,0,0,.45);}
+.js-fire-btn::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.2),transparent 60%);pointer-events:none;}
+.js-custom-row{display:flex;gap:8px;margin-bottom:12px;}
+.js-custom-row input{flex:1;padding:9px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font-family:"Raleway",sans-serif;font-size:.8rem;outline:none;transition:border-color .2s;margin:0;}
+.js-custom-row input:focus{border-color:rgba(255,255,255,.3);}
+.js-custom-row button{padding:9px 16px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:rgba(255,255,255,.07);color:#fff;font-size:.75rem;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:"Raleway",sans-serif;}
+.js-custom-row button:hover{background:rgba(255,255,255,.14);}
 
 /* ── LOW DETAIL MODE ── */
 #ld-toggle{
@@ -1322,6 +1371,23 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 
 <div class="admin-card">
+<h3>💀 Jumpscare <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— hits ALL devices for 3 sec · Admin+</span></h3>
+<p style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.6;">Pick a preset or paste any image URL.</p>
+<div class="js-images-grid" id="js-images-grid">
+  <div class="js-img-option selected" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/en/c/c9/Scary_maze_game_zoomed.jpg',this)">😱</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/1200px-Camponotus_flavomarginatus_ant.jpg',this)">🐜</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Gatto_europeo4.jpg/1200px-Gatto_europeo4.jpg',this)">🐱</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg',this)">🖼️</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Ruoff_Home_Mortgage_Music_Center_Noblesville_Indiana.jpg/1200px-Ruoff_Home_Mortgage_Music_Center_Noblesville_Indiana.jpg',this)">👻</div>
+  <div class="js-img-option" onclick="selectJsImage('https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Fis_chzol2.jpg/1200px-Fis_chzol2.jpg',this)">🕷️</div>
+</div>
+<div class="js-custom-row">
+  <input type="url" id="js-custom-url" placeholder="Or paste any image URL…"/>
+  <button onclick="setCustomJsImage()">Use URL</button>
+</div>
+<button class="js-fire-btn" onclick="fireJumpscare()">⚡ JUMPSCARE EVERYONE</button>
+</div>
+<div class="admin-card">
 <h3>🔒 Site Lockdown</h3>
 <p style="font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.7;">Shuts the site for ALL users on every device. Relaunch password: <strong style="color:#fff;">41</strong></p>
 <button class="lockdown-btn" onclick="triggerLockdown()">⚠️ Initiate Lockdown</button>
@@ -1705,8 +1771,14 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <iframe id="fullscreen-iframe" src="" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation allow-modals" allowfullscreen allow="fullscreen; autoplay"></iframe>
 </div>
 
-<!-- LOW DETAIL TOGGLE -->
+<!-- JUMPSCARE OVERLAY -->
 
+<div id="jumpscare-overlay"><img id="jumpscare-img" src="" alt=""/></div>
+
+<!-- TOAST CONTAINER -->
+
+<div id="toast-container"></div>
+<!-- LOW DETAIL TOGGLE -->
 <button id="ld-toggle" onclick="toggleLowDetail()">⚡ Low Detail</button>
 
 <script>
@@ -1838,6 +1910,7 @@ function doFirebaseLogin(name, role, onError) {
     startWofListener();
     startAnnounceListener();
     startChatListeners();
+    startJumpscareListener();
     restoreDisguiseFromStorage();
     buildDisguiseGrid();
     startUptime();
@@ -3681,6 +3754,65 @@ function clearAllJohnBlocks() {
 }
 
 
+// ==================================================
+// JUMPSCARE SYSTEM
+// ==================================================
+let selectedJsImageUrl = 'https://upload.wikimedia.org/wikipedia/en/c/c9/Scary_maze_game_zoomed.jpg';
+
+function selectJsImage(url, el) {
+  selectedJsImageUrl = url;
+  document.querySelectorAll('.js-img-option').forEach(o => o.classList.remove('selected'));
+  if (el) el.classList.add('selected');
+}
+
+function setCustomJsImage() {
+  const url = document.getElementById('js-custom-url').value.trim();
+  if (!url) { showToast('⚠ Paste an image URL first.'); return; }
+  if (!/^https?:\/\//i.test(url)) { showToast('⚠ URL must start with https://'); return; }
+  selectedJsImageUrl = url;
+  document.querySelectorAll('.js-img-option').forEach(o => o.classList.remove('selected'));
+  showToast('✅ Custom image set!');
+}
+
+function fireJumpscare() {
+  if (getRoleMeta(currentRole).rank < 3) { showToast('⛔ Admin and above only.'); return; }
+  if (!selectedJsImageUrl) { showToast('⚠ Select an image first.'); return; }
+  db.ref('jumpscare').set({ url: selectedJsImageUrl, ts: Date.now(), firedBy: currentName })
+    .then(() => { showToast('💀 Jumpscare fired!'); addLog(currentName + ' fired a jumpscare!', 'lock'); })
+    .catch(() => showToast('❌ Firebase error.'));
+}
+
+function startJumpscareListener() {
+  let _lastJsTs = 0;
+  db.ref('jumpscare').on('value', snap => {
+    const d = snap.val();
+    if (!d || !d.url || !d.ts) return;
+    if (d.ts === _lastJsTs) return;
+    _lastJsTs = d.ts;
+    const overlay = document.getElementById('jumpscare-overlay');
+    const img = document.getElementById('jumpscare-img');
+    if (!overlay || !img) return;
+    img.src = d.url;
+    overlay.classList.add('active');
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const buf = ctx.createBuffer(1, ctx.sampleRate * 0.5, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.07));
+      const src = ctx.createBufferSource();
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      src.buffer = buf; src.connect(gain); gain.connect(ctx.destination); src.start();
+    } catch(e) {}
+    setTimeout(() => {
+      overlay.classList.remove('active');
+      img.src = '';
+      db.ref('jumpscare').remove().catch(()=>{});
+    }, 3000);
+  });
+}
+
 // ══════════════════════════════════════════
 // WALL OF FAME
 // ══════════════════════════════════════════
@@ -4501,12 +4633,40 @@ function startMinesweeper() {
   init();
 }
 
-function showToast(msg) {
+function showToast(msg, duration) {
+  duration = duration || 3000;
+  const container = document.getElementById('toast-container');
+  if (!container) return;
   const t = document.createElement('div');
   t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
+  // Icon split: grab leading emoji chars
+  const iconRx = /^([\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}✅❌⚠📢🗑🚫💬👋⛔🏆📣🔑🔒⚡↺👑💀⚙🎮✨]+)/u;
+  const m = msg.match(iconRx);
+  if (m) {
+    const icon = document.createElement('span');
+    icon.className = 'toast-icon';
+    icon.textContent = m[1];
+    t.appendChild(icon);
+    const msgSpan = document.createElement('span');
+    msgSpan.className = 'toast-msg';
+    msgSpan.textContent = msg.slice(m[1].length).trimStart();
+    t.appendChild(msgSpan);
+  } else {
+    const msgSpan = document.createElement('span');
+    msgSpan.className = 'toast-msg';
+    msgSpan.textContent = msg;
+    t.appendChild(msgSpan);
+  }
+  const bar = document.createElement('div');
+  bar.className = 'toast-bar';
+  bar.style.animationDuration = duration + 'ms';
+  t.appendChild(bar);
+  container.appendChild(t);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('toast-show')));
+  setTimeout(() => {
+    t.classList.add('toast-hide');
+    setTimeout(() => t.remove(), 400);
+  }, duration);
 }
 
 const LD_KEY = 'whl_lowdetail';
