@@ -656,6 +656,131 @@ body.low-detail .dot{animation:none !important;opacity:1 !important;}
 body.low-detail .role-god{animation:none !important;}
 body.low-detail .btn:hover,
 body.low-detail .dock-item:hover{transform:none !important;}
+
+/* ════════════════════════════════════════════════════════
+   SPACE THEMES  — applied via data-theme="<id>" on <html>
+   ════════════════════════════════════════════════════════ */
+
+/* ─────────── LUMINOSITY — soft blue stellar corona ─────────── */
+[data-theme="luminosity"]{--bg:#01010f;--glass-bg:rgba(6,10,40,0.78);--glass-border:rgba(160,200,255,0.13);--accent:#a8d4ff;}
+[data-theme="luminosity"] body{background:#01010f;}
+[data-theme="luminosity"] .topbar{background:linear-gradient(180deg,rgba(4,8,36,.92),rgba(2,4,22,.88)) !important;border-bottom-color:rgba(140,190,255,.15) !important;box-shadow:0 1px 0 rgba(140,190,255,.1),0 0 40px rgba(80,140,255,.08) !important;}
+[data-theme="luminosity"] .topbar .logo{background:linear-gradient(90deg,#c8e8ff,#6ab4ff) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 12px rgba(120,180,255,.7)) !important;}
+[data-theme="luminosity"] .dock{background:linear-gradient(135deg,rgba(4,8,40,.82),rgba(2,4,24,.9)) !important;border-color:rgba(140,190,255,.18) !important;box-shadow:0 0 0 1px rgba(140,190,255,.07) inset,0 24px 80px rgba(0,0,0,.85),0 0 40px rgba(80,140,255,.07) !important;}
+[data-theme="luminosity"] .dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(140,190,255,.22),rgba(80,140,255,.14)) !important;border-color:rgba(160,210,255,.5) !important;box-shadow:0 0 20px rgba(120,180,255,.3) !important;}
+[data-theme="luminosity"] .dock-item.active::after{background:#a8d4ff !important;box-shadow:0 0 10px #a8d4ff !important;}
+[data-theme="luminosity"] .dot{background:#a8d4ff !important;}
+[data-theme="luminosity"] .glass{background:linear-gradient(135deg,rgba(6,12,50,.86),rgba(2,6,30,.92)) !important;border-color:rgba(140,190,255,.16) !important;box-shadow:0 2px 0 rgba(140,190,255,.08) inset,0 32px 80px rgba(0,0,0,.85) !important;}
+[data-theme="luminosity"] .admin-card,[data-theme="luminosity"] .settings-card,[data-theme="luminosity"] .chat-card,[data-theme="luminosity"] .ann-add-form,[data-theme="luminosity"] .wof-add-form{border-color:rgba(120,170,255,.1) !important;background:linear-gradient(135deg,rgba(8,14,60,.5),rgba(4,8,36,.6)) !important;}
+[data-theme="luminosity"] .cursor-glow{background:radial-gradient(circle,rgba(140,190,255,.07) 0%,transparent 70%) !important;}
+[data-theme="luminosity"] .blob:nth-child(1){background:radial-gradient(circle,rgba(100,160,255,.18),transparent) !important;}
+[data-theme="luminosity"] .blob:nth-child(2){background:radial-gradient(circle,rgba(160,210,255,.1),transparent) !important;}
+[data-theme="luminosity"] .blob:nth-child(3){background:radial-gradient(circle,rgba(80,130,255,.08),transparent) !important;}
+[data-theme="luminosity"] .game-card,[data-theme="luminosity"] .embed-link-card,[data-theme="luminosity"] .source-card,[data-theme="luminosity"] .wof-card{border-color:rgba(120,170,255,.1) !important;background:rgba(8,14,60,.4) !important;}
+[data-theme="luminosity"] .btn{background:linear-gradient(135deg,#a8d4ff,#6ab4ff) !important;color:#000 !important;}
+[data-theme="luminosity"] .panel-title{background:linear-gradient(90deg,#c8e8ff,#6ab4ff) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;}
+
+/* ─────────── NOVA STAR — crimson + gold explosion ─────────── */
+[data-theme="novastar"]{--bg:#080008;--glass-bg:rgba(28,4,18,0.8);--glass-border:rgba(255,120,60,0.14);--accent:#ff7730;}
+[data-theme="novastar"] body{background:#080008;}
+[data-theme="novastar"] .topbar{background:linear-gradient(180deg,rgba(28,4,12,.95),rgba(16,2,8,.9)) !important;border-bottom-color:rgba(255,100,40,.18) !important;box-shadow:0 1px 0 rgba(255,100,40,.12),0 0 40px rgba(200,40,20,.1) !important;}
+[data-theme="novastar"] .topbar .logo{background:linear-gradient(90deg,#ffcc44,#ff7730,#ff3050) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 14px rgba(255,100,40,.8)) !important;}
+[data-theme="novastar"] .dock{background:linear-gradient(135deg,rgba(24,4,10,.88),rgba(12,2,6,.94)) !important;border-color:rgba(255,100,40,.2) !important;box-shadow:0 0 0 1px rgba(255,80,30,.08) inset,0 24px 80px rgba(0,0,0,.9),0 0 40px rgba(180,30,10,.08) !important;}
+[data-theme="novastar"] .dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(255,100,40,.25),rgba(180,40,10,.16)) !important;border-color:rgba(255,140,60,.55) !important;box-shadow:0 0 24px rgba(255,100,40,.4) !important;}
+[data-theme="novastar"] .dock-item.active::after{background:#ff7730 !important;box-shadow:0 0 12px #ff7730 !important;}
+[data-theme="novastar"] .dot{background:#ff9944 !important;}
+[data-theme="novastar"] .glass{background:linear-gradient(135deg,rgba(32,6,16,.88),rgba(16,2,8,.94)) !important;border-color:rgba(255,100,40,.18) !important;box-shadow:0 2px 0 rgba(255,100,40,.1) inset,0 32px 80px rgba(0,0,0,.9) !important;}
+[data-theme="novastar"] .admin-card,[data-theme="novastar"] .settings-card,[data-theme="novastar"] .chat-card,[data-theme="novastar"] .ann-add-form,[data-theme="novastar"] .wof-add-form{border-color:rgba(255,80,30,.12) !important;background:linear-gradient(135deg,rgba(30,4,10,.55),rgba(18,2,6,.65)) !important;}
+[data-theme="novastar"] .cursor-glow{background:radial-gradient(circle,rgba(255,100,40,.08) 0%,transparent 70%) !important;}
+[data-theme="novastar"] .blob:nth-child(1){background:radial-gradient(circle,rgba(255,80,20,.2),transparent) !important;}
+[data-theme="novastar"] .blob:nth-child(2){background:radial-gradient(circle,rgba(255,160,40,.1),transparent) !important;}
+[data-theme="novastar"] .blob:nth-child(3){background:radial-gradient(circle,rgba(200,30,10,.1),transparent) !important;}
+[data-theme="novastar"] .game-card,[data-theme="novastar"] .embed-link-card,[data-theme="novastar"] .source-card,[data-theme="novastar"] .wof-card{border-color:rgba(255,80,30,.12) !important;background:rgba(28,4,10,.5) !important;}
+[data-theme="novastar"] .btn{background:linear-gradient(135deg,#ff9944,#ff5522) !important;color:#000 !important;}
+[data-theme="novastar"] .panel-title{background:linear-gradient(90deg,#ffcc44,#ff7730) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;}
+
+/* ─────────── NEBULA — violet + teal dust cloud ─────────── */
+[data-theme="nebula"]{--bg:#03020e;--glass-bg:rgba(10,4,32,0.8);--glass-border:rgba(160,80,255,0.13);--accent:#c084ff;}
+[data-theme="nebula"] body{background:#03020e;}
+[data-theme="nebula"] .topbar{background:linear-gradient(180deg,rgba(12,4,36,.94),rgba(6,2,20,.9)) !important;border-bottom-color:rgba(150,70,255,.18) !important;box-shadow:0 1px 0 rgba(140,60,255,.12),0 0 40px rgba(100,20,200,.08) !important;}
+[data-theme="nebula"] .topbar .logo{background:linear-gradient(90deg,#e0b0ff,#a060ff,#40e0d0) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 14px rgba(160,80,255,.7)) !important;}
+[data-theme="nebula"] .dock{background:linear-gradient(135deg,rgba(10,4,32,.86),rgba(4,2,18,.92)) !important;border-color:rgba(150,70,255,.2) !important;box-shadow:0 0 0 1px rgba(140,60,255,.08) inset,0 24px 80px rgba(0,0,0,.88),0 0 40px rgba(100,20,200,.06) !important;}
+[data-theme="nebula"] .dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(160,80,255,.24),rgba(64,224,208,.1)) !important;border-color:rgba(190,120,255,.55) !important;box-shadow:0 0 24px rgba(160,80,255,.35),0 0 40px rgba(64,224,208,.1) !important;}
+[data-theme="nebula"] .dock-item.active::after{background:#c084ff !important;box-shadow:0 0 12px #c084ff,0 0 20px rgba(64,224,208,.3) !important;}
+[data-theme="nebula"] .dot{background:#c084ff !important;}
+[data-theme="nebula"] .glass{background:linear-gradient(135deg,rgba(14,6,44,.86),rgba(6,2,22,.93)) !important;border-color:rgba(150,70,255,.16) !important;box-shadow:0 2px 0 rgba(150,70,255,.1) inset,0 32px 80px rgba(0,0,0,.88) !important;}
+[data-theme="nebula"] .admin-card,[data-theme="nebula"] .settings-card,[data-theme="nebula"] .chat-card,[data-theme="nebula"] .ann-add-form,[data-theme="nebula"] .wof-add-form{border-color:rgba(140,60,255,.12) !important;background:linear-gradient(135deg,rgba(12,4,36,.55),rgba(6,2,20,.65)) !important;}
+[data-theme="nebula"] .cursor-glow{background:radial-gradient(circle,rgba(160,80,255,.07) 0%,transparent 70%) !important;}
+[data-theme="nebula"] .blob:nth-child(1){background:radial-gradient(circle,rgba(140,60,255,.2),transparent) !important;}
+[data-theme="nebula"] .blob:nth-child(2){background:radial-gradient(circle,rgba(64,224,208,.1),transparent) !important;}
+[data-theme="nebula"] .blob:nth-child(3){background:radial-gradient(circle,rgba(200,80,255,.1),transparent) !important;}
+[data-theme="nebula"] .game-card,[data-theme="nebula"] .embed-link-card,[data-theme="nebula"] .source-card,[data-theme="nebula"] .wof-card{border-color:rgba(140,60,255,.12) !important;background:rgba(10,4,30,.5) !important;}
+[data-theme="nebula"] .btn{background:linear-gradient(135deg,#d0a0ff,#9040ff) !important;color:#fff !important;}
+[data-theme="nebula"] .panel-title{background:linear-gradient(90deg,#e0b0ff,#40e0d0) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;}
+
+/* ─────────── SINGULARITY — pure void, ghostly white ─────────── */
+[data-theme="singularity"]{--bg:#000000;--glass-bg:rgba(4,4,4,0.88);--glass-border:rgba(255,255,255,0.07);--accent:#ffffff;}
+[data-theme="singularity"] body{background:#000;}
+[data-theme="singularity"] .topbar{background:rgba(4,4,4,.98) !important;border-bottom-color:rgba(255,255,255,.07) !important;box-shadow:0 1px 0 rgba(255,255,255,.05),0 0 60px rgba(255,255,255,.02) !important;}
+[data-theme="singularity"] .topbar .logo{background:linear-gradient(90deg,#fff,rgba(255,255,255,.5)) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 20px rgba(255,255,255,.3)) !important;}
+[data-theme="singularity"] .dock{background:rgba(2,2,2,.96) !important;border-color:rgba(255,255,255,.08) !important;box-shadow:0 0 0 1px rgba(255,255,255,.04) inset,0 0 0 1px rgba(255,255,255,.03),0 24px 80px rgba(0,0,0,1) !important;}
+[data-theme="singularity"] .dock-item.active .dock-icon{background:rgba(255,255,255,.1) !important;border-color:rgba(255,255,255,.25) !important;box-shadow:0 0 30px rgba(255,255,255,.12),0 0 60px rgba(255,255,255,.05) !important;}
+[data-theme="singularity"] .dock-item.active::after{background:#fff !important;box-shadow:0 0 16px #fff,0 0 32px rgba(255,255,255,.4) !important;}
+[data-theme="singularity"] .glass{background:rgba(6,6,6,.94) !important;border-color:rgba(255,255,255,.08) !important;}
+[data-theme="singularity"] .admin-card,[data-theme="singularity"] .settings-card,[data-theme="singularity"] .chat-card,[data-theme="singularity"] .ann-add-form,[data-theme="singularity"] .wof-add-form{border-color:rgba(255,255,255,.06) !important;background:rgba(8,8,8,.7) !important;}
+[data-theme="singularity"] .cursor-glow{background:radial-gradient(circle,rgba(255,255,255,.05) 0%,transparent 70%) !important;}
+[data-theme="singularity"] .blob:nth-child(1){background:radial-gradient(circle,rgba(255,255,255,.08),transparent) !important;animation-duration:16s !important;}
+[data-theme="singularity"] .blob:nth-child(2){background:radial-gradient(circle,rgba(255,255,255,.04),transparent) !important;animation-duration:22s !important;}
+[data-theme="singularity"] .blob:nth-child(3){background:radial-gradient(circle,rgba(255,255,255,.03),transparent) !important;animation-duration:28s !important;}
+[data-theme="singularity"] .game-card,[data-theme="singularity"] .embed-link-card,[data-theme="singularity"] .source-card,[data-theme="singularity"] .wof-card{border-color:rgba(255,255,255,.06) !important;background:rgba(6,6,6,.6) !important;}
+
+/* ─────────── AURORA — northern lights, green-cyan-magenta ─────────── */
+[data-theme="aurora"]{--bg:#000d08;--glass-bg:rgba(0,14,10,0.82);--glass-border:rgba(0,255,160,0.14);--accent:#00ffaa;}
+[data-theme="aurora"] body{background:#000d08;}
+[data-theme="aurora"] .topbar{background:linear-gradient(180deg,rgba(0,14,10,.96),rgba(0,8,6,.92)) !important;border-bottom-color:rgba(0,220,130,.18) !important;box-shadow:0 1px 0 rgba(0,220,130,.12),0 0 40px rgba(0,160,100,.08) !important;}
+[data-theme="aurora"] .topbar .logo{background:linear-gradient(90deg,#00ffcc,#00e5ff,#ff00cc) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 14px rgba(0,255,180,.6)) !important;}
+[data-theme="aurora"] .dock{background:linear-gradient(135deg,rgba(0,14,10,.88),rgba(0,8,6,.94)) !important;border-color:rgba(0,220,140,.2) !important;box-shadow:0 0 0 1px rgba(0,200,120,.08) inset,0 24px 80px rgba(0,0,0,.88),0 0 40px rgba(0,180,120,.05) !important;}
+[data-theme="aurora"] .dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(0,220,140,.2),rgba(0,180,255,.1)) !important;border-color:rgba(0,255,180,.5) !important;box-shadow:0 0 24px rgba(0,220,140,.35),0 0 40px rgba(0,180,255,.1) !important;}
+[data-theme="aurora"] .dock-item.active::after{background:#00ffaa !important;box-shadow:0 0 12px #00ffaa,0 0 24px rgba(0,180,255,.3) !important;}
+[data-theme="aurora"] .dot{background:#00ffaa !important;}
+[data-theme="aurora"] .glass{background:linear-gradient(135deg,rgba(0,18,12,.86),rgba(0,10,7,.93)) !important;border-color:rgba(0,220,140,.16) !important;box-shadow:0 2px 0 rgba(0,200,130,.1) inset,0 32px 80px rgba(0,0,0,.88) !important;}
+[data-theme="aurora"] .admin-card,[data-theme="aurora"] .settings-card,[data-theme="aurora"] .chat-card,[data-theme="aurora"] .ann-add-form,[data-theme="aurora"] .wof-add-form{border-color:rgba(0,200,120,.12) !important;background:linear-gradient(135deg,rgba(0,18,12,.55),rgba(0,10,7,.65)) !important;}
+[data-theme="aurora"] .cursor-glow{background:radial-gradient(circle,rgba(0,220,140,.07) 0%,transparent 70%) !important;}
+[data-theme="aurora"] .blob:nth-child(1){background:radial-gradient(circle,rgba(0,220,140,.18),transparent) !important;}
+[data-theme="aurora"] .blob:nth-child(2){background:radial-gradient(circle,rgba(0,180,255,.1),transparent) !important;}
+[data-theme="aurora"] .blob:nth-child(3){background:radial-gradient(circle,rgba(200,0,200,.08),transparent) !important;}
+[data-theme="aurora"] .game-card,[data-theme="aurora"] .embed-link-card,[data-theme="aurora"] .source-card,[data-theme="aurora"] .wof-card{border-color:rgba(0,200,120,.12) !important;background:rgba(0,16,10,.5) !important;}
+[data-theme="aurora"] .btn{background:linear-gradient(135deg,#00ffcc,#00cc88) !important;color:#000 !important;}
+[data-theme="aurora"] .panel-title{background:linear-gradient(90deg,#00ffcc,#00e5ff,#ff80ff) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;}
+
+/* ─────────── PULSAR — amber gold + electric cyan ─────────── */
+[data-theme="pulsar"]{--bg:#050300;--glass-bg:rgba(20,12,0,0.82);--glass-border:rgba(255,200,40,0.14);--accent:#ffc820;}
+[data-theme="pulsar"] body{background:#050300;}
+[data-theme="pulsar"] .topbar{background:linear-gradient(180deg,rgba(20,12,0,.96),rgba(10,6,0,.92)) !important;border-bottom-color:rgba(255,190,30,.18) !important;box-shadow:0 1px 0 rgba(255,190,30,.12),0 0 40px rgba(200,140,10,.08) !important;}
+[data-theme="pulsar"] .topbar .logo{background:linear-gradient(90deg,#ffe060,#ffc820,#00e8ff) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;filter:drop-shadow(0 0 14px rgba(255,200,40,.8)) !important;}
+[data-theme="pulsar"] .dock{background:linear-gradient(135deg,rgba(18,10,0,.88),rgba(8,5,0,.94)) !important;border-color:rgba(255,190,30,.2) !important;box-shadow:0 0 0 1px rgba(255,180,20,.08) inset,0 24px 80px rgba(0,0,0,.9),0 0 40px rgba(200,140,10,.06) !important;}
+[data-theme="pulsar"] .dock-item.active .dock-icon{background:linear-gradient(135deg,rgba(255,190,30,.24),rgba(0,220,255,.1)) !important;border-color:rgba(255,220,60,.55) !important;box-shadow:0 0 24px rgba(255,190,30,.4),0 0 40px rgba(0,220,255,.1) !important;}
+[data-theme="pulsar"] .dock-item.active::after{background:#ffc820 !important;box-shadow:0 0 12px #ffc820,0 0 24px rgba(0,220,255,.2) !important;}
+[data-theme="pulsar"] .dot{background:#ffc820 !important;}
+[data-theme="pulsar"] .glass{background:linear-gradient(135deg,rgba(24,14,0,.88),rgba(12,7,0,.94)) !important;border-color:rgba(255,190,30,.16) !important;box-shadow:0 2px 0 rgba(255,190,30,.1) inset,0 32px 80px rgba(0,0,0,.9) !important;}
+[data-theme="pulsar"] .admin-card,[data-theme="pulsar"] .settings-card,[data-theme="pulsar"] .chat-card,[data-theme="pulsar"] .ann-add-form,[data-theme="pulsar"] .wof-add-form{border-color:rgba(255,170,20,.12) !important;background:linear-gradient(135deg,rgba(22,12,0,.55),rgba(10,6,0,.65)) !important;}
+[data-theme="pulsar"] .cursor-glow{background:radial-gradient(circle,rgba(255,190,30,.08) 0%,transparent 70%) !important;}
+[data-theme="pulsar"] .blob:nth-child(1){background:radial-gradient(circle,rgba(255,180,20,.2),transparent) !important;}
+[data-theme="pulsar"] .blob:nth-child(2){background:radial-gradient(circle,rgba(0,220,255,.1),transparent) !important;}
+[data-theme="pulsar"] .blob:nth-child(3){background:radial-gradient(circle,rgba(255,140,10,.1),transparent) !important;}
+[data-theme="pulsar"] .game-card,[data-theme="pulsar"] .embed-link-card,[data-theme="pulsar"] .source-card,[data-theme="pulsar"] .wof-card{border-color:rgba(255,170,20,.12) !important;background:rgba(18,10,0,.5) !important;}
+[data-theme="pulsar"] .btn{background:linear-gradient(135deg,#ffe060,#ffa010) !important;color:#000 !important;}
+[data-theme="pulsar"] .panel-title{background:linear-gradient(90deg,#ffe060,#ffc820,#00e8ff) !important;-webkit-background-clip:text !important;background-clip:text !important;-webkit-text-fill-color:transparent !important;}
+
+/* ── THEME PICKER UI ── */
+.theme-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+.theme-card{border-radius:16px;padding:0;cursor:pointer;border:2px solid transparent;transition:all .3s cubic-bezier(.34,1.56,.64,1);overflow:hidden;position:relative;aspect-ratio:16/9;box-shadow:0 4px 20px rgba(0,0,0,.5);}
+.theme-card:hover{transform:translateY(-5px) scale(1.03);}
+.theme-card.active{border-color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.3),0 8px 32px rgba(0,0,0,.6);}
+.theme-card.active::after{content:'✓';position:absolute;top:6px;right:9px;font-size:.72rem;color:#fff;text-shadow:0 1px 4px #000;}
+.theme-card-bg{width:100%;height:100%;display:block;}
+.theme-card-label{position:absolute;bottom:0;left:0;right:0;padding:6px 10px;font-family:'Cinzel Decorative',cursive;font-size:.58rem;letter-spacing:1px;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent);text-transform:uppercase;}
+
 body::after{
 content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
 background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
@@ -1617,6 +1742,25 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="settings-wrap">
   <div class="panel-title">⚙️ Settings</div>
 
+  <!-- THEMES -->
+
+  <div class="settings-section">
+    <div class="settings-section-title">🌌 Space Themes</div>
+    <div class="settings-card">
+      <span class="settings-card-label">Choose your portal's visual theme</span>
+      <div class="theme-picker" id="theme-picker">
+        <!-- populated by JS -->
+      </div>
+    </div>
+    <div class="settings-card" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.65);margin-bottom:4px;">Reset to default</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.28);">Restores the original black-hole space aesthetic</div>
+      </div>
+      <button class="settings-reset-btn" onclick="applyTheme('default')">↺ Default Theme</button>
+    </div>
+  </div>
+
   <!-- PAGE DISGUISE -->
 
   <div class="settings-section">
@@ -1980,6 +2124,7 @@ function doFirebaseLogin(name, role, onError) {
     startChatListeners();
     startJumpscareListener();
     startBrainrotListener();
+    restoreThemeFromStorage();
     restoreDisguiseFromStorage();
     buildDisguiseGrid();
     startUptime();
@@ -3172,6 +3317,159 @@ function togglePw(id, btn) {
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
+
+
+// ══════════════════════════════════════════
+// SPACE THEMES
+// ══════════════════════════════════════════
+const THEME_KEY = 'whl_theme';
+
+const THEMES = [
+  {
+    id: 'default',
+    name: 'Void',
+    desc: 'Original black hole',
+    bg1: '#01010a', bg2: '#0a0a18', accent: 'rgba(255,255,255,.25)',
+    star1: 'rgba(255,255,255,.25)', star2: 'rgba(255,255,255,.12)',
+  },
+  {
+    id: 'luminosity',
+    name: 'Luminosity',
+    desc: 'Stellar corona',
+    bg1: '#01010f', bg2: '#030818', accent: 'rgba(120,180,255,.4)',
+    star1: 'rgba(100,160,255,.5)', star2: 'rgba(180,220,255,.3)',
+  },
+  {
+    id: 'novastar',
+    name: 'Nova Star',
+    desc: 'Stellar explosion',
+    bg1: '#080008', bg2: '#200408', accent: 'rgba(255,100,30,.45)',
+    star1: 'rgba(255,120,40,.55)', star2: 'rgba(255,200,60,.3)',
+  },
+  {
+    id: 'nebula',
+    name: 'Nebula',
+    desc: 'Dust cloud',
+    bg1: '#03020e', bg2: '#0e0620', accent: 'rgba(160,80,255,.4)',
+    star1: 'rgba(180,100,255,.5)', star2: 'rgba(64,224,208,.3)',
+  },
+  {
+    id: 'singularity',
+    name: 'Singularity',
+    desc: 'Pure void',
+    bg1: '#000000', bg2: '#060606', accent: 'rgba(255,255,255,.1)',
+    star1: 'rgba(255,255,255,.2)', star2: 'rgba(255,255,255,.08)',
+  },
+  {
+    id: 'aurora',
+    name: 'Aurora',
+    desc: 'Northern lights',
+    bg1: '#000d08', bg2: '#001a0e', accent: 'rgba(0,220,140,.4)',
+    star1: 'rgba(0,255,180,.5)', star2: 'rgba(0,180,255,.3)',
+  },
+  {
+    id: 'pulsar',
+    name: 'Pulsar',
+    desc: 'Neutron star',
+    bg1: '#050300', bg2: '#160c00', accent: 'rgba(255,190,30,.45)',
+    star1: 'rgba(255,200,40,.55)', star2: 'rgba(0,220,255,.3)',
+  },
+];
+
+let currentThemeId = 'default';
+
+function buildThemePicker() {
+  const picker = document.getElementById('theme-picker');
+  if (!picker) return;
+  picker.innerHTML = '';
+
+  THEMES.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'theme-card' + (t.id === currentThemeId ? ' active' : '');
+    card.title = t.desc;
+    card.onclick = () => applyTheme(t.id);
+
+    // Mini preview canvas
+    const canvas = document.createElement('canvas');
+    canvas.className = 'theme-card-bg';
+    canvas.width = 280; canvas.height = 158;
+    const ctx = canvas.getContext('2d');
+
+    // Background gradient
+    const grd = ctx.createRadialGradient(140, 80, 10, 140, 80, 140);
+    grd.addColorStop(0, t.bg2);
+    grd.addColorStop(1, t.bg1);
+    ctx.fillStyle = grd;
+    ctx.fillRect(0, 0, 280, 158);
+
+    // Stars
+    for (let i = 0; i < 60; i++) {
+      const x = Math.random() * 280, y = Math.random() * 158;
+      const r = Math.random() * 1.4 + 0.3;
+      const alpha = Math.random() * 0.8 + 0.2;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = i % 3 === 0 ? t.star2 : t.star1;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // Glow orb
+    const orb = ctx.createRadialGradient(140, 79, 0, 140, 79, 50);
+    orb.addColorStop(0, t.accent);
+    orb.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = orb;
+    ctx.fillRect(0, 0, 280, 158);
+
+    // Rings (for black hole feel)
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.scale(1, 0.28);
+    const ring = ctx.createRadialGradient(140, 290, 16, 140, 290, 38);
+    ring.addColorStop(0, 'rgba(0,0,0,0)');
+    ring.addColorStop(0.5, t.accent);
+    ring.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath(); ctx.arc(140, 290, 32, 0, Math.PI * 2);
+    ctx.fillStyle = ring; ctx.fill();
+    ctx.restore();
+
+    card.appendChild(canvas);
+
+    const label = document.createElement('div');
+    label.className = 'theme-card-label';
+    label.textContent = t.name;
+    card.appendChild(label);
+
+    picker.appendChild(card);
+  });
+}
+
+function applyTheme(id) {
+  currentThemeId = id;
+  const html = document.documentElement;
+
+  if (id === 'default') {
+    html.removeAttribute('data-theme');
+  } else {
+    html.setAttribute('data-theme', id);
+  }
+
+  // Rebuild picker to show active state
+  buildThemePicker();
+
+  // Save
+  try { localStorage.setItem(THEME_KEY, id); } catch(e) {}
+
+  showToast('🌌 Theme: ' + (THEMES.find(t=>t.id===id)?.name || 'Default'));
+}
+
+function restoreThemeFromStorage() {
+  try {
+    const saved = localStorage.getItem(THEME_KEY);
+    if (saved) applyTheme(saved);
+  } catch(e) {}
+}
 
 // ══════════════════════════════════════════
 // PAGE DISGUISE / SETTINGS
@@ -4431,7 +4729,7 @@ function switchTab(name, btn) {
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
   if (name !== 'embeds') closeEmbedViewer();
-  if (name === 'settings') buildDisguiseGrid();
+  if (name === 'settings') { buildDisguiseGrid(); buildThemePicker(); }
 }
 
 // GAMES
