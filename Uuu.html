@@ -385,6 +385,73 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 .wof-empty{text-align:center;color:rgba(255,255,255,.18);font-size:.82rem;padding:32px 0;}
 
 
+/* ── SETTINGS TAB ── */
+.settings-wrap{max-width:680px;margin:0 auto;}
+.settings-section{margin-bottom:32px;}
+.settings-section-title{font-family:'Cinzel Decorative',cursive;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3);padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:18px;}
+.settings-card{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:22px 24px;margin-bottom:14px;transition:border-color .2s;box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 4px 20px rgba(0,0,0,.3);}
+.settings-card:hover{border-color:rgba(255,255,255,.11);}
+.settings-card-label{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:14px;display:block;}
+/* Disguise picker grid */
+.disguise-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.disguise-option{
+  padding:12px 10px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+  overflow:hidden;
+}
+.disguise-option::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.06) 0%,transparent 65%);opacity:0;transition:opacity .25s;}
+.disguise-option:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.18);box-shadow:0 8px 28px rgba(0,0,0,.4);}
+.disguise-option:hover::before{opacity:1;}
+.disguise-option.active{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.07);box-shadow:0 0 0 1px rgba(255,255,255,.1) inset,0 8px 28px rgba(0,0,0,.4);}
+.disguise-option.active::after{content:'✓';position:absolute;top:6px;right:8px;font-size:.65rem;color:rgba(255,255,255,.6);}
+.disguise-favicon{width:28px;height:28px;border-radius:6px;object-fit:contain;background:#fff;padding:2px;}
+.disguise-favicon-emoji{font-size:1.5rem;line-height:1;}
+.disguise-name{font-size:.65rem;letter-spacing:1px;color:rgba(255,255,255,.55);text-align:center;}
+/* Fake tab bar preview */
+.fake-tab-preview{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:14px;
+}
+.fake-tab-bar{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.03);
+  padding:8px 12px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.fake-tab-dot{width:8px;height:8px;border-radius:50%;}
+.fake-tab-body{
+  display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.04);
+  border-radius:8px;
+  padding:5px 10px;
+  font-size:.72rem;
+  color:rgba(255,255,255,.5);
+  flex:1;
+  max-width:220px;
+}
+.fake-tab-body img{width:14px;height:14px;border-radius:3px;object-fit:contain;background:#fff;}
+.fake-tab-body span.fake-favicon-emoji{font-size:.85rem;}
+#fake-tab-title{font-size:.72rem;color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;}
+/* Custom disguise input */
+.settings-input-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;}
+.settings-input-row input{flex:1;min-width:160px;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;color:#fff;font-family:'Raleway',sans-serif;font-size:.85rem;outline:none;transition:border-color .2s;margin:0;}
+.settings-input-row input:focus{border-color:rgba(255,255,255,.3);}
+.settings-apply-btn{padding:10px 20px;border:none;border-radius:12px;cursor:pointer;background:rgba(255,255,255,.9);color:#000;font-weight:700;font-size:.78rem;transition:all .2s;white-space:nowrap;font-family:'Raleway',sans-serif;}
+.settings-apply-btn:hover{background:#fff;transform:translateY(-1px);}
+.settings-reset-btn{padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:12px;cursor:pointer;background:transparent;color:rgba(255,255,255,.45);font-size:.75rem;transition:all .2s;white-space:nowrap;font-family:'Raleway',sans-serif;}
+.settings-reset-btn:hover{background:rgba(255,255,255,.07);color:#fff;}
+/* Note box */
+.settings-note{font-size:.72rem;color:rgba(255,255,255,.28);line-height:1.7;margin-top:10px;padding:10px 14px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(255,255,255,.05);}
+
 /* ── LOW DETAIL MODE ── */
 #ld-toggle{
   position:fixed;bottom:16px;right:16px;z-index:9995;
@@ -914,6 +981,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dock-icon">🏆</div>
 <span class="dock-label">Fame</span>
 </button>
+<button class="dock-item" id="dock-settings" onclick="switchTab('settings',this)">
+<div class="dock-icon">⚙️</div>
+<span class="dock-label">Settings</span>
+</button>
 <div class="dock-separator"></div>
 <button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)">
 <div class="dock-icon">👑</div>
@@ -1322,6 +1393,67 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 </div>
 </div>
 <!-- END WALL OF FAME -->
+
+<!-- SETTINGS TAB -->
+
+<div class="tab-panel" id="panel-settings">
+<div class="settings-wrap">
+  <div class="panel-title">⚙️ Settings</div>
+
+  <!-- PAGE DISGUISE -->
+
+  <div class="settings-section">
+    <div class="settings-section-title">🕵️ Page Disguise</div>
+    <div class="settings-card">
+      <span class="settings-card-label">Choose a disguise — changes the tab title &amp; favicon so it looks like a real site</span>
+      <div class="disguise-grid" id="disguise-grid">
+        <!-- populated by JS -->
+      </div>
+      <!-- Live preview -->
+      <div class="fake-tab-preview">
+        <div class="fake-tab-bar">
+          <div class="fake-tab-dot" style="background:#ff5f57;"></div>
+          <div class="fake-tab-dot" style="background:#febc2e;"></div>
+          <div class="fake-tab-dot" style="background:#28c840;"></div>
+          <div class="fake-tab-body">
+            <span id="fake-tab-favicon-wrap"></span>
+            <span id="fake-tab-title">We Hate Lightspeed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+```
+<!-- Custom disguise -->
+<div class="settings-card">
+  <span class="settings-card-label">Custom disguise</span>
+  <div class="settings-input-row">
+    <input type="text" id="custom-disguise-title" placeholder="Custom tab title…" maxlength="60"/>
+    <input type="url"  id="custom-disguise-favicon" placeholder="Favicon URL (https://…)"/>
+    <button class="settings-apply-btn" onclick="applyCustomDisguise()">Apply</button>
+  </div>
+  <div class="settings-note">Tip: Use a site's favicon by going to https://www.google.com/s2/favicons?domain=example.com</div>
+</div>
+```
+
+  </div>
+
+  <!-- RESET -->
+
+  <div class="settings-section">
+    <div class="settings-section-title">🔄 Reset</div>
+    <div class="settings-card" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.65);margin-bottom:4px;">Remove disguise</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.28);">Restores the real tab title and icon</div>
+      </div>
+      <button class="settings-reset-btn" onclick="resetDisguise()">↺ Reset to Default</button>
+    </div>
+  </div>
+
+</div>
+</div>
+<!-- END SETTINGS TAB -->
 </div><!-- end content -->
 </div><!-- end app-page -->
 
@@ -1525,6 +1657,8 @@ function doFirebaseLogin(name, role, onError) {
     startVisitorsListener();
     startJohnsBlockListener();
     startWofListener();
+    restoreDisguiseFromStorage();
+    buildDisguiseGrid();
     startUptime();
     document.getElementById('admin-notes').value = localStorage.getItem(NOTES_KEY) || '';
     document.getElementById('consent-overlay').style.display = 'none';
@@ -2711,6 +2845,220 @@ function togglePw(id, btn) {
   btn.textContent = revealed ? 'Hide' : 'Show';
 }
 
+
+// ══════════════════════════════════════════
+// PAGE DISGUISE / SETTINGS
+// ══════════════════════════════════════════
+const DISGUISE_KEY = 'whl_disguise';
+
+const DISGUISES = [
+  {
+    id: 'none',
+    name: 'None',
+    title: 'We Hate Lightspeed',
+    favicon: null,
+    emoji: '🚫',
+    faviconUrl: null,
+  },
+  {
+    id: 'gdocs',
+    name: 'Google Docs',
+    title: 'Document - Google Docs',
+    faviconUrl: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
+    emoji: null,
+  },
+  {
+    id: 'gslides',
+    name: 'Google Slides',
+    title: 'Presentation - Google Slides',
+    faviconUrl: 'https://ssl.gstatic.com/docs/presentations/images/favicon5.ico',
+    emoji: null,
+  },
+  {
+    id: 'gsheets',
+    name: 'Google Sheets',
+    title: 'Spreadsheet - Google Sheets',
+    faviconUrl: 'https://ssl.gstatic.com/docs/spreadsheets/favicon3.ico',
+    emoji: null,
+  },
+  {
+    id: 'gclassroom',
+    name: 'Google Classroom',
+    title: 'Classes - Google Classroom',
+    faviconUrl: 'https://www.gstatic.com/classroom/favicon.png',
+    emoji: null,
+  },
+  {
+    id: 'classlink',
+    name: 'ClassLink',
+    title: 'ClassLink LaunchPad',
+    faviconUrl: 'https://www.classlink.com/favicon.ico',
+    emoji: null,
+  },
+  {
+    id: 'myapps',
+    name: 'MyApps',
+    title: 'MyApps - Home',
+    faviconUrl: 'https://www.myapps.net/favicon.ico',
+    emoji: null,
+  },
+  {
+    id: 'canvas',
+    name: 'Canvas LMS',
+    title: 'Dashboard - Canvas',
+    faviconUrl: 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico',
+    emoji: null,
+  },
+  {
+    id: 'khan',
+    name: 'Khan Academy',
+    title: 'Khan Academy',
+    faviconUrl: 'https://www.khanacademy.org/favicon.ico',
+    emoji: null,
+  },
+  {
+    id: 'wikipedia',
+    name: 'Wikipedia',
+    title: 'Wikipedia - The Free Encyclopedia',
+    faviconUrl: 'https://en.wikipedia.org/favicon.ico',
+    emoji: null,
+  },
+  {
+    id: 'gmail',
+    name: 'Gmail',
+    title: 'Inbox - Gmail',
+    faviconUrl: 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
+    emoji: null,
+  },
+  {
+    id: 'youtube',
+    name: 'YouTube',
+    title: 'YouTube',
+    faviconUrl: 'https://www.youtube.com/favicon.ico',
+    emoji: null,
+  },
+];
+
+let currentDisguiseId = 'none';
+
+function buildDisguiseGrid() {
+  const grid = document.getElementById('disguise-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  DISGUISES.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'disguise-option' + (d.id === currentDisguiseId ? ' active' : '');
+    card.onclick = () => applyDisguise(d.id);
+
+    // Favicon / emoji
+    const iconWrap = document.createElement('div');
+    if (d.faviconUrl) {
+      const img = document.createElement('img');
+      img.className = 'disguise-favicon';
+      img.src = d.faviconUrl;
+      img.alt = d.name;
+      img.onerror = () => { img.style.display='none'; const em=document.createElement('span'); em.textContent='🌐'; em.className='disguise-favicon-emoji'; iconWrap.appendChild(em); };
+      iconWrap.appendChild(img);
+    } else {
+      const em = document.createElement('span');
+      em.className = 'disguise-favicon-emoji';
+      em.textContent = d.emoji || '🌐';
+      iconWrap.appendChild(em);
+    }
+    card.appendChild(iconWrap);
+
+    const label = document.createElement('div');
+    label.className = 'disguise-name';
+    label.textContent = d.name;
+    card.appendChild(label);
+
+    grid.appendChild(card);
+  });
+}
+
+function applyDisguise(id) {
+  const d = DISGUISES.find(x => x.id === id);
+  if (!d) return;
+  currentDisguiseId = id;
+  _setDisguise(d.title, d.faviconUrl, d.emoji);
+  buildDisguiseGrid(); // refresh active state
+  try { localStorage.setItem(DISGUISE_KEY, JSON.stringify({ id, title: d.title, faviconUrl: d.faviconUrl, emoji: d.emoji })); } catch(e) {}
+  showToast('🕵️ Disguise applied: ' + d.name);
+}
+
+function applyCustomDisguise() {
+  const title = document.getElementById('custom-disguise-title').value.trim();
+  const faviconUrl = document.getElementById('custom-disguise-favicon').value.trim();
+  if (!title && !faviconUrl) { showToast('⚠️ Enter a title or favicon URL.'); return; }
+  currentDisguiseId = 'custom';
+  _setDisguise(title || document.title, faviconUrl || null, null);
+  buildDisguiseGrid();
+  try { localStorage.setItem(DISGUISE_KEY, JSON.stringify({ id: 'custom', title: title || document.title, faviconUrl: faviconUrl || null, emoji: null })); } catch(e) {}
+  showToast('🕵️ Custom disguise applied!');
+}
+
+function resetDisguise() {
+  currentDisguiseId = 'none';
+  _setDisguise('We Hate Lightspeed', null, null);
+  buildDisguiseGrid();
+  try { localStorage.removeItem(DISGUISE_KEY); } catch(e) {}
+  showToast('↺ Disguise removed.');
+}
+
+function _setDisguise(title, faviconUrl, emoji) {
+  // Tab title
+  if (title) document.title = title;
+
+  // Favicon — find or create <link rel="icon">
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+
+  if (faviconUrl) {
+    link.href = faviconUrl;
+    link.type = 'image/x-icon';
+  } else if (!faviconUrl && !emoji) {
+    // Reset to default (no favicon = browser default blank)
+    link.href = 'data:,';
+  }
+
+  // Update live preview
+  const previewTitle = document.getElementById('fake-tab-title');
+  if (previewTitle) previewTitle.textContent = title || 'We Hate Lightspeed';
+
+  const previewFavicon = document.getElementById('fake-tab-favicon-wrap');
+  if (previewFavicon) {
+    previewFavicon.innerHTML = '';
+    if (faviconUrl) {
+      const img = document.createElement('img');
+      img.src = faviconUrl;
+      img.style.cssText = 'width:14px;height:14px;border-radius:3px;object-fit:contain;background:#fff;';
+      img.onerror = () => { img.replaceWith(Object.assign(document.createElement('span'), {textContent:'🌐', className:'fake-favicon-emoji'})); };
+      previewFavicon.appendChild(img);
+    } else if (emoji) {
+      const em = document.createElement('span');
+      em.className = 'fake-favicon-emoji';
+      em.textContent = emoji;
+      previewFavicon.appendChild(em);
+    } else {
+      previewFavicon.textContent = '';
+    }
+  }
+}
+
+function restoreDisguiseFromStorage() {
+  try {
+    const saved = localStorage.getItem(DISGUISE_KEY);
+    if (!saved) return;
+    const d = JSON.parse(saved);
+    currentDisguiseId = d.id || 'none';
+    _setDisguise(d.title, d.faviconUrl || null, d.emoji || null);
+  } catch(e) {}
+}
+
 // ══════════════════════════════════════════
 // JOHN'S CORNER CONTENT SYSTEM
 // ══════════════════════════════════════════
@@ -3126,6 +3474,7 @@ function switchTab(name, btn) {
   if (panel) panel.classList.add('active');
   if (btn) btn.classList.add('active');
   if (name !== 'embeds') closeEmbedViewer();
+  if (name === 'settings') buildDisguiseGrid();
 }
 
 // GAMES
