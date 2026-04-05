@@ -564,6 +564,35 @@ box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);
 .chat-notif-badge.visible{display:flex;}
 #dock-chat{position:relative;}
 
+/* -- BRAINROT -- */
+#brainrot-overlay{position:fixed;inset:0;z-index:99998;display:none;background:#000;overflow:hidden;}
+#brainrot-overlay.active{display:block;}
+.br-img-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:brShake .09s ease infinite;}
+@keyframes brShake{0%{transform:translate(0,0) scale(1.05) rotate(0deg);}15%{transform:translate(-8px,6px) scale(1.07) rotate(-1deg);}30%{transform:translate(10px,-7px) scale(1.04) rotate(1.5deg);}45%{transform:translate(-6px,9px) scale(1.06) rotate(-0.5deg);}60%{transform:translate(9px,-5px) scale(1.05) rotate(1deg);}75%{transform:translate(-7px,4px) scale(1.07) rotate(-1.5deg);}100%{transform:translate(0,0) scale(1.05) rotate(0deg);}}
+.br-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;gap:16px;}
+.br-text{font-family:"Comic Sans MS","Chalkboard SE",cursive;font-weight:900;text-align:center;animation:brTextPop .15s ease infinite alternate;text-shadow:4px 4px 0 #000,-4px -4px 0 #000,4px -4px 0 #000,-4px 4px 0 #000,0 0 30px currentColor;mix-blend-mode:screen;}
+@keyframes brTextPop{from{transform:scale(1) rotate(-3deg);filter:hue-rotate(0deg);}to{transform:scale(1.08) rotate(3deg);filter:hue-rotate(180deg);}}
+.br-emoji-rain{position:absolute;inset:0;overflow:hidden;pointer-events:none;}
+.br-emoji{position:absolute;font-size:2.5rem;animation:brEmojiFall linear infinite;opacity:.85;}
+@keyframes brEmojiFall{from{transform:translateY(-80px) rotate(0deg);}to{transform:translateY(110vh) rotate(720deg);}}
+/* admin brainrot card */
+.br-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-bottom:14px;}
+.br-option{border-radius:10px;cursor:pointer;border:2px solid transparent;transition:all .2s;aspect-ratio:1;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:1.6rem;position:relative;overflow:hidden;}
+.br-option:hover{border-color:rgba(255,255,255,.4);transform:scale(1.06);}
+.br-option.selected{border-color:#ff0;box-shadow:0 0 14px rgba(255,255,0,.4);}
+.br-option.selected::after{content:"\2713";position:absolute;top:3px;right:5px;font-size:.7rem;color:#ff0;text-shadow:0 1px 4px #000;}
+.br-option img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.br-fire-btn{width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(135deg,#ff6a00,#ee0979,#7b2ff7);color:#fff;font-family:"Comic Sans MS","Chalkboard SE",cursive;font-size:.85rem;font-weight:900;letter-spacing:1px;transition:all .2s;box-shadow:0 4px 24px rgba(238,9,121,.4);position:relative;overflow:hidden;animation:brBtnPulse 1.5s ease-in-out infinite alternate;}
+@keyframes brBtnPulse{from{box-shadow:0 4px 24px rgba(238,9,121,.4);}to{box-shadow:0 8px 40px rgba(123,47,247,.7),0 0 0 3px rgba(255,255,0,.3);}}
+.br-fire-btn:hover{transform:translateY(-2px) scale(1.01);}
+.br-fire-btn::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.2),transparent 60%);pointer-events:none;}
+.br-duration-row{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.br-duration-btn{padding:6px 14px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.72rem;transition:all .2s;font-family:"Raleway",sans-serif;}
+.br-duration-btn:hover{background:rgba(255,255,255,.1);color:#fff;}
+.br-duration-btn.selected{background:rgba(255,200,0,.14);border-color:rgba(255,200,0,.4);color:#ffd700;}
+.br-select-all-btn{padding:6px 14px;border-radius:8px;cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:.72rem;transition:all .2s;font-family:"Raleway",sans-serif;margin-left:auto;}
+.br-select-all-btn:hover{background:rgba(255,255,255,.12);color:#fff;}
+
 /* -- JUMPSCARE -- */
 #jumpscare-overlay{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:#000;}
 #jumpscare-overlay.active{display:flex;animation:jsFlash .08s ease;}
@@ -1388,6 +1417,33 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <button class="js-fire-btn" onclick="fireJumpscare()">⚡ JUMPSCARE EVERYONE</button>
 </div>
 <div class="admin-card">
+<h3>🧠 Brainrot <span style="font-size:.65rem;color:rgba(255,255,255,.4);font-family:'Raleway',sans-serif;font-weight:400;letter-spacing:0;text-transform:none;">— cycles meme images with chaos · Admin+</span></h3>
+<p style="font-size:.75rem;color:rgba(255,255,255,.4);margin-bottom:12px;line-height:1.6;">Select one or more memes. Choose duration. Fire.</p>
+<div class="br-grid" id="br-grid">
+  <div class="br-option selected" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png',this)" title="Troll Face">😈</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/4/45/NyanCat.png',this)" title="Nyan Cat">🌈</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/5/5f/Original_Doge_meme.jpg',this)" title="Doge">🐕</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/commons/d/dc/Grumpy_Cat_%28made_Shawn_Mendes_proud%29.jpg',this)" title="Grumpy Cat">😾</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/4/4f/Pepe_the_Frog.png',this)" title="Pepe">🐸</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/3/3b/SpongeBob_SquarePants_character.svg',this)" title="SpongeBob">🧽</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Pok%C3%A9mon_Pikachu_art.png/800px-Pok%C3%A9mon_Pikachu_art.png',this)" title="Surprised Pika">⚡</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/7/74/Shrek.jpg',this)" title="Shrek">🫏</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Man_Looking_at_Woman.jpg/1280px-Man_Looking_at_Woman.jpg',this)" title="Distracted BF">👀</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/commons/1/1e/Drake_July_2016.jpg',this)" title="Drake">🎤</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/%F0%9F%98%82.svg/512px-%F0%9F%98%82.svg.png',this)" title="Crying Laughing">😂</div>
+  <div class="br-option" onclick="selectBrImage('https://upload.wikimedia.org/wikipedia/en/6/6c/Thisisfine.png',this)" title="This is Fine">🔥</div>
+</div>
+<div class="br-duration-row">
+  <span style="font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);">Duration</span>
+  <button class="br-duration-btn selected" onclick="selectBrDuration(3000,this)">3s</button>
+  <button class="br-duration-btn" onclick="selectBrDuration(5000,this)">5s</button>
+  <button class="br-duration-btn" onclick="selectBrDuration(10000,this)">10s</button>
+  <button class="br-duration-btn" onclick="selectBrDuration(15000,this)">15s</button>
+  <button class="br-select-all-btn" onclick="selectAllBrImages()">Select All</button>
+</div>
+<button class="br-fire-btn" onclick="fireBrainrot()">🧠 BRAINROT EVERYONE 🧠</button>
+</div>
+<div class="admin-card">
 <h3>🔒 Site Lockdown</h3>
 <p style="font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.7;">Shuts the site for ALL users on every device. Relaunch password: <strong style="color:#fff;">41</strong></p>
 <button class="lockdown-btn" onclick="triggerLockdown()">⚠️ Initiate Lockdown</button>
@@ -1773,6 +1829,16 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 
 <!-- JUMPSCARE OVERLAY -->
 
+<!-- BRAINROT OVERLAY -->
+
+<div id="brainrot-overlay">
+  <img id="brainrot-img" class="br-img-fill" src="" alt=""/>
+  <div class="br-emoji-rain" id="br-emoji-rain"></div>
+  <div class="br-text-overlay">
+    <div class="br-text" id="br-text-top" style="font-size:clamp(2rem,7vw,5rem);color:#ff0;"></div>
+    <div class="br-text" id="br-text-bot" style="font-size:clamp(1.2rem,4vw,2.8rem);color:#ff69b4;"></div>
+  </div>
+</div>
 <div id="jumpscare-overlay"><img id="jumpscare-img" src="" alt=""/></div>
 
 <!-- TOAST CONTAINER -->
@@ -1911,6 +1977,7 @@ function doFirebaseLogin(name, role, onError) {
     startAnnounceListener();
     startChatListeners();
     startJumpscareListener();
+    startBrainrotListener();
     restoreDisguiseFromStorage();
     buildDisguiseGrid();
     startUptime();
@@ -3755,13 +3822,138 @@ function clearAllJohnBlocks() {
 
 
 // ==================================================
+// BRAINROT SYSTEM
+// ==================================================
+let selectedBrImages = ['https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png'];
+let brDuration = 3000;
+let brImgInterval = null;
+let brTextInterval = null;
+let brEmojiInterval = null;
+
+const BR_TEXTS_TOP = ["TUNG TUNG TUNG SAHUR", "BOMBARDIRO CROCODILO", "TRALALERO TRALALA", "BRRR BRRR PATAPIM", "CAPPUCCINO ASSASSINO", "LA VACA SATURNO SATURNITA", "BRAINROT ACTIVATED", "SKILL ISSUE", "NO CAP FR FR", "YOU CANNOT ESCAPE", "GNG GNG GNG", "RIZZ OVERLOAD", "W RIZZ", "OHIO FINAL BOSS"];
+const BR_TEXTS_BOT = ["only in ohio", "fr fr no cap", "he is so cooked", "glazing intensifies", "absolute cinema", "mid", "L bozo", "yapping at full speed", "sussy baka", "no thoughts head empty", "touch grass", "based", "cringe", "W", "ratio"];
+const BR_EMOJIS    = ["💀", "🗿", "🧠", "🐸", "🤡", "🐊", "🦆", "🐢", "🫡", "😭", "🔥", "💅", "🤌", "👁️", "🎺", "🗣️"];
+
+function selectBrImage(url, el) {
+  if (!el) return;
+  if (el.classList.contains("selected")) {
+    el.classList.remove("selected");
+    selectedBrImages = selectedBrImages.filter(u => u !== url);
+  } else {
+    el.classList.add("selected");
+    if (!selectedBrImages.includes(url)) selectedBrImages.push(url);
+  }
+}
+
+function selectAllBrImages() {
+  const opts = document.querySelectorAll(".br-option");
+  const allSelected = Array.from(opts).every(o => o.classList.contains("selected"));
+  selectedBrImages = [];
+  opts.forEach(o => {
+    if (allSelected) { o.classList.remove("selected"); }
+    else { o.classList.add("selected"); const url = o.getAttribute("onclick").match(/'(https[^']+)'/)?.[1]; if (url) selectedBrImages.push(url); }
+  });
+}
+
+function selectBrDuration(ms, el) {
+  brDuration = ms;
+  document.querySelectorAll(".br-duration-btn").forEach(b => b.classList.remove("selected"));
+  if (el) el.classList.add("selected");
+}
+
+function fireBrainrot() {
+  if (getRoleMeta(currentRole).rank < 3) { showToast("⛔ Admin and above only."); return; }
+  if (!selectedBrImages.length) { showToast("⚠ Select at least one meme!"); return; }
+  db.ref("brainrot").set({
+    images: selectedBrImages,
+    duration: brDuration,
+    ts: Date.now(),
+    firedBy: currentName
+  }).then(() => {
+    showToast("🧠 Brainrot unleashed!");
+    addLog(currentName + " fired a brainrot attack!", "lock");
+  }).catch(() => showToast("❌ Firebase error."));
+}
+
+function startBrainrotListener() {
+  let _lastBrTs = 0;
+  db.ref("brainrot").on("value", snap => {
+    const d = snap.val();
+    if (!d || !d.images || !d.ts) return;
+    if (d.ts === _lastBrTs) return;
+    _lastBrTs = d.ts;
+    triggerBrainrotLocally(d.images, d.duration || 5000);
+  });
+}
+
+function triggerBrainrotLocally(images, duration) {
+  const overlay  = document.getElementById("brainrot-overlay");
+  const img      = document.getElementById("brainrot-img");
+  const textTop  = document.getElementById("br-text-top");
+  const textBot  = document.getElementById("br-text-bot");
+  const emojiRain= document.getElementById("br-emoji-rain");
+  if (!overlay || !img) return;
+
+  let imgIdx = 0;
+  img.src = images[0];
+  textTop.textContent = BR_TEXTS_TOP[Math.floor(Math.random() * BR_TEXTS_TOP.length)];
+  textBot.textContent = BR_TEXTS_BOT[Math.floor(Math.random() * BR_TEXTS_BOT.length)];
+  overlay.classList.add("active");
+
+  // Cycle images every 600ms
+  if (brImgInterval) clearInterval(brImgInterval);
+  brImgInterval = setInterval(() => {
+    imgIdx = (imgIdx + 1) % images.length;
+    img.src = images[imgIdx];
+  }, 600);
+
+  // Cycle random brainrot text
+  if (brTextInterval) clearInterval(brTextInterval);
+  brTextInterval = setInterval(() => {
+    textTop.textContent = BR_TEXTS_TOP[Math.floor(Math.random() * BR_TEXTS_TOP.length)];
+    textBot.textContent = BR_TEXTS_BOT[Math.floor(Math.random() * BR_TEXTS_BOT.length)];
+    textTop.style.color = ["#ff0","#ff69b4","#00ffff","#ff4500","#adff2f","#ff1493"][Math.floor(Math.random()*6)];
+    textBot.style.color = ["#fff","#ffdd00","#00ff9f","#ff7fff","#ff6347"][Math.floor(Math.random()*5)];
+  }, 400);
+
+  // Emoji rain
+  if (emojiRain) emojiRain.innerHTML = "";
+  if (brEmojiInterval) clearInterval(brEmojiInterval);
+  brEmojiInterval = setInterval(() => {
+    if (!emojiRain) return;
+    const em = document.createElement("span");
+    em.className = "br-emoji";
+    em.textContent = BR_EMOJIS[Math.floor(Math.random() * BR_EMOJIS.length)];
+    em.style.left = Math.random() * 100 + "vw";
+    em.style.animationDuration = (0.8 + Math.random() * 1.4) + "s";
+    em.style.fontSize = (1.5 + Math.random() * 2.5) + "rem";
+    emojiRain.appendChild(em);
+    setTimeout(() => em.remove(), 2500);
+  }, 80);
+
+  // Cleanup after duration
+  setTimeout(() => {
+    clearInterval(brImgInterval);
+    clearInterval(brTextInterval);
+    clearInterval(brEmojiInterval);
+    brImgInterval = brTextInterval = brEmojiInterval = null;
+    overlay.classList.remove("active");
+    img.src = "";
+    if (textTop) textTop.textContent = "";
+    if (textBot) textBot.textContent = "";
+    if (emojiRain) emojiRain.innerHTML = "";
+    db.ref("brainrot").remove().catch(()=>{});
+  }, duration);
+}
+
+// ==================================================
 // JUMPSCARE SYSTEM
 // ==================================================
 let selectedJsImageUrl = 'https://upload.wikimedia.org/wikipedia/en/c/c9/Scary_maze_game_zoomed.jpg';
 
 function selectJsImage(url, el) {
   selectedJsImageUrl = url;
-  document.querySelectorAll('.js-img-option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('#js-images-grid .js-img-option').forEach(o => o.classList.remove('selected'));
   if (el) el.classList.add('selected');
 }
 
@@ -3770,7 +3962,7 @@ function setCustomJsImage() {
   if (!url) { showToast('⚠ Paste an image URL first.'); return; }
   if (!/^https?:\/\//i.test(url)) { showToast('⚠ URL must start with https://'); return; }
   selectedJsImageUrl = url;
-  document.querySelectorAll('.js-img-option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('#js-images-grid .js-img-option').forEach(o => o.classList.remove('selected'));
   showToast('✅ Custom image set!');
 }
 
