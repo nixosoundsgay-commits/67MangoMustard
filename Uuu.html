@@ -1057,18 +1057,6 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <div class="dock-icon">🌐</div>
 <span class="dock-label">Sources</span>
 </button>
-<button class="dock-item" id="dock-johns" onclick="switchTab('johns',this)">
-<div class="dock-icon">🟢</div>
-<span class="dock-label">John's</span>
-</button>
-<button class="dock-item" id="dock-wof" onclick="switchTab('wof',this)">
-<div class="dock-icon">🏆</div>
-<span class="dock-label">Fame</span>
-</button>
-<button class="dock-item" id="dock-settings" onclick="switchTab('settings',this)">
-<div class="dock-icon">⚙️</div>
-<span class="dock-label">Settings</span>
-</button>
 <button class="dock-item" id="dock-announce" onclick="switchTab('announce',this)">
 <div class="dock-icon">📣</div>
 <span class="dock-label">Announce</span>
@@ -1078,6 +1066,14 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <span class="dock-label">Chat</span>
 <span class="chat-notif-badge" id="chat-dock-badge"></span>
 </button>
+<button class="dock-item" id="dock-wof" onclick="switchTab('wof',this)">
+<div class="dock-icon">🏆</div>
+<span class="dock-label">Fame</span>
+</button>
+<button class="dock-item" id="dock-johns" onclick="switchTab('johns',this)">
+<div class="dock-icon">🟢</div>
+<span class="dock-label">John's</span>
+</button>
 <div class="dock-separator"></div>
 <button class="dock-item" id="dock-admin" onclick="switchTab('admin',this)">
 <div class="dock-icon">👑</div>
@@ -1086,6 +1082,10 @@ Your network fingerprint has been recorded and logged.<br/><br/>
 <button class="dock-item" id="dock-johns-panel" onclick="switchTab('johns-panel',this)" style="display:none;">
 <div class="dock-icon" style="font-size:1.1rem;">🟢<br><span style="font-size:.45rem;font-family:'Share Tech Mono',monospace;color:#00ff50;line-height:1;">JOHN</span></div>
 <span class="dock-label">John's Edit</span>
+</button>
+<button class="dock-item" id="dock-settings" onclick="switchTab('settings',this)">
+<div class="dock-icon">⚙️</div>
+<span class="dock-label">Settings</span>
 </button>
 </div>
 </div>
@@ -2288,6 +2288,9 @@ function logout() {
   const ldBtn = document.getElementById('ld-toggle');
   if (ldBtn) { ldBtn.style.display = 'none'; ldBtn.textContent = '⚡ Low Detail'; ldBtn.classList.remove('ld-on'); }
   document.body.classList.remove('low-detail');
+  // Clean up chat
+  closeChat();
+  if (myRef) db.ref('chatNotifications/' + myRef.key).remove().catch(()=>{});
 
   hasFullyLoggedIn = false;
   currentRole = null;
@@ -3364,12 +3367,26 @@ let chatInboxListener = null;
 let unreadCount = 0;
 
 function startChatListeners() {
-  // Listen for incoming chat requests addressed to me
-  chatInboxListener = db.ref('chatRequests').on('value', snap => {
+  // Listen for incoming PENDING requests addressed to me
+  db.ref('chatRequests').on('value', snap => {
     renderChatInbox(snap.val() || {});
   });
 
-  // Render online users list whenever liveUsers changes (already handled by renderOnline calling updateChatOnline)
+  // Listen for an accepted notification addressed to me (the original sender)
+  // so I can open the chat window without polling or duplicate listeners
+  if (!myRef) return;
+  const myUid = myRef.key;
+  db.ref('chatNotifications/' + myUid).on('value', snap => {
+    const n = snap.val();
+    if (!n || !n.sessionKey) return;
+    // Only open if we don't already have an active chat
+    if (!activeChatKey) {
+      openChatWindow(n.sessionKey, n.fromName);
+      showToast('✅ ' + n.fromName + ' accepted your chat request!');
+    }
+    // Remove the notification after handling so it doesn't re-fire
+    db.ref('chatNotifications/' + myUid).remove();
+  });
 }
 
 function updateChatOnline() {
@@ -3411,8 +3428,9 @@ function updateChatOnline() {
 }
 
 function sendChatRequest(targetUid, targetName) {
+  if (!myRef) return;
   const reqData = {
-    fromUid: myRef ? myRef.key : '',
+    fromUid: myRef.key,
     fromName: currentName,
     fromRole: currentRole,
     toUid: targetUid,
@@ -3432,20 +3450,17 @@ function renderChatInbox(data) {
   if (!inbox || !myRef) return;
 
   const myUid = myRef.key;
-  // Only show requests TO me that are pending
   const mine = Object.entries(data).filter(([, v]) => v && v.toUid === myUid && v.status === 'pending');
 
   unreadCount = mine.length;
   if (badgeEl) badgeEl.textContent = unreadCount;
 
-  // Update dock notification badge
   const dockBadge = document.getElementById('chat-dock-badge');
   if (dockBadge) {
     dockBadge.style.display = unreadCount > 0 ? 'flex' : 'none';
     dockBadge.textContent = unreadCount;
   }
 
-  // Clear
   Array.from(inbox.children).forEach(c => { if (c.id !== 'chat-inbox-empty') c.remove(); });
 
   if (!mine.length) {
@@ -3470,29 +3485,29 @@ function renderChatInbox(data) {
 }
 
 function acceptChatRequest(reqKey, fromName, fromUid) {
-  // Create a chat session in Firebase
+  if (!myRef) return;
+  // Create the shared chat session
   const sessionData = {
     participants: [myRef.key, fromUid],
     participantNames: [currentName, fromName],
-    startedAt: Date.now(),
-    messages: {}
+    startedAt: Date.now()
   };
   db.ref('chatSessions').push(sessionData).then(ref => {
-    activeChatKey = ref.key;
-    activeChatWith = fromName;
-    // Remove the request
+    const sessionKey = ref.key;
+
+    // 1. Remove the pending request (cleans up acceptor's inbox)
     db.ref('chatRequests/' + reqKey).remove();
-    // Notify the sender
-    db.ref('chatRequests').push({
-      fromUid: myRef.key,
-      fromName: currentName,
-      toUid: fromUid,
-      toName: fromName,
-      status: 'accepted',
-      sessionKey: ref.key,
+
+    // 2. Write a one-shot notification to the SENDER's notification slot
+    //    so they open the window on their side
+    db.ref('chatNotifications/' + fromUid).set({
+      sessionKey,
+      fromName: currentName,   // "from" here means who accepted
       ts: Date.now()
     });
-    openChatWindow(ref.key, fromName);
+
+    // 3. Open chat window for the acceptor (only this person)
+    openChatWindow(sessionKey, fromName);
     showToast('✅ Chat started with ' + fromName + '!');
   }).catch(() => showToast('❌ Could not start chat.'));
 }
@@ -3503,6 +3518,9 @@ function declineChatRequest(reqKey) {
 }
 
 function openChatWindow(sessionKey, withName) {
+  // If already in this session, do nothing
+  if (activeChatKey === sessionKey) return;
+
   activeChatKey = sessionKey;
   activeChatWith = withName;
 
@@ -3511,23 +3529,19 @@ function openChatWindow(sessionKey, withName) {
   document.getElementById('chat-window-placeholder').style.display = 'none';
   document.getElementById('chat-messages').innerHTML = '';
 
-  // Listen for accepted requests too (so other side can open)
-  db.ref('chatRequests').on('value', snap => {
-    const data = snap.val() || {};
-    Object.entries(data).forEach(([key, v]) => {
-      if (v && v.status === 'accepted' && v.toUid === (myRef ? myRef.key : '') && v.sessionKey) {
-        db.ref('chatRequests/' + key).remove();
-        if (!activeChatKey) openChatWindow(v.sessionKey, v.fromName);
-      }
-    });
-  });
-
-  // Subscribe to messages
-  if (chatMsgListener) db.ref('chatSessions/' + activeChatKey + '/messages').off('value', chatMsgListener);
-  chatMsgListener = db.ref('chatSessions/' + sessionKey + '/messages').on('value', snap => {
+  // Unsubscribe previous message listener if any
+  if (chatMsgListener && _prevMsgRef) {
+    _prevMsgRef.off('value', chatMsgListener);
+  }
+  const msgRef = db.ref('chatSessions/' + sessionKey + '/messages');
+  _prevMsgRef = msgRef;
+  chatMsgListener = msgRef.on('value', snap => {
     renderChatMessages(snap.val() || {});
   });
 }
+
+// track ref for cleanup
+let _prevMsgRef = null;
 
 function renderChatMessages(data) {
   const container = document.getElementById('chat-messages');
@@ -3557,14 +3571,19 @@ function sendChatMessage() {
 }
 
 function closeChat() {
-  if (chatMsgListener && activeChatKey) {
-    db.ref('chatSessions/' + activeChatKey + '/messages').off('value', chatMsgListener);
+  if (_prevMsgRef && chatMsgListener) {
+    _prevMsgRef.off('value', chatMsgListener);
+    _prevMsgRef = null;
     chatMsgListener = null;
   }
   activeChatKey = null;
   activeChatWith = null;
   const win = document.getElementById('chat-window');
-  if (win) { win.classList.remove('active'); win.querySelector('.chat-messages') && (win.querySelector('.chat-messages').innerHTML = ''); }
+  if (win) {
+    win.classList.remove('active');
+    const msgs = win.querySelector('.chat-messages');
+    if (msgs) msgs.innerHTML = '';
+  }
   const ph = document.getElementById('chat-window-placeholder');
   if (ph) ph.style.display = '';
 }
